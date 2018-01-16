@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.teamcode;
 
-import com.kauailabs.navx.ftc.navXPIDController;
+//import com.kauailabs.navx.ftc.navXPIDController;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
