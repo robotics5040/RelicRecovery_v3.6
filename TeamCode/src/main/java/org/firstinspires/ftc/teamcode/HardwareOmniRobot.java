@@ -166,7 +166,7 @@ public class HardwareOmniRobot
         claw2.setPosition(1.0);
         jewelGrab.setPosition(0.19);
         dumper.setPower(0);
-        relicClaw.setPosition(0.0);
+        relicClaw.setPosition(0.15);
         relicWrist.setPosition(0.94);
         relicStopper.setPosition(0.98);
         flexServo.setPosition(0.196);        //out to 90 -- 0.82
@@ -197,7 +197,7 @@ public class HardwareOmniRobot
 
             //Move the claw back to a semi-open position
             claw2.setPosition(0.9);
-            relicClaw.setPosition(0.35);
+            //relicClaw.setPosition(0.35);
             //The robot is now initialized within 18 inches!
         }
     }

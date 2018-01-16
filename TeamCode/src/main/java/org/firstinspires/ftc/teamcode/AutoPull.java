@@ -133,7 +133,7 @@ public class AutoPull extends LinearOpMode {
     //rotates to degree. goes from 0 to 359
     public void RotateTo(HardwareOmniRobot robot, int degrees, int gyro) {
         double p = 0.00999;
-        double i = 0.0000001;
+        double i = 0.0000005;
         double d = 0.00;
 
         PID pid = new PID(p, i, d);
