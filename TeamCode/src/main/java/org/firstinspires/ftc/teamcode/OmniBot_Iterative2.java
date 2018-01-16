@@ -225,26 +225,26 @@ public class OmniBot_Iterative2 extends OpMode{
             robot.grabber.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             robot.grabber.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             there = true;
+            run = false;
         }
         else if(dup == true) {
-
-            robot.grabber.setPower(0.75);
-            robot.grabber.setTargetPosition(up);
+            robot.grabber.setPower(0.2);
+            robot.grabber.setTargetPosition(-1500);
             done = true;
-            up +=10;
         }
         else if(ddown == true) {
-            robot.grabber.setPower(0.75);
-            robot.grabber.setTargetPosition(-1*up);
+            robot.grabber.setPower(0.2);
+            robot.grabber.setTargetPosition(1500);
             done = true;
-            up +=10;
 
         }
         else if(done == true) {
-            up = 10;
+            robot.grabber.setPower(0);
+            robot.grabber.setTargetPosition(robot.grabber.getCurrentPosition());
             robot.grabber.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             robot.grabber.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             done = false;
+            robot.grabber.setPower(1);
         }
         else if (left_bumper == true) {
             robot.grabber.setTargetPosition(1560);
