@@ -308,15 +308,17 @@ public class OmniBot_Iterative2 extends OpMode{
         double rwCurrent = robot.relicWrist.getPosition(), rwGoal = rwCurrent;
 
         double power = 0.5;
-        final int RELIC_OUT = 2900; // Minimum Value to Prevent Over Extension
+        final int RELIC_OUT = 3000; // Minimum Value to Prevent Over Extension
         final int RELIC_IN  = 0;
         double SERVO_INCREMENT = 0.04, decay = 0.008;
 
         if(right_stick_y_2 < -0.1 && robot.relicMotor.getCurrentPosition() < RELIC_OUT){
             robot.relicStopper.setPosition(0.3);
             newRelicMotorPosition = RELIC_OUT;
+            power = 1.0;
         }else if(right_stick_y_2 > 0.1){
             newRelicMotorPosition = RELIC_IN;
+            power = 1.0;
         }else{
             newRelicMotorPosition = relicMotorPosition;
         }
@@ -358,7 +360,7 @@ public class OmniBot_Iterative2 extends OpMode{
         newRelicMotorPosition = Range.clip(newRelicMotorPosition, RELIC_IN, RELIC_OUT);
         robot.relicMotor.setTargetPosition(newRelicMotorPosition);
         relicMotorPosition = robot.relicMotor.getCurrentPosition();
-        power = Math.abs(right_stick_y_2);
+        //power = Math.abs(right_stick_y_2);
 
         if(power < 0.4){
             power = 0.4;
