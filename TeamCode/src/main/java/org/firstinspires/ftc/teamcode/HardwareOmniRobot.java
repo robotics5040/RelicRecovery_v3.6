@@ -28,11 +28,6 @@ import java.text.DecimalFormat;
  *
  * This hardware class assumes the following device names have been configured on the robot:
  * Note:  All names are lower case and some have single spaces between words.
- *
- * Motor channel:  Left  drive motor1:        "left_motor1"
- * Motor channel:  Left  drive motor2:        "left_motor2"
- * Motor channel:  Right drive motor1:        "right_motor1"
- * Motor channel:  Right drive motor2:        "right_motor2"
  */
 public class HardwareOmniRobot
 {
@@ -61,6 +56,7 @@ public class HardwareOmniRobot
     public DcMotor relicMotor = null;
     public Servo relicWrist   = null;
     public Servo relicClaw    = null;
+    public Servo relicStopper = null;
 
     public DcMotor wheelie = null;
     public DcMotor grabber = null;
@@ -121,15 +117,14 @@ public class HardwareOmniRobot
 
         ultra_backMR = hwMap.get(ModernRoboticsI2cRangeSensor.class, "ultra_backMR");
         ultra_backMR2 = hwMap.get(ModernRoboticsI2cRangeSensor.class, "ultra_backMR2");
+
         relicMotor = hwMap.dcMotor.get("relic_motor");
         relicMotor.setDirection(DcMotor.Direction.REVERSE);
-        relicMotor.setPower(0.0);
         relicMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         relicMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         relicWrist = hwMap.get(Servo.class, "relic_wrist");
-        relicWrist.setPosition(0.0);
         relicClaw = hwMap.get(Servo.class, "relic_claw");
-        relicClaw.setPosition(0.0);
+        relicStopper = hwMap.get(Servo.class, "extension_stopper");
 
         //ultra_back = hwMap.get(ModernRoboticsI2cRangeSensor.class, "ultra_back");
         //ultra_left = hwMap.get(ModernRoboticsI2cRangeSensor.class, "ultra_left");
@@ -157,7 +152,7 @@ public class HardwareOmniRobot
         dumper.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         dumper.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        RobotLog.ii("5040MSGHW","Everything setMode adn Direction run");
+        RobotLog.ii("5040MSGHW","Everything setMode and Direction run");
 
         // Set all motors to zero power
         leftMotor1.setPower(0);
@@ -171,10 +166,12 @@ public class HardwareOmniRobot
         claw2.setPosition(1.0);
         jewelGrab.setPosition(0.19);
         dumper.setPower(0);
-        relicClaw.setPosition(0.5);
-        relicWrist.setPosition(0.0);
+        relicClaw.setPosition(0.0);
         relicWrist.setPosition(0.94);
+        relicStopper.setPosition(0.98);
         flexServo.setPosition(0.196);        //out to 90 -- 0.82
+        RobotLog.ii("5040MSGHW", "Everything Initialized Correctly");
+
 
         if(rungyro == true) {
             BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
@@ -185,17 +182,24 @@ public class HardwareOmniRobot
             parameters.loggingTag          = "IMU";
             parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
 
-            // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
-            // on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
-            // and named "imu".
             this.imu = hwMap.get(BNO055IMU.class, "imu");
             this.imu.initialize(parameters);
             imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
 
+            //Close the claw to clear the relic arm
+            claw2.setPosition(0.3);
 
+            //Move the grabber Up
+            while(grabber.getCurrentPosition() < GRABBER_AUTOPOS - 10) {
+                grabber.setPower(0.75);
+                grabber.setTargetPosition(GRABBER_AUTOPOS);
+            }
+
+            //Move the claw back to a semi-open position
+            claw2.setPosition(0.9);
+            relicClaw.setPosition(0.35);
+            //The robot is now initialized within 18 inches!
         }
-
-
     }
 
     /***
@@ -206,7 +210,7 @@ public class HardwareOmniRobot
      *
      * @param periodMs  Length of wait cycle in mSec.
      */
-    public void waitForTick(long periodMs) {
+    public void waitForTick(long periodMs) {//ch
 
         long  remaining = periodMs - (long)period.milliseconds();
 
