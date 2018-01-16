@@ -308,7 +308,7 @@ public class OmniBot_Iterative2 extends OpMode{
         double rwCurrent = robot.relicWrist.getPosition(), rwGoal = rwCurrent;
 
         double power = 0.5;
-        final int RELIC_OUT = 2850; // Minimum Value to Prevent Over Extension
+        final int RELIC_OUT = 2900; // Minimum Value to Prevent Over Extension
         final int RELIC_IN  = 0;
         double SERVO_INCREMENT = 0.04, decay = 0.008;
 
