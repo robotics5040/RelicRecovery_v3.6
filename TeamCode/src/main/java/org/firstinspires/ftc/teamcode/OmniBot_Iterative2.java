@@ -64,7 +64,7 @@ public class OmniBot_Iterative2 extends OpMode{
     private double position = 0.0;
     public int  pressed = 0,up=10;
     double wrist_num = 0;
-    boolean there=true,run =false,done=false,aPressed=true,bPressed=false,xPressed=false,yPressed=false,closed = true;
+    boolean done2 = false,there=true,run =false,done=false,aPressed=true,bPressed=false,xPressed=false,yPressed=false,closed = true;
     ElapsedTime runtime = new ElapsedTime();
     /* Declare OpMode members. */
     private HardwareOmniRobot robot; // use the class created to define a Pushbot's hardware
@@ -213,6 +213,7 @@ public class OmniBot_Iterative2 extends OpMode{
 
         //grabber position
         if(home == true && run == false) {
+            robot.glyphStop.setPosition(1);
             robot.grabber.setPower(0.75);
             robot.grabber.setTargetPosition(-1*robot.GRABBER_AUTOPOS);
             run = true;
@@ -230,12 +231,12 @@ public class OmniBot_Iterative2 extends OpMode{
         }
         else if(dup == true) {
             robot.grabber.setPower(0.2);
-            robot.grabber.setTargetPosition(-1500);
+            robot.grabber.setTargetPosition(1500);
             done = true;
         }
         else if(ddown == true) {
             robot.grabber.setPower(0.2);
-            robot.grabber.setTargetPosition(1500);
+            robot.grabber.setTargetPosition(-1500);
             done = true;
 
         }
@@ -248,7 +249,7 @@ public class OmniBot_Iterative2 extends OpMode{
             robot.grabber.setPower(1);
         }
         else if (left_bumper == true) {
-            robot.grabber.setTargetPosition(1560);
+            robot.grabber.setTargetPosition(1600);
 
         }
         else if(left_trigger > 0.2) {
@@ -256,6 +257,15 @@ public class OmniBot_Iterative2 extends OpMode{
         }
         else {
             robot.grabber.setTargetPosition(0);
+        }
+
+        if(x_button == true || left_bumper == true || left_trigger > 0.2 || dup == true || ddown == true || robot.grabber.getCurrentPosition() > 10) {
+            robot.glyphStop.setPosition(1);
+            done2 = true;
+        }
+        else if(done2 = true){
+            robot.glyphStop.setPosition(0.4);
+            done2 = false;
         }
         //wheelie controlls
         if(left_bump1 == true) {

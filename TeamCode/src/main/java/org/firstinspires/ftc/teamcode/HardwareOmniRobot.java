@@ -125,6 +125,7 @@ public class HardwareOmniRobot
         relicWrist = hwMap.get(Servo.class, "relic_wrist");
         relicClaw = hwMap.get(Servo.class, "relic_claw");
         relicStopper = hwMap.get(Servo.class, "extension_stopper");
+        glyphStop = hwMap.get(Servo.class, "glyphStop");
 
         //ultra_back = hwMap.get(ModernRoboticsI2cRangeSensor.class, "ultra_back");
         //ultra_left = hwMap.get(ModernRoboticsI2cRangeSensor.class, "ultra_left");
@@ -142,6 +143,7 @@ public class HardwareOmniRobot
 
         flex = hwMap.analogInput.get("flx");
 
+        leftMotor1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         leftMotor1.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
         leftMotor2.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
         rightMotor1.setDirection(DcMotor.Direction.FORWARD);// Set to FORWARD if using AndyMark motors
@@ -167,6 +169,7 @@ public class HardwareOmniRobot
         jewelGrab.setPosition(0.19);
         dumper.setPower(0);
         relicClaw.setPosition(0.15);
+        glyphStop.setPosition(1);
         relicWrist.setPosition(0.94);
         relicStopper.setPosition(0.98);
         flexServo.setPosition(0.196);        //out to 90 -- 0.82
