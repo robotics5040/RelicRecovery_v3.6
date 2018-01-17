@@ -40,7 +40,7 @@ public class HardwareOmniRobot
 
     ModernRoboticsI2cRangeSensor ultra_backMR, ultra_backMR2;
 
-    public final int GRABBER_AUTOPOS = 1395;
+    public final int GRABBER_AUTOPOS = 1300;
     public final double JKUP = 0.8;
 
     /* Public OpMode members. */

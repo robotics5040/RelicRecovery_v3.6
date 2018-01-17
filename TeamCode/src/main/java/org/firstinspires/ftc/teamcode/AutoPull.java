@@ -130,7 +130,31 @@ public class AutoPull extends LinearOpMode {
         if(robot.jknock.getPosition() != robot.JKUP) {robot.jknock.setPosition(robot.JKUP);}
     }
 
-    //rotates to degree. goes from 0 to 359
+    public void rotateTo(HardwareOmniRobot robot,int degrees,int gyro) {
+        float heading = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle;//getGyro(robot) - gyro;
+        double speed = 0.5;
+        boolean go = false;
+
+        runtime.reset();
+        while (heading != degrees && opModeIsActive() && runtime.seconds() < 3) {
+            telemetry.addData("HEADING", heading);
+            telemetry.update();
+            heading = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle;//robot.gyro.getHeading() - gyro;
+            if (degrees-1 < heading) {
+                onmiDrive(robot, 0.0, 0.0, -speed);
+                go = true;
+            } else if (degrees+1 > heading) {
+                onmiDrive(robot, 0.0, 0.0, speed);
+                if (speed > 0.4 && go == true) {
+                    speed -= 0.01;
+                }
+            } else {
+                onmiDrive(robot, 0.0, 0.0, 0.0);
+            }
+        }
+    }
+
+    //rotates to degree. goes from -180
     public void RotateTo(HardwareOmniRobot robot, int degrees, int gyro) {
         double p = 0.006;
         double i = 0.01;
