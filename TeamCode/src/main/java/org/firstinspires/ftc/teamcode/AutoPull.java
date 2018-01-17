@@ -4,6 +4,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
@@ -155,17 +156,23 @@ public class AutoPull extends LinearOpMode {
     }
 
     //rotates to degree. goes from -180
-    public void RotateTo(HardwareOmniRobot robot, int degrees, int gyro) {
-        double p = 0.006;
+    public void RotateTo(HardwareOmniRobot robot, int degrees, int offset) {
+        robot.leftMotor1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.leftMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.rightMotor1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.rightMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        double p = 0.01;
         double i = 0.01;
-        double d = 0.0000;
+        double d = 0.000;
 
         PID pid = new PID(p, i, d);
         pid.setSetPoint(degrees);
 
         while(opModeIsActive()){
-            double heading = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle + gyro;
-            double power = pid.update(robot, heading);
+            double heading = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle + offset;
+
+            double power = pid.update(robot.leftMotor1, heading);
             power = Range.clip(power, -1.0, 1.0);
 
             robot.onmiDrive(0.0, 0.0, power);
@@ -174,12 +181,19 @@ public class AutoPull extends LinearOpMode {
                 break;
             }
 
-            telemetry.addData("speed", power);
-            telemetry.addData("Heading: ", robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle);
-            telemetry.addData("calibrated?gyro ", robot.imu.isGyroCalibrated());
+            telemetry.addData("Power: ", power);
+            telemetry.addData("Heading: ", robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle + offset);
+            telemetry.addData("Error: ", Math.abs(heading - degrees));
+            telemetry.addData("calibrated? gyro: ", robot.imu.isGyroCalibrated());
             telemetry.update();
         }
+        telemetry.addLine("Done!");
         robot.onmiDrive(0.0, 0.0, 0);
+
+        robot.leftMotor1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.leftMotor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.rightMotor1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.rightMotor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     public void rotateBy(HardwareOmniRobot robot, int degrees,int gyro){

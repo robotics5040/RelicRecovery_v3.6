@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.hardware.DcMotor;
+
 /**
  * Created by jedch on 1/14/2018.
  */
@@ -15,6 +17,8 @@ public class PID {
     private double i_error;
 
     private long time;
+
+    private int previous = Integer.MAX_VALUE;
 
     public PID(double p, double i, double d){
         this.p = p;
@@ -39,16 +43,29 @@ public class PID {
         return (System.currentTimeMillis() - time + 1) / 1000;
     }
 
-    public double update(HardwareOmniRobot robot, double heading){
+    public double update(double heading){
         double currentError = setPoint - heading;
+        double errorDifference = (currentError - error) / secondsElapsed();
+
+        i_error += currentError * secondsElapsed();
+        error = currentError;
+
+        return p * currentError + i * i_error + d * errorDifference;
+    }
+
+    public double update(DcMotor motor, double heading){
+        double currentError = setPoint - heading;
+        double errorDifference = (currentError - error) / secondsElapsed();
+
+        if(motor.getCurrentPosition() == previous) {
+            i_error += 0.5;
+        }else{
+            i_error -= 0.01;
+        }
+
+        previous = motor.getCurrentPosition();
 
         //i_error += currentError * secondsElapsed();
-        int previous = robot.leftMotor1.getCurrentPosition();
-        if(robot.leftMotor1.getCurrentPosition() == previous) {
-            i_error += .1;
-        }
-        double errorDifference = (currentError - error);
-        errorDifference /= secondsElapsed();
         error = currentError;
 
         return p * currentError + i * i_error + d * errorDifference;
