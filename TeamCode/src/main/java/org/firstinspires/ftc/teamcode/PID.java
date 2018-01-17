@@ -41,14 +41,9 @@ public class PID {
 
     public double update(HardwareOmniRobot robot, double heading){
         double currentError = setPoint - heading;
+        double errorDifference = (currentError - error) / secondsElapsed();
 
-        //i_error += currentError * secondsElapsed();
-        int previous = robot.leftMotor1.getCurrentPosition();
-        if(robot.leftMotor1.getCurrentPosition() == previous) {
-            i_error += .1;
-        }
-        double errorDifference = (currentError - error);
-        errorDifference /= secondsElapsed();
+        i_error += currentError * secondsElapsed();
         error = currentError;
 
         return p * currentError + i * i_error + d * errorDifference;
