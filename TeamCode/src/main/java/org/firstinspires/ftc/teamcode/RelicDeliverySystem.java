@@ -22,28 +22,22 @@ public class RelicDeliverySystem {
     }
 
     public void moveSlide(double joystick) {
-        double power = 0.5;
-        int relicMotorPosition = robot.relicMotor.getCurrentPosition();
-        int newRelicMotorPosition = relicMotorPosition;
+        double power = 0.0;
+        int newRelicMotorPosition;
 
         if(joystick< -0.1 && robot.relicMotor.getCurrentPosition() <RELIC_OUT) {
             robot.relicStopper.setPosition(0.3);
             newRelicMotorPosition = RELIC_OUT;
             power = 1.0;
-        }else if(joystick >0.1) {
+        }else if(joystick > 0.1) {
             newRelicMotorPosition = RELIC_IN;
             power = 1.0;
         }else {
-            newRelicMotorPosition = relicMotorPosition;
+            newRelicMotorPosition = robot.relicMotor.getCurrentPosition();
         }
 
         newRelicMotorPosition = Range.clip(newRelicMotorPosition, RELIC_IN, RELIC_OUT);
         robot.relicMotor.setTargetPosition(newRelicMotorPosition);
-        relicMotorPosition = robot.relicMotor.getCurrentPosition();
-
-        if(power < 0.4){
-            power = 0.4;
-        }
 
         robot.relicMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.relicMotor.setPower(power);

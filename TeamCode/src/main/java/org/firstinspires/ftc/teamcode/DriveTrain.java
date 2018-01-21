@@ -12,6 +12,14 @@ public class DriveTrain {
         this.robot = robot;
     }
 
-    public void makeAdjustments()
+    public void makeAdjustments(boolean dup, boolean ddown, boolean dleft, boolean dright){
+        //convert the booleans to integers.
+        int forward  = dup ? 1 : 0;
+        int backward = ddown ? 1 : 0;
+        int left     = dleft ? 1 : 0;
+        int right    = dright ? 1 : 0;
+
+
+    }
 
 }
