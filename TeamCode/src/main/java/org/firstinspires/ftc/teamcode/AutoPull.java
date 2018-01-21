@@ -157,7 +157,7 @@ public class AutoPull extends LinearOpMode {
         robot.rightMotor1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.rightMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        double p = 0.01;
+        double p = 0.02;
         double i = 0.01;
         double d = 0.000;
 
