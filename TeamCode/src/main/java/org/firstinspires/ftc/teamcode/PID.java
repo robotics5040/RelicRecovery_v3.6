@@ -58,9 +58,8 @@ public class PID {
         double errorDifference = (currentError - error) / secondsElapsed();
 
         if(motor.getCurrentPosition() == previous) {
-            i_error += 0.5;
-        }else{
-            i_error -= 0.01;
+            i_error += 40;
+            i_error = (i_error*motor.getCurrentPosition())/Math.abs(motor.getCurrentPosition());
         }
 
         previous = motor.getCurrentPosition();

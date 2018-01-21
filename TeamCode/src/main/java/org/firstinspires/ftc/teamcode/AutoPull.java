@@ -69,16 +69,16 @@ public class AutoPull extends LinearOpMode {
     public void TurnLeft(HardwareOmniRobot robot){
         telemetry.addLine("Left");
         telemetry.update();
-        DriveFor(robot,0.4, 0.0, 0.0, -0.5);
+        DriveFor(robot,0.45, 0.0, 0.0, -0.5);
         robot.jknock.setPosition(0.7);
-        DriveFor(robot,0.4, 0.0, 0.0, 0.5);
+        DriveFor(robot,0.45, 0.0, 0.0, 0.5);
     }
     public void TurnRight(HardwareOmniRobot robot){
         telemetry.addLine("Right");
         telemetry.update();
-        DriveFor(robot,0.4, 0.0, 0.0, 0.5);
+        DriveFor(robot,0.45, 0.0, 0.0, 0.5);
         robot.jknock.setPosition(0.7);
-        DriveFor(robot,0.4, 0.0, 0.0, -0.5);
+        DriveFor(robot,0.45, 0.0, 0.0, -0.5);
     }
 
     //jewel code
@@ -137,22 +137,21 @@ public class AutoPull extends LinearOpMode {
         boolean go = false;
 
         runtime.reset();
-        while (heading != degrees && opModeIsActive() && runtime.seconds() < 3) {
+        while (heading != degrees && opModeIsActive() && runtime.seconds() < 1) {
             telemetry.addData("HEADING", heading);
             telemetry.update();
             heading = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle;//robot.gyro.getHeading() - gyro;
-            if (degrees-1 < heading) {
+            if (degrees-0.5< heading) {
                 onmiDrive(robot, 0.0, 0.0, -speed);
                 go = true;
-            } else if (degrees+1 > heading) {
+            } else if (degrees+0.5 > heading) {
                 onmiDrive(robot, 0.0, 0.0, speed);
                 if (speed > 0.4 && go == true) {
                     speed -= 0.01;
                 }
-            } else {
-                onmiDrive(robot, 0.0, 0.0, 0.0);
             }
         }
+        onmiDrive(robot, 0.0, 0.0, 0.0);
     }
 
     //rotates to degree. goes from -180
@@ -168,8 +167,8 @@ public class AutoPull extends LinearOpMode {
 
         PID pid = new PID(p, i, d);
         pid.setSetPoint(degrees);
-
-        while(opModeIsActive()){
+        runtime.reset();
+        while(opModeIsActive() && runtime.seconds() < 2){
             double heading = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle + offset;
 
             double power = pid.update(robot.leftMotor1, heading);
@@ -177,7 +176,7 @@ public class AutoPull extends LinearOpMode {
 
             robot.onmiDrive(0.0, 0.0, power);
 
-            if(Math.abs(heading - degrees) < 3.0){
+            if(Math.abs(heading - degrees) < 0.5){
                 break;
             }
 

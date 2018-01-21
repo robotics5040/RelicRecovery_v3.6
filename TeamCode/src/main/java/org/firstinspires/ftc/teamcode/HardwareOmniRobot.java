@@ -119,7 +119,7 @@ public class HardwareOmniRobot
         ultra_backMR2 = hwMap.get(ModernRoboticsI2cRangeSensor.class, "ultra_backMR2");
 
         relicMotor = hwMap.dcMotor.get("relic_motor");
-        relicMotor.setDirection(DcMotor.Direction.REVERSE);
+        //relicMotor.setDirection(DcMotor.Direction.REVERSE);
         relicMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         relicMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         relicWrist = hwMap.get(Servo.class, "relic_wrist");
@@ -143,7 +143,6 @@ public class HardwareOmniRobot
 
         flex = hwMap.analogInput.get("flx");
 
-        leftMotor1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         leftMotor1.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
         leftMotor2.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
         rightMotor1.setDirection(DcMotor.Direction.FORWARD);// Set to FORWARD if using AndyMark motors
@@ -171,7 +170,7 @@ public class HardwareOmniRobot
         relicClaw.setPosition(0.15);
         glyphStop.setPosition(1);
         relicWrist.setPosition(0.94);
-        relicStopper.setPosition(0.98);
+        relicStopper.setPosition(0.96);
         flexServo.setPosition(0.196);        //out to 90 -- 0.82
         RobotLog.ii("5040MSGHW", "Everything Initialized Correctly");
 
