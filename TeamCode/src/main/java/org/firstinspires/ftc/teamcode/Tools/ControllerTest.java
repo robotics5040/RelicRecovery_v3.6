@@ -17,6 +17,7 @@ public class ControllerTest extends OpMode {
     public void loop(){
         double left_joystick_y, left_joystick_x, right_joystick_y, right_joystick_x;
         double left_trigger, right_trigger;
+        boolean left_bumper, right_bumper;
         boolean left_stick_button, right_stick_button;
         boolean a_button, b_button, x_button, y_button;
         boolean d_up, d_down, d_left, d_right;
@@ -34,7 +35,9 @@ public class ControllerTest extends OpMode {
 
         //Bumpers & Triggers
         left_trigger  = gamepad1.left_trigger;
+        left_bumper   = gamepad1.left_bumper;
         right_trigger = gamepad1.right_trigger;
+        right_bumper  = gamepad1.right_bumper;
 
         //Face Buttons
         a_button = gamepad1.a;
@@ -63,9 +66,10 @@ public class ControllerTest extends OpMode {
         telemetry.addData("right Stick Button: ", right_stick_button);
         telemetry.addLine("-------------------------------------------");
         telemetry.addLine("Bumpers & Triggers: ");
+        telemetry.addData("Left Bumper: ", left_bumper);
         telemetry.addData("Left Trigger: ", left_trigger);
+        telemetry.addData("right Bumper: ", right_bumper);
         telemetry.addData("Right Trigger: ", right_trigger);
-        telemetry.addData("Left Bumber")
         telemetry.addLine("-------------------------------------------");
         telemetry.addLine("Buttons: ");
         telemetry.addData("A: ", a_button);
