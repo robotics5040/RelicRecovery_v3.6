@@ -68,6 +68,7 @@ public class OmniBot_Iterative2 extends OpMode{
     ElapsedTime runtime = new ElapsedTime();
     /* Declare OpMode members. */
     private HardwareOmniRobot robot; // use the class created to define a Pushbot's hardware
+    private DriveTrain driveTrain;
     private RelicDeliverySystem rds;
 
     public OmniBot_Iterative2() {
@@ -85,6 +86,7 @@ public class OmniBot_Iterative2 extends OpMode{
          */
         robot.init(hardwareMap, false);
         rds = new RelicDeliverySystem(robot);
+        driveTrain = new DriveTrain(robot);
 
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Say", "Hello Driver");    //
@@ -155,63 +157,9 @@ public class OmniBot_Iterative2 extends OpMode{
         robot.grabber.setPower(1);
         robot.dumper.setPower(0.4);
 
-        //slight adjustments for driver
-        if(d_down1 == true) {
-            left_stick_y = 0.5;
-        }
-        if(d_up1 == true) {
-            left_stick_y = -0.5;
-        }
-        if(d_left1 == true) {
-            left_stick_x = -0.5;
-        }
-        if(d_right1 == true) {
-            left_stick_x = 0.5;
-        }
-
-        //changes front of robot for driver using a,b,x,y
-        if(y_button1 == true || aPressed == true) {
-            front = left_stick_y * -1;
-            side = left_stick_x * -1;
-            rotate = right_stick_x*-1;
-
-            aPressed = true;
-            bPressed = false;
-            xPressed = false;
-            yPressed = false;
-        }
-        if(x_button1 == true || bPressed == true) {
-            front = left_stick_x;
-            side = left_stick_y*-1;
-            rotate = right_stick_y*-1;
-
-            aPressed = false;
-            bPressed = true;
-            xPressed = false;
-            yPressed = false;
-        }
-        if(b_button1 == true || xPressed == true) {
-            front = left_stick_x*-1;
-            side = left_stick_y;
-            rotate = right_stick_y;
-
-            aPressed = false;
-            bPressed = false;
-            xPressed = true;
-            yPressed = false;
-        }
-        if(a_button1 == true || yPressed == true) {
-            front = left_stick_y;
-            side = left_stick_x;
-            rotate = right_stick_x;
-
-            aPressed = false;
-            bPressed = false;
-            xPressed = false;
-            yPressed = true;
-        }
-
-        robot.onmiDrive(side, front, rotate);
+        driveTrain.makeAdjustments(dup, ddown, dleft, dright);
+        driveTrain.changeSide(y_button, x_button, b_button, a_button);
+        driveTrain.drive(left_stick_x, left_stick_y, right_stick_x, right_stick_y);
 
         //grabber position
         if(home == true && run == false) {

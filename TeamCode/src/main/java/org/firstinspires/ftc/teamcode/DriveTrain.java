@@ -43,11 +43,34 @@ public class DriveTrain {
         }
     }
 
-    public void drive (double ljoystick_x, double ljoystick_y, double rjoystick_y, double rjoystick_x) {
-        omniDrive(ljoystick_y, ljoystick_y, rjoystick_x);
+    public void drive (double ljoystick_x, double ljoystick_y, double rjoystick_x, double rjoystick_y) {
+        switch(currentSide) {
+            case FRONT:
+                forward  = ljoystick_y * -1;
+                side     = ljoystick_x * -1;
+                rotation = rjoystick_x * -1;
+                break;
+            case BACK:
+                forward  = ljoystick_y;
+                side     = ljoystick_x;
+                rotation = rjoystick_x;
+                break;
+            case LEFT:
+                forward  = ljoystick_x;
+                side     = ljoystick_y;
+                rotation = rjoystick_y;
+                break;
+            case RIGHT:
+                forward  = ljoystick_x * -1;
+                side     = ljoystick_y * -1;
+                rotation = rjoystick_y * -1;
+                break;
+        }
+
+        omniDrive(side, forward, rotation);
     }
 
-    public void omniDrive(double sideways, double forward, double rotation){
+    private void omniDrive(double sideways, double forward, double rotation){
         try {
             robot.leftMotor1.setPower(robot.limit(((forward - sideways)/2) * 1 + (-.2 * rotation)));
             robot.leftMotor2.setPower(robot.limit(((forward + sideways)/2) * 1 + (-.2 * rotation)));
