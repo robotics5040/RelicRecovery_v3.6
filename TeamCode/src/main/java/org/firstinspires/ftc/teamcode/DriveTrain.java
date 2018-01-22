@@ -11,7 +11,7 @@ public class DriveTrain {
     private HardwareOmniRobot robot;
 
     private double forward, side, rotation;
-    private boolean toggle = true;
+
     private enum Side {FRONT, LEFT, RIGHT, BACK}
     private Side currentSide = Side.FRONT;
     public static final String MESSAGETAG = "5040MSG";
@@ -43,8 +43,8 @@ public class DriveTrain {
         }
     }
 
-    public void drive () {
-
+    public void drive (double ljoystick_x, double ljoystick_y, double rjoystick_y, double rjoystick_x) {
+        omniDrive(ljoystick_y, ljoystick_y, rjoystick_x);
     }
 
     public void omniDrive(double sideways, double forward, double rotation){
