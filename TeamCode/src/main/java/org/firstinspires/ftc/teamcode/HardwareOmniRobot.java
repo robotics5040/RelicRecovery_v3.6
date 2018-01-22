@@ -7,6 +7,7 @@ import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
 import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.GyroSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.I2cAddr;
@@ -143,10 +144,10 @@ public class HardwareOmniRobot
 
         flex = hwMap.analogInput.get("flx");
 
-        leftMotor1.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
-        leftMotor2.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
-        rightMotor1.setDirection(DcMotor.Direction.FORWARD);// Set to FORWARD if using AndyMark motors
-        rightMotor2.setDirection(DcMotor.Direction.FORWARD);// Set to FORWARD if using AndyMark motors
+        leftMotor1.setDirection(DcMotor.Direction.REVERSE); // Set to REVERSE if using AndyMark motors
+        leftMotor2.setDirection(DcMotor.Direction.REVERSE); // Set to REVERSE if using AndyMark motors
+        rightMotor1.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
+        rightMotor2.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
         grabber.setDirection(DcMotor.Direction.REVERSE);
         grabber.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         grabber.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -163,11 +164,11 @@ public class HardwareOmniRobot
         RobotLog.ii("5040MSGHW","Drive Train setPower");
         wheelie.setPower(0);
         jknock.setPosition(0.8);
-        claw1.setPosition(0.0);
-        claw2.setPosition(1.0);
+        claw1.setPosition(1.0);
+        claw2.setPosition(0.0);
         jewelGrab.setPosition(0.19);
         dumper.setPower(0);
-        relicClaw.setPosition(0.15);
+        relicClaw.setPosition(0.5);
         glyphStop.setPosition(1);
         relicWrist.setPosition(0.94);
         relicStopper.setPosition(0.96);

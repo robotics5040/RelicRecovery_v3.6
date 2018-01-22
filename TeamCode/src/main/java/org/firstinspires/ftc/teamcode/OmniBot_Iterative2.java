@@ -150,7 +150,7 @@ public class OmniBot_Iterative2 extends OpMode{
         stick_press1 = gamepad2.left_stick_button;
         home = gamepad2.guide;
 
-        robot.dumper.setPower(0.6);
+        robot.dumper.setPower(0.5);
 
         //slight adjustments for driver
         if(d_down1 == true) {
@@ -303,7 +303,7 @@ public class OmniBot_Iterative2 extends OpMode{
 
         //dumper controls
         if (right_bumper == true) {
-            robot.dumper.setTargetPosition(480);
+            robot.dumper.setTargetPosition(520);
         }
         else {
             robot.dumper.setTargetPosition(0);
@@ -313,18 +313,18 @@ public class OmniBot_Iterative2 extends OpMode{
         // OLD NUMBERS -- closed - .76,.24 -- partway - .6,.4
         //closes claws
         if (x_button == true || run2 == true) {
-            robot.claw1.setPosition(0.7);
-            robot.claw2.setPosition(0.25);
+            robot.claw1.setPosition(0.47);
+            robot.claw2.setPosition(0.53);
         }
         //all the way open
         else if(y_button == true) {
-            robot.claw1.setPosition(0.3);
-            robot.claw2.setPosition(0.7);
+            robot.claw1.setPosition(0.7);
+            robot.claw2.setPosition(0.3);
         }
         //part way open when not pressing a button
         else {
-            robot.claw1.setPosition(0.55);
-            robot.claw2.setPosition(0.45);
+            robot.claw1.setPosition(0.6);
+            robot.claw2.setPosition(0.4);
         }
 
         int relicMotorPosition = robot.relicMotor.getCurrentPosition();
