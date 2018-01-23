@@ -97,7 +97,7 @@ public class Red2Place1 extends AutoPull {
                 target = 23;
                 break;
             case (2):
-                target = 30.5;
+                target = 31.5;
                 break;
             case (3):
                 target = 37;
@@ -110,8 +110,8 @@ public class Red2Place1 extends AutoPull {
         telemetry.addData("VuMark", "%s visible", choosen);
         telemetry.update();
 
-        robot.claw1.setPosition(0.55);
-        robot.claw2.setPosition(0.45);
+        robot.claw1.setPosition(0.5);
+        robot.claw2.setPosition(0.5);
 
         JewelKnock(robot,"red");
         DriveFor(robot,0.3,0.0,0.0,0.0);
@@ -119,8 +119,8 @@ public class Red2Place1 extends AutoPull {
         robot.wheelie.setPower(-1);
         DriveFor(robot,0.8,-1.0,0.0,0.0);
         robot.wheelie.setPower(0);
-        DriveFor(robot,0.5,-0.5,0.0,0.0);
-        DriveFor(robot,0.7,0.5,0.0,0.0);
+        DriveFor(robot,0.5,-0.4,0.0,0.0);
+        DriveFor(robot,0.5,0.4,0.0,0.0);
         DriveFor(robot,0.3,0.0,0.0,0.0);
 
         //DriveFor(robot,0.3,0,0,0);
@@ -129,8 +129,8 @@ public class Red2Place1 extends AutoPull {
         DriveFor(robot,0.3,0.0,0.0,0.0);
 
         DriveFor(robot, 0.4,0,1,0);
-        DriveFor(robot,0.8,-1,0,0);
-        DriveFor(robot,0.5,0.5,0,0);
+        DriveFor(robot,1.0,-1,0,0);
+        DriveFor(robot,0.55,0.36,0,0);
         DriveFor(robot,0.3,0,0,0);
 
         telemetry.addLine("Lineup 1 Complete");
@@ -139,46 +139,51 @@ public class Red2Place1 extends AutoPull {
         boolean dis2 = false;
         int count = 0;
         runtime.reset();
+        double speed = 0.285;
+        if(choosen == 2){
+            speed = 0.26;
+        }
         while (dis2 == false && runtime2.seconds() < 23 && opModeIsActive()) {
             double distanceLeft = ((robot.ultra_left.getVoltage() / 5) * 512) + 2.5;// robot.ultra_right.getDistance(DistanceUnit.CM);
             telemetry.addData("Left", distanceLeft);
             telemetry.update();
 
-            if (distanceLeft > target+1) {
-                onmiDrive(robot, 0.45, 0.0, 0.0);
+            if (distanceLeft > target+0.3) {
+                onmiDrive(robot, speed, 0.0, 0.0);
             }
-            else if (distanceLeft < target-1) {
-                onmiDrive(robot,-0.45,0.0,0.0);
+            else if (distanceLeft < target-0.3) {
+                onmiDrive(robot,-speed,0.0,0.0);
             }
             else {
+                if(count == 1) {
+                    speed = 0.26;
+                }
                 onmiDrive(robot,0.0, 0.0, 0.0);
                 DriveFor(robot,0.3,0,0,0);
-                if(count == 4) {
+                if(count == 2) {
                     rotateTo(robot, 0, 0);
-                    DriveFor(robot, 0.3, 0, 0, 0);
+                   DriveFor(robot, 0.3, 0, 0, 0);
                 }
-                else if(count == 6) {
-                    DriveFor(robot,0.6,-1,0,0);
-                    DriveFor(robot,0.4,0.5,0,0);
-                    DriveFor(robot,0.3,0,0,0);
+                if(count == 3) {
                     dis2 = true;
                 }
                 count ++;
             }
         }
         onmiDrive(robot,0.0, 0.0, 0.0);
+        DriveFor(robot,0.6,-1,0,0);
+        DriveFor(robot,0.3,0,0,0);
 
         telemetry.addLine("Lineup 2 Complete");
         telemetry.update();
 
         robot.dumper.setPower(0.4);
-        onmiDrive(robot,0.0, 0.0, 0.0);
         runtime.reset();
-        while (robot.dumper.getCurrentPosition() <= 470 && opModeIsActive() && runtime2.seconds() < 28 && runtime.seconds() < 1.5) {
+        while (robot.dumper.getCurrentPosition() <= 470 && opModeIsActive() && runtime2.seconds() < 28 && runtime.seconds() < 2.0) {
             robot.dumper.setTargetPosition(480);
+            onmiDrive(robot, 0,.26,0);
         }
-        DriveFor(robot,0.3,0.0,0.0,0.0);
-        DriveFor(robot,0.8, 0.45, 0.0, 0.0);
+        DriveFor(robot,0.6, 0.3, 0.0, 0.0);
 
         while (robot.dumper.getCurrentPosition() >= 5 && opModeIsActive()) {
             robot.dumper.setTargetPosition(0);
@@ -188,8 +193,8 @@ public class Red2Place1 extends AutoPull {
             DriveFor(robot, 1.0, -0.8, 0.0, 0.0);
             DriveFor(robot, 0.5, 0.5, 0.0, 0.0);
         }
-        robot.claw1.setPosition(0.3);
-        robot.claw2.setPosition(0.7);
+        //robot.claw1.setPosition(0.3);
+        //robot.claw2.setPosition(0.7);
         DriveFor(robot,1.0, 0.0, 0.0, 0.0);
 
 

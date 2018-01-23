@@ -65,22 +65,22 @@ public class AutoPull extends LinearOpMode {
     public void TurnLeft(HardwareOmniRobot robot){
         telemetry.addLine("Left");
         telemetry.update();
-        DriveFor(robot,0.45, 0.0, 0.0, -0.5);
+        DriveFor(robot,0.45, 0.0, 0.0, -0.36);
         robot.jknock.setPosition(0.7);
-        DriveFor(robot,0.45, 0.0, 0.0, 0.5);
+        DriveFor(robot,0.45, 0.0, 0.0, 0.36);
     }
     public void TurnRight(HardwareOmniRobot robot){
         telemetry.addLine("Right");
         telemetry.update();
-        DriveFor(robot,0.45, 0.0, 0.0, 0.5);
+        DriveFor(robot,0.45, 0.0, 0.0, 0.36);
         robot.jknock.setPosition(0.7);
-        DriveFor(robot,0.45, 0.0, 0.0, -0.5);
+        DriveFor(robot,0.45, 0.0, 0.0, -0.36);
     }
 
     //jewel code
     public void JewelKnock(HardwareOmniRobot robot,String side){
 
-        robot.jknock.setPosition(0.1);
+        robot.jknock.setPosition(0.13);
         robot.jkcolor.enableLed(true);
         robot.jkcolor2.enableLed(true);
         DriveFor(robot,1.5,0.0,0.0,0.0);
@@ -128,22 +128,22 @@ public class AutoPull extends LinearOpMode {
     }
 
     public void rotateTo(HardwareOmniRobot robot,int degrees,int gyro) {
-        float heading = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle;//getGyro(robot) - gyro;
+        float heading = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle+gyro;//getGyro(robot) - gyro;
         double speed = 0.5;
         boolean go = false;
 
         runtime.reset();
-        while (heading != degrees && opModeIsActive() && runtime.seconds() < 5) {
+        while (heading != degrees && opModeIsActive() && runtime.seconds() < 3) {
             telemetry.addData("HEADING", heading);
             telemetry.addData("speed", speed);
             telemetry.update();
-            heading = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle;//robot.gyro.getHeading() - gyro;
-            if (degrees-0.25< heading) {
+            heading = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle+gyro;//robot.gyro.getHeading() - gyro;
+            if (degrees-0.5< heading) {
                 onmiDrive(robot, 0.0, 0.0, -speed);
                 go = true;
             } else if (degrees+0.5 > heading) {
                 onmiDrive(robot, 0.0, 0.0, speed);
-                if (speed > 0.3 && go == true) {
+                if (speed > 0.25 && go == true) {
                     speed -= 0.01;
                 }
             }
