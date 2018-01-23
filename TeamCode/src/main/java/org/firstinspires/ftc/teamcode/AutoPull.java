@@ -80,7 +80,7 @@ public class AutoPull extends LinearOpMode {
     //jewel code
     public void JewelKnock(HardwareOmniRobot robot,String side){
 
-        robot.jknock.setPosition(0.15);
+        robot.jknock.setPosition(0.1);
         robot.jkcolor.enableLed(true);
         robot.jkcolor2.enableLed(true);
         DriveFor(robot,1.5,0.0,0.0,0.0);
@@ -133,16 +133,17 @@ public class AutoPull extends LinearOpMode {
         boolean go = false;
 
         runtime.reset();
-        while (heading != degrees && opModeIsActive() && runtime.seconds() < 1) {
+        while (heading != degrees && opModeIsActive() && runtime.seconds() < 5) {
             telemetry.addData("HEADING", heading);
+            telemetry.addData("speed", speed);
             telemetry.update();
             heading = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle;//robot.gyro.getHeading() - gyro;
-            if (degrees-0.5< heading) {
+            if (degrees-0.25< heading) {
                 onmiDrive(robot, 0.0, 0.0, -speed);
                 go = true;
             } else if (degrees+0.5 > heading) {
                 onmiDrive(robot, 0.0, 0.0, speed);
-                if (speed > 0.4 && go == true) {
+                if (speed > 0.3 && go == true) {
                     speed -= 0.01;
                 }
             }
@@ -164,7 +165,7 @@ public class AutoPull extends LinearOpMode {
         PID pid = new PID(p, i, d);
         pid.setSetPoint(degrees);
         runtime.reset();
-        while(opModeIsActive() && runtime.seconds() < 2){
+        while(opModeIsActive() && runtime.seconds() < 5){
             double heading = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle + offset;
 
             double power = pid.update(robot.leftMotor1, heading);

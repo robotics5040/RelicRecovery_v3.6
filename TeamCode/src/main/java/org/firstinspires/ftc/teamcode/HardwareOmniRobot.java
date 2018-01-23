@@ -190,7 +190,7 @@ public class HardwareOmniRobot
             imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
 
             //Close the claw to clear the relic arm
-            claw2.setPosition(0.3);
+            claw2.setPosition(0.5);
 
             //Move the grabber Up
             while(grabber.getCurrentPosition() < GRABBER_AUTOPOS - 10) {
@@ -199,7 +199,7 @@ public class HardwareOmniRobot
             }
 
             //Move the claw back to a semi-open position
-            claw2.setPosition(0.9);
+            claw2.setPosition(0.1);
             //relicClaw.setPosition(0.35);
             //The robot is now initialized within 18 inches!
         }

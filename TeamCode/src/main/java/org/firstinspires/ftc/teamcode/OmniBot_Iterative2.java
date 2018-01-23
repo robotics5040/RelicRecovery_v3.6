@@ -238,7 +238,7 @@ public class OmniBot_Iterative2 extends OpMode{
         }
         else if(left_trigger > 0.2) {
             robot.glyphStop.setPosition(1);
-            robot.grabber.setTargetPosition(1200);
+            robot.grabber.setTargetPosition(1100);
         }
         else if(left_bump1 == true) {
             robot.glyphStop.setPosition(1);
@@ -303,7 +303,7 @@ public class OmniBot_Iterative2 extends OpMode{
 
         //dumper controls
         if (right_bumper == true) {
-            robot.dumper.setTargetPosition(520);
+            robot.dumper.setTargetPosition(480);
         }
         else {
             robot.dumper.setTargetPosition(0);
@@ -313,8 +313,8 @@ public class OmniBot_Iterative2 extends OpMode{
         // OLD NUMBERS -- closed - .76,.24 -- partway - .6,.4
         //closes claws
         if (x_button == true || run2 == true) {
-            robot.claw1.setPosition(0.47);
-            robot.claw2.setPosition(0.53);
+            robot.claw1.setPosition(0.51);
+            robot.claw2.setPosition(0.49);
         }
         //all the way open
         else if(y_button == true) {
@@ -323,8 +323,8 @@ public class OmniBot_Iterative2 extends OpMode{
         }
         //part way open when not pressing a button
         else {
-            robot.claw1.setPosition(0.6);
-            robot.claw2.setPosition(0.4);
+            robot.claw1.setPosition(0.62);
+            robot.claw2.setPosition(0.38);
         }
 
         int relicMotorPosition = robot.relicMotor.getCurrentPosition();
@@ -372,7 +372,7 @@ public class OmniBot_Iterative2 extends OpMode{
             robot.relicClaw.setPosition(0.0);
         }
         else if(b_button == true) {
-            robot.relicClaw.setPosition(0.32);
+            robot.relicClaw.setPosition(0.38);
         }
         else{
             robot.relicClaw.setPosition(0.5);
@@ -416,6 +416,7 @@ public class OmniBot_Iterative2 extends OpMode{
         telemetry.addData("home",gamepad2.guide);
         telemetry.addData("color 1", robot.jkcolor.blue());
         telemetry.addData("color 1", robot.jkcolor2.blue());
+        telemetry.addData("dumper", robot.dumper.getCurrentPosition());
         /*
         telemetry.addData("Ultra back", robot.ultra_back.getDistance(DistanceUnit.CM));
         telemetry.addData("Ultra left", robot.ultra_left.getDistance(DistanceUnit.CM));
