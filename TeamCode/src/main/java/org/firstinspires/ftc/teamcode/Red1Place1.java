@@ -138,7 +138,7 @@ public class Red1Place1 extends AutoPull {
         runtime.reset();
         double speed = 0.275;
         if(choosen == 2){
-            speed = 0.26;
+            speed = 0.25;
         }
         while (dis2 == false && runtime2.seconds() < 23 && opModeIsActive()) {
             double distanceLeft = ((robot.ultra_left.getVoltage() / 5) * 512) + 2.5;// robot.ultra_right.getDistance(DistanceUnit.CM);
@@ -153,7 +153,7 @@ public class Red1Place1 extends AutoPull {
             }
             else {
                 if(count == 1) {
-                    speed = 0.26;
+                    speed = 0.25;
                 }
                 onmiDrive(robot,0.0, 0.0, 0.0);
                 DriveFor(robot,0.3,0,0,0);

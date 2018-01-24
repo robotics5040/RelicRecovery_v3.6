@@ -100,7 +100,7 @@ public class Blue2Place1 extends AutoPull {
                 target = 22;
                 break;
             case (2):
-                target = 31.5;
+                target = 29;
                 break;
             case (3):
                 target = 37;
@@ -144,7 +144,7 @@ public class Blue2Place1 extends AutoPull {
         runtime.reset();
         double speed = 0.285;
         if(choosen == 2){
-            speed = 0.26;
+            speed = 0.25;
         }
         while (dis2 == false && runtime2.seconds() < 23 && opModeIsActive()) {
             double distanceRight = ((robot.ultra_right.getVoltage() / 5) * 512) + 2.5;// robot.ultra_right.getDistance(DistanceUnit.CM);
@@ -159,7 +159,7 @@ public class Blue2Place1 extends AutoPull {
             }
             else {
                 if(count == 1) {
-                    speed = 0.26;
+                    speed = 0.25;
                 }
                 onmiDrive(robot,0.0, 0.0, 0.0);
                 DriveFor(robot,0.3,0,0,0);
