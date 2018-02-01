@@ -282,8 +282,8 @@ public class OmniBot_Iterative2 extends OpMode{
         else{
             //robot.glyphStop.setPosition(0.4);
         }*/
-        if(right_trigger1 > 0.4) {
-            robot.glyphStop.setPosition(1);
+        if(right_trigger1 > 0.4 && left_bumper == false && left_trigger < 0.3 && robot.grabber.getCurrentPosition() < 20 && dup == false && ddown == false && run2 == false) {
+            robot.glyphStop.setPosition(0.8);
         }
         else {
             robot.glyphStop.setPosition(0.1);

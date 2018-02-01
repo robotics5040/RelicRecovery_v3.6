@@ -82,9 +82,9 @@ public class AutoTest extends AutoPull {
 
         //DriveFor(robot,1.5,1,0,0);
 
-        RotateTo(robot, 90, 0);
+        rotateTo(robot, 45, -135);
         while(opModeIsActive()) {
-            telemetry.addData("calibrated?gyro ", robot.imu.isGyroCalibrated());
+           telemetry.addData("calibrated?gyro ", robot.imu.isGyroCalibrated());
             telemetry.addData("heading", robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle);
             telemetry.update();
         }

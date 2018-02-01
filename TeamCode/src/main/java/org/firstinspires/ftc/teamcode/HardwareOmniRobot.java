@@ -112,9 +112,11 @@ public class HardwareOmniRobot
         flexServo = hwMap.servo.get("flex");
         jkcolor = hwMap.get(ColorSensor.class, "color_sense");
         jkcolor2 = hwMap.get(ColorSensor.class, "color");
+        dumperColor = hwMap.get(ColorSensor.class, "dumperColor");
         RobotLog.ii("5040MSGHW","Everything but ultras gotten");
 
         jkcolor2.setI2cAddress(I2cAddr.create8bit(0x28));
+        jkcolor2.setI2cAddress(I2cAddr.create8bit(0x26));
 
         ultra_backMR = hwMap.get(ModernRoboticsI2cRangeSensor.class, "ultra_backMR");
         ultra_backMR2 = hwMap.get(ModernRoboticsI2cRangeSensor.class, "ultra_backMR2");

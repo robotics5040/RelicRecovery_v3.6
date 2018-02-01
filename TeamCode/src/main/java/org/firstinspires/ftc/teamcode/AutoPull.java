@@ -65,25 +65,25 @@ public class AutoPull extends LinearOpMode {
     public void TurnLeft(HardwareOmniRobot robot){
         telemetry.addLine("Left");
         telemetry.update();
-        DriveFor(robot,0.45, 0.0, 0.0, -0.36);
+        DriveFor(robot,0.2, 0.0, 0.0, -1);
         robot.jknock.setPosition(0.7);
-        DriveFor(robot,0.45, 0.0, 0.0, 0.36);
+        DriveFor(robot,0.3, 0.0, 0.0, 1);
     }
     public void TurnRight(HardwareOmniRobot robot){
         telemetry.addLine("Right");
         telemetry.update();
-        DriveFor(robot,0.45, 0.0, 0.0, 0.36);
+        DriveFor(robot,0.2, 0.0, 0.0, 1);
         robot.jknock.setPosition(0.7);
-        DriveFor(robot,0.45, 0.0, 0.0, -0.36);
+        DriveFor(robot,0.3, 0.0, 0.0, -1);
     }
 
     //jewel code
     public void JewelKnock(HardwareOmniRobot robot,String side){
 
-        robot.jknock.setPosition(0.13);
         robot.jkcolor.enableLed(true);
         robot.jkcolor2.enableLed(true);
-        DriveFor(robot,1.5,0.0,0.0,0.0);
+        robot.jknock.setPosition(0.13);
+        //DriveFor(robot,0.5,0.0,0.0,0.0);
         boolean decided = false;
         runtime.reset();
         int color1b = robot.jkcolor.blue();
@@ -96,7 +96,7 @@ public class AutoPull extends LinearOpMode {
         telemetry.addData("Color 2r", color2r);
         telemetry.update();
 
-        while (opModeIsActive() && decided == false && runtime.seconds() < 2) {
+        while (opModeIsActive() && decided == false && runtime.seconds() < 1) {
             if (color1r < 2 && color1b< 2 && color2r < 2 && color2b < 2) {
                 decided = true;
                 robot.jknock.setPosition(robot.JKUP);
@@ -129,11 +129,11 @@ public class AutoPull extends LinearOpMode {
 
     public void rotateTo(HardwareOmniRobot robot,int degrees,int gyro) {
         float heading = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle+gyro;//getGyro(robot) - gyro;
-        double speed = 0.5;
+        double speed = 0.35;
         boolean go = false;
 
         runtime.reset();
-        while (heading != degrees && opModeIsActive() && runtime.seconds() < 3) {
+        while (heading != degrees && opModeIsActive() && runtime.seconds() < 1.5) {
             telemetry.addData("HEADING", heading);
             telemetry.addData("speed", speed);
             telemetry.update();
@@ -143,7 +143,7 @@ public class AutoPull extends LinearOpMode {
                 go = true;
             } else if (degrees+0.5 > heading) {
                 onmiDrive(robot, 0.0, 0.0, speed);
-                if (speed > 0.25 && go == true) {
+                if (speed > 0.3 && go == true) {
                     speed -= 0.01;
                 }
             }
