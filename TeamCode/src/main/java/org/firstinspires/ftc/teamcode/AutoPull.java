@@ -1,15 +1,12 @@
 package org.firstinspires.ftc.teamcode;
 
-//import com.kauailabs.navx.ftc.navXPIDController;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 import com.qualcomm.robotcore.util.RobotLog;
-//easter egg
-import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
@@ -68,22 +65,22 @@ public class AutoPull extends LinearOpMode {
     public void TurnLeft(HardwareOmniRobot robot){
         telemetry.addLine("Left");
         telemetry.update();
-        DriveFor(robot,0.4, 0.0, 0.0, -0.5);
+        DriveFor(robot,0.45, 0.0, 0.0, -0.36);
         robot.jknock.setPosition(0.7);
-        DriveFor(robot,0.4, 0.0, 0.0, 0.5);
+        DriveFor(robot,0.45, 0.0, 0.0, 0.36);
     }
     public void TurnRight(HardwareOmniRobot robot){
         telemetry.addLine("Right");
         telemetry.update();
-        DriveFor(robot,0.4, 0.0, 0.0, 0.5);
+        DriveFor(robot,0.45, 0.0, 0.0, 0.36);
         robot.jknock.setPosition(0.7);
-        DriveFor(robot,0.4, 0.0, 0.0, -0.5);
+        DriveFor(robot,0.45, 0.0, 0.0, -0.36);
     }
 
     //jewel code
     public void JewelKnock(HardwareOmniRobot robot,String side){
 
-        robot.jknock.setPosition(0.15);
+        robot.jknock.setPosition(0.13);
         robot.jkcolor.enableLed(true);
         robot.jkcolor2.enableLed(true);
         DriveFor(robot,1.5,0.0,0.0,0.0);
@@ -131,56 +128,69 @@ public class AutoPull extends LinearOpMode {
     }
 
     public void rotateTo(HardwareOmniRobot robot,int degrees,int gyro) {
-        float heading = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle;//getGyro(robot) - gyro;
+        float heading = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle+gyro;//getGyro(robot) - gyro;
         double speed = 0.5;
         boolean go = false;
 
         runtime.reset();
         while (heading != degrees && opModeIsActive() && runtime.seconds() < 3) {
             telemetry.addData("HEADING", heading);
+            telemetry.addData("speed", speed);
             telemetry.update();
-            heading = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle;//robot.gyro.getHeading() - gyro;
-            if (degrees-1 < heading) {
+            heading = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle+gyro;//robot.gyro.getHeading() - gyro;
+            if (degrees-0.5< heading) {
                 onmiDrive(robot, 0.0, 0.0, -speed);
                 go = true;
-            } else if (degrees+1 > heading) {
+            } else if (degrees+0.5 > heading) {
                 onmiDrive(robot, 0.0, 0.0, speed);
-                if (speed > 0.4 && go == true) {
+                if (speed > 0.25 && go == true) {
                     speed -= 0.01;
                 }
-            } else {
-                onmiDrive(robot, 0.0, 0.0, 0.0);
             }
         }
+        onmiDrive(robot, 0.0, 0.0, 0.0);
     }
 
     //rotates to degree. goes from -180
-    public void RotateTo(HardwareOmniRobot robot, int degrees, int gyro) {
-        double p = 0.019;
-        double i = 0.000;
+    public void RotateTo(HardwareOmniRobot robot, int degrees, int offset) {
+        robot.leftMotor1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.leftMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.rightMotor1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.rightMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        double p = 0.09;
+        double i = 0.00;
         double d = 0.000;
 
         PID pid = new PID(p, i, d);
         pid.setSetPoint(degrees);
+        runtime.reset();
+        while(opModeIsActive() && runtime.seconds() < 5){
+            double heading = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle + offset;
 
-        while(opModeIsActive()){
-            double heading = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle + gyro;
-
-            double power = pid.update(robot, heading);
+            //double power = pid.update(robot.leftMotor1, heading);
+            double power = pid.update(heading);
             power = Range.clip(power, -1.0, 1.0);
 
             robot.onmiDrive(0.0, 0.0, power);
 
-            if(Math.abs(heading - degrees) < 3.0){
+            if(Math.abs(heading - degrees) < 0.5){
                 break;
             }
 
             telemetry.addData("Power: ", power);
-            telemetry.addData("Heading: ", robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle + gyro);
+            telemetry.addData("Heading: ", robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle + offset);
+            telemetry.addData("Error: ", Math.abs(heading - degrees));
             telemetry.addData("calibrated? gyro: ", robot.imu.isGyroCalibrated());
             telemetry.update();
         }
+        telemetry.addLine("Done!");
         robot.onmiDrive(0.0, 0.0, 0);
+
+        robot.leftMotor1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.leftMotor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.rightMotor1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.rightMotor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     public void rotateBy(HardwareOmniRobot robot, int degrees,int gyro){
