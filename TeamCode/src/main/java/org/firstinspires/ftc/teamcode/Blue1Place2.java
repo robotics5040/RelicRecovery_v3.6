@@ -116,14 +116,14 @@ public class Blue1Place2 extends AutoPull {
                 break;
         }
 
-        int glyphColor1;
+        /*int glyphColor1;
         //brown    1 is brown 2 is gray 0 is none
         if(robot.dumperColor.alpha() < 20) {
             glyphColor1 = 1;
         }
         else {
             glyphColor1 = 2;
-        }
+        }*/
 
         telemetry.addData("VuMark", "%s visible", choosen);
         telemetry.update();
@@ -150,10 +150,12 @@ public class Blue1Place2 extends AutoPull {
         DriveFor(robot,1.5,1,0,0);
         robot.claw1.setPosition(0.51);
         robot.claw2.setPosition(0.49);
-        //DriveFor(robot,2,-1,0,0);
+        DriveFor(robot,0.3,0,0,0);
         DriveFor(robot, 1,-1,0,0);
 
+
         //Shaking off glyph
+
         //DriveFor(robot,0.3,0,0,1);
         //DriveFor(robot,0.3,0,0,-1);
         robot.glyphStop.setPosition(0.1);
@@ -215,7 +217,7 @@ public class Blue1Place2 extends AutoPull {
         runtime.reset();
         while (robot.dumper.getCurrentPosition() <= 470 && opModeIsActive() && runtime2.seconds() < 28 && runtime.seconds() < 2) {
             robot.dumper.setTargetPosition(480);
-            onmiDrive(robot, 0,.32,0);
+            onmiDrive(robot, 0,.4,0);
         }
         //DriveFor(robot,0.2, 1, 0.0, 0.0);
 
@@ -234,9 +236,15 @@ public class Blue1Place2 extends AutoPull {
 
         boolean dump = false;
         DriveFor(robot,0.3,0,0,0);
-        telemetry.addData("DumperColor", robot.dumperColor.alpha());
+        //telemetry.addData("DumperColor", robot.dumperColor.alpha());
         if(choosen != 1 && choosen != 3) {
-            int glyphColor2;
+
+            DriveFor(robot,0.3, -1,0,0);
+            DriveFor(robot,0.2, 1,0,0);
+            DriveFor(robot,0.28, 0,1,0);
+            dump = true;
+
+            /*int glyphColor2;
             //brown    1 is brown 2 is gray 0 is none
             if(robot.dumperColor.alpha() < 20) {
                 glyphColor2 = 1;
@@ -259,7 +267,7 @@ public class Blue1Place2 extends AutoPull {
                 DriveFor(robot,0.4,0,1,0);
                 dump = true;
             }
-            telemetry.update();
+            telemetry.update();*/
         }
         else {
             dump = true;
@@ -271,20 +279,21 @@ public class Blue1Place2 extends AutoPull {
             runtime.reset();
             while (robot.dumper.getCurrentPosition() <= 470 && opModeIsActive() && runtime2.seconds() < 28 && runtime.seconds() < 2) {
                 robot.dumper.setTargetPosition(480);
-                onmiDrive(robot, 0,.3,0);
+                //onmiDrive(robot, 0,.3,0);
             }
             //onmiDrive(robot,0,0,0);
-            DriveFor(robot,0.2, 0.5, 0.0, 0.0);
+            DriveFor(robot,0.4, 0.4, 0.0, 0.0);
 
             while (robot.dumper.getCurrentPosition() >= 5 && opModeIsActive()) {
                 robot.dumper.setTargetPosition(0);
             }
         }
 
+
         if(runtime2.seconds() < 28) {
             DriveFor(robot, 1.0, -1, 0.0, 0.0);
-            DriveFor(robot, 0.5, 0.5, 0.0, 0.0);
+            //DriveFor(robot, 0.5, 0.5, 0.0, 0.0);
         }
-        DriveFor(robot,1.0, 0.0, 0.0, 0.0);
+        DriveFor(robot,0.3, 1, 0.0, 0.0);
     }
 }

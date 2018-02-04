@@ -87,6 +87,10 @@ public class Red2Place1 extends AutoPull {
         //waitForStart();
         runtime2.reset();
 
+        robot.jkcolor.enableLed(true);
+        robot.jkcolor2.enableLed(true);
+        robot.jknock.setPosition(0.13);
+
         RobotLog.ii("5040MSG","Run vufloria");
         //int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         int choosen = Vuforia(cameraMonitorViewId, "red",vuforia);

@@ -101,6 +101,7 @@ public class OmniBot_Iterative2 extends OpMode{
     @Override
     public void start() {
         robot.grabber.setPower(1);
+        robot.dumper.setPower(0.5);
     }
 
     /*
@@ -108,7 +109,7 @@ public class OmniBot_Iterative2 extends OpMode{
      */
     @Override
     public void loop() {
-        double left_stick_x, left_stick_y,right_stick_x,right_stick_y,left_trigger,right_trigger1,LX,RX,rotate=0,front=0,side=0, left_stick_y_2, right_stick_y_2;
+        double right_trigger2,left_stick_x, left_stick_y,right_stick_x,right_stick_y,left_trigger,right_trigger1,LX,RX,rotate=0,front=0,side=0, left_stick_y_2, right_stick_y_2;
         boolean home, b_button1,a_button1,y_button1,x_button1,left_bumper, right_bumper, a_button, b_button, x_button, y_button,dup,ddown,dleft,dright,left_bump1,right_bump1, d_up1,d_down1,d_left1,d_right1,stick_press, stick_press1, a_button_2;
 
 
@@ -125,6 +126,7 @@ public class OmniBot_Iterative2 extends OpMode{
 
         left_stick_y_2  = gamepad2.left_stick_y;
         right_stick_y_2 = gamepad2.right_stick_y;
+        right_trigger2 = gamepad2.right_trigger;
 
         a_button = gamepad2.a;
         b_button = gamepad2.b;
@@ -149,8 +151,6 @@ public class OmniBot_Iterative2 extends OpMode{
         stick_press = gamepad2.right_stick_button;
         stick_press1 = gamepad2.left_stick_button;
         home = gamepad2.guide;
-
-        robot.dumper.setPower(0.5);
 
         //slight adjustments for driver
         if(d_down1 == true) {
@@ -282,12 +282,12 @@ public class OmniBot_Iterative2 extends OpMode{
         else{
             //robot.glyphStop.setPosition(0.4);
         }*/
-        if(right_trigger1 > 0.4 && left_bumper == false && left_trigger < 0.3 && robot.grabber.getCurrentPosition() < 20 && dup == false && ddown == false && run2 == false) {
+       /* if(right_trigger1 > 0.4 && left_bumper == false && left_trigger < 0.3 && robot.grabber.getCurrentPosition() < 20 && dup == false && ddown == false && run2 == false) {
             robot.glyphStop.setPosition(0.8);
         }
         else {
             robot.glyphStop.setPosition(0.1);
-        }
+        }*/
         //wheelie controlls
         if(left_bump1 == true) {
             robot.wheelie.setPower(-1.0);
@@ -309,7 +309,18 @@ public class OmniBot_Iterative2 extends OpMode{
 
         //dumper controls
         if (right_bumper == true) {
+            robot.dumper.setPower(0.5);
             robot.dumper.setTargetPosition(480);
+        }
+        else if(right_trigger2 > 0.5) {
+            robot.dumper.setPower(0.05);
+            robot.dumper.setTargetPosition(-480);
+            done2 = true;
+        }
+        else if(done2 == true) {
+            robot.dumper.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            robot.dumper.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            done2 = false;
         }
         else {
             robot.dumper.setTargetPosition(0);
@@ -343,7 +354,7 @@ public class OmniBot_Iterative2 extends OpMode{
         final int RELIC_IN  = 0;
         double SERVO_INCREMENT = 0.04, decay = 0.008;
 
-        if(right_stick_y_2 < -0.1 && robot.relicMotor.getCurrentPosition() < RELIC_OUT){
+        if(right_stick_y_2 < -0.1 && robot.relicMotor.getCurrentPosition() < RELIC_OUT && run2 == true){
             robot.relicStopper.setPosition(0.0);
             newRelicMotorPosition = RELIC_OUT;
             power = 1.0;
@@ -367,7 +378,6 @@ public class OmniBot_Iterative2 extends OpMode{
             rwGoal = rwCurrent - SERVO_INCREMENT;
             //SERVO_INCREMENT += decay;
         }
-
         if(rwGoal > 1.0){
             rwGoal = 1.0;
         }else if(rwGoal < 0.0){
@@ -388,7 +398,7 @@ public class OmniBot_Iterative2 extends OpMode{
 
         telemetry.addData("Servo Increment: ", SERVO_INCREMENT);
         telemetry.addData("Motor Slide New Position: ", newRelicMotorPosition);
-        telemetry.addData("Motor Slide Curent Positon: ", relicMotorPosition);
+        telemetry.addData("Motor Slide Current Position: ", relicMotorPosition);
         telemetry.addData("Relic Claw Position: ", robot.relicClaw.getPosition());
         telemetry.addData("Relic Wrist Position: ", robot.relicWrist.getPosition());
 
