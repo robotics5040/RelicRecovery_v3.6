@@ -154,16 +154,16 @@ public class OmniBot_Iterative2 extends OpMode{
 
         //slight adjustments for driver
         if(d_down1 == true) {
-            left_stick_y = 0.5;
+            left_stick_y = 0.4;
         }
         if(d_up1 == true) {
-            left_stick_y = -0.5;
+            left_stick_y = -0.4;
         }
         if(d_left1 == true) {
-            left_stick_x = -0.5;
+            left_stick_x = -0.4;
         }
         if(d_right1 == true) {
-            left_stick_x = 0.5;
+            left_stick_x = 0.4;
         }
 
         //changes front of robot for driver using a,b,x,y
