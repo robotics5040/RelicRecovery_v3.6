@@ -100,7 +100,7 @@ public class OmniBot_Iterative2 extends OpMode{
      */
     @Override
     public void start() {
-        robot.grabber.setPower(1);
+        robot.grabber.setPower(0.6);
         robot.dumper.setPower(0.5);
     }
 
@@ -208,13 +208,18 @@ public class OmniBot_Iterative2 extends OpMode{
             yPressed = true;
         }
 
+        if(left_bump1 == true) {
+            front /= 2;
+            side /= 2;
+        }
+
         robot.onmiDrive(side, front, rotate);
 
         //grabber position
         if(home == true || there == false) {
             if (run == false) {
                 //robot.glyphStop.setPosition(0.6);
-                robot.grabber.setPower(1.0);
+                robot.grabber.setPower(0.6);
                 robot.grabber.setTargetPosition(-1 * robot.GRABBER_AUTOPOS);
                 run = true;
                 there = false;
@@ -232,15 +237,18 @@ public class OmniBot_Iterative2 extends OpMode{
             }
         }
         else if (left_bumper == true) {
+            robot.grabber.setPower(0.6);
             //robot.glyphStop.setPosition(0.6);
-            robot.grabber.setTargetPosition(1100);
+            robot.grabber.setTargetPosition(520);
 
         }
         else if(left_trigger > 0.3) {
+            robot.grabber.setPower(0.4);
             //robot.glyphStop.setPosition(0.6);
-            robot.grabber.setTargetPosition(750);
+            robot.grabber.setTargetPosition(400);
         }
         else if(left_bump1 == true) {
+            robot.grabber.setPower(0.6);
             //robot.glyphStop.setPosition(0.6);
             robot.grabber.setTargetPosition(950);
             robot.claw1.setPosition(0.7);
@@ -249,10 +257,10 @@ public class OmniBot_Iterative2 extends OpMode{
             runtime.reset();
         }
         else if(run2 == true && runtime.seconds() > 2.0) {
-            robot.grabber.setPower(0);
+            robot.grabber.setPower(0.2);
         }
         else if(run2 == false){
-            robot.grabber.setTargetPosition(0);
+            robot.grabber.setTargetPosition(10);
         }
         if(dup == true) {
             //robot.glyphStop.setPosition(0.6);
@@ -282,12 +290,12 @@ public class OmniBot_Iterative2 extends OpMode{
         else{
             //robot.glyphStop.setPosition(0.4);
         }*/
-       /* if(right_trigger1 > 0.4 && left_bumper == false && left_trigger < 0.3 && robot.grabber.getCurrentPosition() < 20 && dup == false && ddown == false && run2 == false) {
+        if(right_trigger1 > 0.4 && left_bumper == false && left_trigger < 0.3 && robot.grabber.getCurrentPosition() < 20 && dup == false && ddown == false && run2 == false) {
             robot.glyphStop.setPosition(0.8);
         }
         else {
             robot.glyphStop.setPosition(0.1);
-        }*/
+        }
         //wheelie controlls
         if(left_bump1 == true) {
             robot.wheelie.setPower(-1.0);

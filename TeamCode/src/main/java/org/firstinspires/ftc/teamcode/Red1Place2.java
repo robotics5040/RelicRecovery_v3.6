@@ -53,7 +53,7 @@ public class Red1Place2 extends AutoPull {
 
         RobotLog.ii("5040MSG","Robot Inited");
 
-        //robot.grabber.setPower(0.75);
+        robot.grabber.setPower(0.6);
         RobotLog.ii("5040MSG","Grabber set power");
         //robot.grabber.setTargetPosition(robot.GRABBER_AUTOPOS);
 
@@ -156,7 +156,8 @@ public class Red1Place2 extends AutoPull {
         //DriveFor(robot,0.3,0,0,1);
         //DriveFor(robot,0.3,0,0,-1);
         robot.glyphStop.setPosition(0.1);
-        robot.grabber.setTargetPosition(750);
+        robot.grabber.setPower(0.4);
+        robot.grabber.setTargetPosition(400);
         rotateTo(robot,-90,0);
         DriveFor(robot, 1.0,-1,0,0);
         DriveFor(robot,0.2,1,0,0);
@@ -224,7 +225,8 @@ public class Red1Place2 extends AutoPull {
             robot.dumper.setTargetPosition(0);
         }
 
-        robot.grabber.setTargetPosition(1100);
+        robot.grabber.setPower(0.6);
+        robot.grabber.setTargetPosition(520);
         DriveFor(robot,0.4,0,0,0);
         robot.claw1.setPosition(0.64);
         robot.claw2.setPosition(0.36);
