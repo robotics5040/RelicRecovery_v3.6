@@ -236,9 +236,14 @@ public class OmniBot_Iterative2 extends OpMode{
             }
         }
         else if (left_bumper == true) {
-            robot.grabber.setPower(0.6);
-            //robot.glyphStop.setPosition(0.6);
-            robot.grabber.setTargetPosition(520);
+            //robot.grabber.setPower(0.6);
+            if(robot.grabber.getCurrentPosition() >= 400) {
+                robot.grabber.setPower(0.3);
+            }
+            else {
+                robot.grabber.setPower(0.6);
+            }
+            robot.grabber.setTargetPosition(550);
 
         }
         else if(left_trigger > 0.3) {
@@ -259,7 +264,13 @@ public class OmniBot_Iterative2 extends OpMode{
             robot.grabber.setPower(0.2);
         }
         else if(run2 == false){
-            robot.grabber.setTargetPosition(10);
+            if(robot.grabber.getCurrentPosition() <= 10) {
+                robot.grabber.setPower(0);
+            }
+            else {
+                robot.grabber.setPower(0.6);
+            }
+            robot.grabber.setTargetPosition(5);
         }
         if(dup == true) {
             //robot.glyphStop.setPosition(0.6);
@@ -320,8 +331,13 @@ public class OmniBot_Iterative2 extends OpMode{
             robot.dumper.setTargetPosition(480);
         }
         else if(right_trigger2 > 0.5) {
-            robot.dumper.setPower(0.05);
-            robot.dumper.setTargetPosition(-480);
+            if(robot.dumper.getCurrentPosition() >= -200) {
+                robot.dumper.setPower(0.6);
+            }
+            else {
+                robot.dumper.setPower(0);
+            }
+            robot.dumper.setTargetPosition(-300);
             done2 = true;
         }
         else if(done2 == true) {
@@ -330,6 +346,12 @@ public class OmniBot_Iterative2 extends OpMode{
             done2 = false;
         }
         else {
+            if(robot.dumper.getCurrentPosition() <= 10) {
+                robot.dumper.setPower(0);
+            }
+            else {
+                robot.dumper.setPower(0.5);
+            }
             robot.dumper.setTargetPosition(0);
         }
 
@@ -421,6 +443,9 @@ public class OmniBot_Iterative2 extends OpMode{
         robot.relicMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.relicMotor.setPower(power);
         // Send telemetry message to signify robot running;
+        telemetry.addLine();
+        telemetry.addData("grabber position", robot.grabber.getCurrentPosition());
+        telemetry.addLine();
         telemetry.addLine("Controller Telemetry:");
         telemetry.addData("Left Bumper: ", left_bumper);
         telemetry.addData("Right Bumper: ", right_bumper );
