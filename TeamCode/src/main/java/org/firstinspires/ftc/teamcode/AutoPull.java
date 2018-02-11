@@ -102,21 +102,21 @@ public class AutoPull extends LinearOpMode {
                 robot.jknock.setPosition(robot.JKUP);
             }
             else if(side == "blue") {
-                if((color1b>=2 && color1r<2) || (color2b<2 && color2r>=2)) {
+                if((color1b>color1r+1 && color1r<color1b-1) || (color2b<color2r-1 && color2r>color2b+1)) {
                     TurnLeft(robot);
                     decided = true;
                 }
-                else if((color1b<2 && color1r>=2) || (color2b>=2 && color2r<2)) {
+                else if((color1b<color1r-1 && color1r>color1b+1) || (color2b>color2r+1 && color2r<color2b-1)) {
                     TurnRight(robot);
                     decided = true;
                 }
             }
             else if(side == "red") {
-                if((color1b>=2 && color1r<2) || (color2b<2 && color2r>=2)) {
+                if((color1b>color1r+1 && color1r<color1b-1) || (color2b<color2r-1 && color2r>color2b+1)) {
                     TurnRight(robot);
                     decided = true;
                 }
-                else if((color1b<2 && color1r>=2) || (color2b>=2 && color2r<2)) {
+                else if((color1b<color1r-1 && color1r>color1b+1) || (color2b>color2r+1 && color2r<color2b-1)) {
                     TurnLeft(robot);
                     decided = true;
                 }

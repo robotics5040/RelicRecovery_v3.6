@@ -217,7 +217,7 @@ public class Red1Place2 extends AutoPull {
             robot.dumper.setTargetPosition(480);
             //onmiDrive(robot, 0,.28,0);
         }
-        DriveFor(robot,0.4, 0.4, 0.0, 0.0);
+        DriveFor(robot,0.5, 0.4, 0.0, 0.0);
 
 
         onmiDrive(robot,0,0,0);

@@ -182,15 +182,15 @@ public class Red1Place1 extends AutoPull {
         runtime.reset();
         while (robot.dumper.getCurrentPosition() <= 470 && opModeIsActive() && runtime2.seconds() < 28 && runtime.seconds() < 2.0) {
             robot.dumper.setTargetPosition(480);
-            onmiDrive(robot, 0,.26,0);
+            //onmiDrive(robot, 0,.26,0);
         }
-        DriveFor(robot,0.6, 0.3, 0.0, 0.0);
+        DriveFor(robot,0.5, 0.4, 0.0, 0.0);
 
         while (robot.dumper.getCurrentPosition() >= 5 && opModeIsActive()) {
             robot.dumper.setTargetPosition(0);
         }
 
-        if(runtime2.seconds() < 29) {
+        if(runtime2.seconds() < 28) {
             DriveFor(robot, 1.0, -0.8, 0.0, 0.0);
             DriveFor(robot, 0.5, 0.5, 0.0, 0.0);
         }

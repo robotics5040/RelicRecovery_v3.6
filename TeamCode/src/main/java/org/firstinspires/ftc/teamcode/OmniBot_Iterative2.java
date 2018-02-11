@@ -44,7 +44,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 /**
- * This file provides basic Telop driving for a Pushbot robot.
+ * This file provides basic Teleop driving for a Pushbot robot.
  * The code is structured as an Iterative OpMode
  *
  * This OpMode uses the common Pushbot hardware class to define the devices on the robot.
@@ -218,7 +218,6 @@ public class OmniBot_Iterative2 extends OpMode{
         //grabber position
         if(home == true || there == false) {
             if (run == false) {
-                //robot.glyphStop.setPosition(0.6);
                 robot.grabber.setPower(0.6);
                 robot.grabber.setTargetPosition(-1 * robot.GRABBER_AUTOPOS);
                 run = true;
@@ -243,14 +242,14 @@ public class OmniBot_Iterative2 extends OpMode{
 
         }
         else if(left_trigger > 0.3) {
-            robot.grabber.setPower(0.4);
+            robot.grabber.setPower(0.35);
             //robot.glyphStop.setPosition(0.6);
             robot.grabber.setTargetPosition(400);
         }
         else if(left_bump1 == true) {
             robot.grabber.setPower(0.6);
             //robot.glyphStop.setPosition(0.6);
-            robot.grabber.setTargetPosition(950);
+            robot.grabber.setTargetPosition(450);
             robot.claw1.setPosition(0.7);
             robot.claw2.setPosition(0.25);
             run2 = true;

@@ -188,9 +188,9 @@ public class Blue2Place1 extends AutoPull {
         runtime.reset();
         while (robot.dumper.getCurrentPosition() <= 470 && opModeIsActive() && runtime2.seconds() < 28 && runtime.seconds() < 2.0) {
             robot.dumper.setTargetPosition(480);
-            onmiDrive(robot, 0,.26,0);
+            //onmiDrive(robot, 0,.26,0);
         }
-        DriveFor(robot,0.6, 0.3, 0.0, 0.0);
+        DriveFor(robot,0.5, 0.4, 0.0, 0.0);
 
         while (robot.dumper.getCurrentPosition() >= 5 && opModeIsActive()) {
             robot.dumper.setTargetPosition(0);

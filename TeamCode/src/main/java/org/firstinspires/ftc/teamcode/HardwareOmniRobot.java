@@ -41,7 +41,7 @@ public class HardwareOmniRobot
 
     ModernRoboticsI2cRangeSensor ultra_backMR, ultra_backMR2;
 
-    public final int GRABBER_AUTOPOS = 420;
+    public final int GRABBER_AUTOPOS = 430;
     public final double JKUP = 0.8;
 
     /* Public OpMode members. */
@@ -115,7 +115,7 @@ public class HardwareOmniRobot
         dumperColor = hwMap.get(ColorSensor.class, "dumperColor");
         RobotLog.ii("5040MSGHW","Everything but ultras gotten");
 
-        jkcolor2.setI2cAddress(I2cAddr.create8bit(0x28));
+        jkcolor.setI2cAddress(I2cAddr.create8bit(0x28));
         jkcolor2.setI2cAddress(I2cAddr.create8bit(0x26));
 
         ultra_backMR = hwMap.get(ModernRoboticsI2cRangeSensor.class, "ultra_backMR");
