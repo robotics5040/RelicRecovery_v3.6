@@ -63,8 +63,10 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 public class OmniBot_Iterative2 extends OpMode{
     private double position = 0.0;
     public int  pressed = 0,up=10;
+    private int gamepadMode = 0;
     double wrist_num = 0;
-    boolean run2=false,goup = false,done2 = false,there=true,run =false,done=false,aPressed=true,bPressed=false,xPressed=false,yPressed=false,closed = true;
+    boolean run2=false,goup = false,dumperReset = false,grabberDown=true,run =false,grabberReset=false;
+    boolean aPressed=true,bPressed=false,xPressed=false,yPressed=false,closed = true;
     ElapsedTime runtime = new ElapsedTime();
     /* Declare OpMode members. */
     private HardwareOmniRobot robot; // use the class created to define a Pushbot's hardware
@@ -110,7 +112,7 @@ public class OmniBot_Iterative2 extends OpMode{
     @Override
     public void loop() {
         double right_trigger2,left_stick_x, left_stick_y,right_stick_x,right_stick_y,left_trigger,right_trigger1,LX,RX,rotate=0,front=0,side=0, left_stick_y_2, right_stick_y_2;
-        boolean home, b_button1,a_button1,y_button1,x_button1,left_bumper, right_bumper, a_button, b_button, x_button, y_button,dup,ddown,dleft,dright,left_bump1,right_bump1, d_up1,d_down1,d_left1,d_right1,stick_press, stick_press1, a_button_2;
+        boolean home, b_button1,a_button1,y_button1,x_button1,left_bumper, right_bumper, a_button2, b_button2, x_button2, y_button2,dup,ddown,dleft,dright,left_bump1,right_bump1, d_up1,d_down1,d_left1,d_right1,stick_press, stick_press1, a_button_2;
 
 
         //note: The joystick goes negative when pushed forwards, so negate it)
@@ -123,34 +125,41 @@ public class OmniBot_Iterative2 extends OpMode{
         right_bumper = gamepad2.right_bumper;
         left_trigger = gamepad2.left_trigger;
         right_trigger1 = gamepad1.right_trigger;
+        
+        a_button1 = gamepad2.a;
+        b_button1 = gamepad2.b;
+        x_button1 = gamepad2.x;
+        y_button1 = gamepad2.y;
 
-        left_stick_y_2  = gamepad2.left_stick_y;
-        right_stick_y_2 = gamepad2.right_stick_y;
-        right_trigger2 = gamepad2.right_trigger;
-        //changes
-        a_button = gamepad2.a;
-        b_button = gamepad2.b;
-        x_button = gamepad2.x;
-        y_button = gamepad2.y;
-        b_button1 = gamepad1.b;
-        a_button1 = gamepad1.a;
-        y_button1 = gamepad1.y;
-        x_button1 = gamepad1.x;
         LX = gamepad2.left_stick_y;
         RX = gamepad2.right_stick_y;
-        dup = gamepad2.dpad_up;
-        ddown = gamepad2.dpad_down;
-        dleft = gamepad2.dpad_left;
-        dright = gamepad2.dpad_right;
         left_bump1 = gamepad1.left_bumper;
         right_bump1 = gamepad1.right_bumper;
         d_down1 = gamepad1.dpad_down;
         d_up1 = gamepad1.dpad_up;
         d_left1 = gamepad1.dpad_left;
         d_right1 = gamepad1.dpad_right;
-        stick_press = gamepad2.right_stick_button;
-        stick_press1 = gamepad2.left_stick_button;
-        home = gamepad2.guide;
+        
+        /*
+         *   Gamepad 2 First Mode
+         */
+        left_stick_y_2  = gamepad2.left_stick_y;
+        right_stick_y_2 = gamepad2.right_stick_y;
+        right_trigger2  = gamepad2.right_trigger;
+        
+        b_button2 = gamepad1.b && gamepadMode == 0;
+        a_button2 = gamepad1.a && gamepadMode == 0;
+        y_button2 = gamepad1.y && gamepadMode == 0;
+        x_button2 = gamepad1.x && gamepadMode == 0;
+        
+        dup    = gamepad2.dpad_up    && gamepadMode == 0;
+        ddown  = gamepad2.dpad_down  && gamepadMode == 0;
+        dleft  = gamepad2.dpad_left  && gamepadMode == 0;
+        dright = gamepad2.dpad_right && gamepadMode == 0;
+        
+        stick_press  = gamepad2.right_stick_button && gamepadMode == 0;
+        stick_press1 = gamepad2.left_stick_button  && gamepadMode == 0;
+        home = gamepad2.guide && gamepadMode == 0;
 
         //slight adjustments for driver
         if(d_down1 == true) {
@@ -215,23 +224,25 @@ public class OmniBot_Iterative2 extends OpMode{
 
         robot.onmiDrive(side, front, rotate);
 
-        //grabber position
-        if(home == true || there == false) {
+        /*
+            The home button moves the grabber down to the bottom position, while this process is happening         
+         */
+        if(home == true || grabberDown == false) {
             if (run == false) {
                 robot.grabber.setPower(0.6);
                 robot.grabber.setTargetPosition(-1 * robot.GRABBER_AUTOPOS);
                 run = true;
-                there = false;
+                grabberDown = false;
                 run2 = false;
                 runtime.reset();
 
-            } else if (robot.grabber.getCurrentPosition() > ((-1 * robot.GRABBER_AUTOPOS) + 10) && there == false && runtime.seconds() < 2) {
+            } else if (robot.grabber.getCurrentPosition() > ((-1 * robot.GRABBER_AUTOPOS) + 10) && grabberDown == false && runtime.seconds() < 2) {
                 telemetry.addLine("Waiting to get to bottom");
                 telemetry.update();
-            } else if (robot.grabber.getCurrentPosition() <= ((-1 * robot.GRABBER_AUTOPOS) + 10) && there == false || runtime.seconds() > 2) {
+            } else if (robot.grabber.getCurrentPosition() <= ((-1 * robot.GRABBER_AUTOPOS) + 10) && grabberDown == false || runtime.seconds() > 2) {
                 robot.grabber.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 robot.grabber.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                there = true;
+                grabberDown = true;
                 run = false;
             }
         }
@@ -276,25 +287,25 @@ public class OmniBot_Iterative2 extends OpMode{
             //robot.glyphStop.setPosition(0.6);
             robot.grabber.setPower(0.2);
             robot.grabber.setTargetPosition(1500);
-            done = true;
+            grabberReset = true;
         }
         else if(ddown == true) {
             //robot.glyphStop.setPosition(0.6);
             robot.grabber.setPower(0.2);
             robot.grabber.setTargetPosition(-1500);
-            done = true;
+            grabberReset = true;
 
         }
-        else if(done == true) {
+        else if(grabberReset == true) {
             robot.grabber.setPower(0);
             robot.grabber.setTargetPosition(robot.grabber.getCurrentPosition());
             robot.grabber.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             robot.grabber.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            done = false;
+            grabberReset = false;
             robot.grabber.setPower(1);
         }
 
-        /*if(left_bumper == true || left_trigger > 0.3 || dup == true || ddown == true || robot.grabber.getCurrentPosition() > 10 || there == false) {
+        /*if(left_bumper == true || left_trigger > 0.3 || dup == true || ddown == true || robot.grabber.getCurrentPosition() > 10 || grabberDown == false) {
             //robot.glyphStop.setPosition(0.6);
         }
         else{
@@ -338,12 +349,12 @@ public class OmniBot_Iterative2 extends OpMode{
                 robot.dumper.setPower(0);
             }
             robot.dumper.setTargetPosition(-300);
-            done2 = true;
+            dumperReset = true;
         }
-        else if(done2 == true) {
+        else if(dumperReset == true) {
             robot.dumper.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             robot.dumper.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            done2 = false;
+            dumperReset = false;
         }
         else {
             if(robot.dumper.getCurrentPosition() <= 10) {
@@ -358,12 +369,12 @@ public class OmniBot_Iterative2 extends OpMode{
         //claw controls
         // OLD NUMBERS -- closed - .76,.24 -- partway - .6,.4
         //closes claws
-        if (x_button == true || run2 == true) {
+        if (x_button2 == true || run2 == true) {
             robot.claw1.setPosition(0.51);
             robot.claw2.setPosition(0.49);
         }
         //all the way open
-        else if(y_button == true) {
+        else if(y_button2 == true) {
             robot.claw1.setPosition(0.7);
             robot.claw2.setPosition(0.3);
         }
@@ -413,10 +424,10 @@ public class OmniBot_Iterative2 extends OpMode{
             rwGoal = 0.0;
         }
 
-        if(a_button == true){
+        if(a_button2 == true){
             robot.relicClaw.setPosition(0.0);
         }
-        else if(b_button == true) {
+        else if(b_button2 == true) {
             robot.relicClaw.setPosition(0.46);
         }
         else{
@@ -447,14 +458,15 @@ public class OmniBot_Iterative2 extends OpMode{
         telemetry.addData("grabber position", robot.grabber.getCurrentPosition());
         telemetry.addLine();
         telemetry.addLine("Controller Telemetry:");
+        telemetry.addData("Gamepade 2 Mode: ", gamepadeMode);
         telemetry.addData("Left Bumper: ", left_bumper);
         telemetry.addData("Right Bumper: ", right_bumper );
         telemetry.addData("Left Trigger: ", left_trigger);
         telemetry.addData("Right Trigger: ", right_trigger1);
-        telemetry.addData("A Button: ", a_button);
-        telemetry.addData("B Button: ", b_button);
-        telemetry.addData("X Button: ", x_button);
-        telemetry.addData("Y Button: ", y_button);
+        telemetry.addData("A Button: ", a_button2);
+        telemetry.addData("B Button: ", b_button2);
+        telemetry.addData("X Button: ", x_button2);
+        telemetry.addData("Y Button: ", y_button2);
         telemetry.addData("A Button: ", aPressed);
         telemetry.addData("B Button: ", bPressed);
         telemetry.addData("X Button: ", xPressed);
