@@ -83,12 +83,14 @@ public class Blue1Place2 extends AutoPull {
             //telemetry.addData("HEADING",robot.gyro.getHeading());
             //telemetry.addData("heading2", robot.gyro2.getHeading());
             telemetry.addData("calibration", robot.imu.isGyroCalibrated());
+            telemetry.addData("potentiometer",(robot.potentiometer.getVoltage()*((float)1023/68))-37.5);
             telemetry.update();
             idle();
         }
         //int startG = robot.gyro.getHeading();
         //int startG2 = robot.gyro2.getHeading();
         RobotLog.ii("5040MSG","Robot started");
+        float angle = (float)((robot.potentiometer.getVoltage()*((float)1023/68))-37.5);
         //waitForStart();
         runtime2.reset();
 
@@ -143,7 +145,7 @@ public class Blue1Place2 extends AutoPull {
 
         DriveFor(robot,1,0,0,1);
         //RotateTo0(robot,0, startG, startG2);
-        rotateTo(robot, -90,0);
+        rotateTo(robot, -90,angle);
         robot.grabber.setTargetPosition(0);
         DriveFor(robot,0.2,0,0,0);
         robot.glyphStop.setPosition(0.8);
