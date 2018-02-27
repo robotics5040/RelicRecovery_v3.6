@@ -125,6 +125,7 @@ public class AutoPull extends LinearOpMode {
         robot.jkcolor.enableLed(false);
         robot.jkcolor2.enableLed(false);
         if(robot.jknock.getPosition() != robot.JKUP) {robot.jknock.setPosition(robot.JKUP);}
+
     }
 
     public void rotateTo(HardwareOmniRobot robot,float degrees,float potent) {

@@ -121,7 +121,6 @@ public class OmniBot_Iterative2 extends OpMode{
         double right_trigger2,left_stick_x, left_stick_y,right_stick_x,right_stick_y,left_trigger,left_trigger1,right_trigger1,rotate=0,front=0,side=0, left_stick_y_2, right_stick_y_2;
         boolean back2,back,home, b_button1,a_button1,y_button1,x_button1,left_bumper, right_bumper, a_button, b_button, x_button, y_button,dup,ddown,dleft,dright,left_bump1,right_bump1, d_up1,d_down1,d_left1,d_right1,stick_press, stick_press1, a_button_2;
 
-
         //note: The joystick goes negative when pushed forwards, so negate it)
         left_trigger1 = gamepad1.left_trigger;
         left_stick_x = gamepad1.left_stick_x;

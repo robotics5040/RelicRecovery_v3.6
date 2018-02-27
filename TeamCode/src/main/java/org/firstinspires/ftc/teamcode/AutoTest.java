@@ -35,6 +35,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.RobotLog;
@@ -65,28 +66,37 @@ import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 public class AutoTest extends AutoPull {
 
     HardwareOmniRobot robot   = new HardwareOmniRobot();
+    public AnalogInput potentiometer =null;
     ElapsedTime runtime = new ElapsedTime();
 
     BNO055IMU imu;
 
     @Override public void runOpMode() {
         robot.init(hardwareMap, true);
+        potentiometer = hardwareMap.analogInput.get("potentiometer");
 
         telemetry.addLine("waiting for start");
         telemetry.update();
 
         while (!(isStarted() || isStopRequested())) {
             telemetry.addData("calibrated?gyro ", robot.imu.isGyroCalibrated());
+            telemetry.addData("potentiometer",potentiometer.getVoltage());
+            telemetry.addData("potentiometer",(potentiometer.getVoltage()*((float)1023/68))-37.5);
             telemetry.update();
         }
 
-        //DriveFor(robot,1.5,1,0,0);
+        float angle = (float)((potentiometer.getVoltage()*((float)1023/68))-37.5);
 
-        rotateTo(robot, 45, -135);
+        //angle *= -1;
+
+        rotateTo(robot, -90, angle);
+        DriveFor(robot,1.0,1,0,0);
         while(opModeIsActive()) {
-           telemetry.addData("calibrated?gyro ", robot.imu.isGyroCalibrated());
+            telemetry.addData("calibrated?gyro ", robot.imu.isGyroCalibrated());
             telemetry.addData("heading", robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle);
+            telemetry.addData("potentiometer",potentiometer.getVoltage());
             telemetry.update();
+
         }
 
     }

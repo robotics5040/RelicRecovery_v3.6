@@ -19,7 +19,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 
 import java.text.DecimalFormat;
-
 /**
  * This is NOT an opmode.
  *
