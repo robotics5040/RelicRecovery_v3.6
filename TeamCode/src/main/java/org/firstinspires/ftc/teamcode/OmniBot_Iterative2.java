@@ -127,7 +127,7 @@ public class OmniBot_Iterative2 extends OpMode{
         left_stick_y_2  = gamepad2.left_stick_y;
         right_stick_y_2 = gamepad2.right_stick_y;
         right_trigger2 = gamepad2.right_trigger;
-
+        //changes
         a_button = gamepad2.a;
         b_button = gamepad2.b;
         x_button = gamepad2.x;
