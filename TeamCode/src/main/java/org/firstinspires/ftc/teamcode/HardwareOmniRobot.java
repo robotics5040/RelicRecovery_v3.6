@@ -7,6 +7,7 @@ import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
 import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.GyroSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.I2cAddr;
@@ -40,7 +41,7 @@ public class HardwareOmniRobot
 
     ModernRoboticsI2cRangeSensor ultra_backMR, ultra_backMR2;
 
-    public final int GRABBER_AUTOPOS = 1300;
+    public final int GRABBER_AUTOPOS = 430;
     public final double JKUP = 0.8;
 
     /* Public OpMode members. */
@@ -111,15 +112,17 @@ public class HardwareOmniRobot
         flexServo = hwMap.servo.get("flex");
         jkcolor = hwMap.get(ColorSensor.class, "color_sense");
         jkcolor2 = hwMap.get(ColorSensor.class, "color");
+        dumperColor = hwMap.get(ColorSensor.class, "dumperColor");
         RobotLog.ii("5040MSGHW","Everything but ultras gotten");
 
-        jkcolor2.setI2cAddress(I2cAddr.create8bit(0x28));
+        jkcolor.setI2cAddress(I2cAddr.create8bit(0x28));
+        jkcolor2.setI2cAddress(I2cAddr.create8bit(0x26));
 
         ultra_backMR = hwMap.get(ModernRoboticsI2cRangeSensor.class, "ultra_backMR");
         ultra_backMR2 = hwMap.get(ModernRoboticsI2cRangeSensor.class, "ultra_backMR2");
 
         relicMotor = hwMap.dcMotor.get("relic_motor");
-        relicMotor.setDirection(DcMotor.Direction.REVERSE);
+        //relicMotor.setDirection(DcMotor.Direction.REVERSE);
         relicMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         relicMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         relicWrist = hwMap.get(Servo.class, "relic_wrist");
@@ -143,11 +146,10 @@ public class HardwareOmniRobot
 
         flex = hwMap.analogInput.get("flx");
 
-        leftMotor1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        leftMotor1.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
-        leftMotor2.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
-        rightMotor1.setDirection(DcMotor.Direction.FORWARD);// Set to FORWARD if using AndyMark motors
-        rightMotor2.setDirection(DcMotor.Direction.FORWARD);// Set to FORWARD if using AndyMark motors
+        leftMotor1.setDirection(DcMotor.Direction.REVERSE); // Set to REVERSE if using AndyMark motors
+        leftMotor2.setDirection(DcMotor.Direction.REVERSE); // Set to REVERSE if using AndyMark motors
+        rightMotor1.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
+        rightMotor2.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
         grabber.setDirection(DcMotor.Direction.REVERSE);
         grabber.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         grabber.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -164,14 +166,14 @@ public class HardwareOmniRobot
         RobotLog.ii("5040MSGHW","Drive Train setPower");
         wheelie.setPower(0);
         jknock.setPosition(0.8);
-        claw1.setPosition(0.0);
-        claw2.setPosition(1.0);
+        claw1.setPosition(1.0);
+        claw2.setPosition(0.0);
         jewelGrab.setPosition(0.19);
         dumper.setPower(0);
-        relicClaw.setPosition(0.15);
-        glyphStop.setPosition(1);
+        relicClaw.setPosition(0.5);
+        glyphStop.setPosition(0.1);
         relicWrist.setPosition(0.94);
-        relicStopper.setPosition(0.98);
+        relicStopper.setPosition(0.96);
         flexServo.setPosition(0.196);        //out to 90 -- 0.82
         RobotLog.ii("5040MSGHW", "Everything Initialized Correctly");
 
@@ -190,16 +192,16 @@ public class HardwareOmniRobot
             imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
 
             //Close the claw to clear the relic arm
-            claw2.setPosition(0.3);
+            claw2.setPosition(0.5);
 
             //Move the grabber Up
             while(grabber.getCurrentPosition() < GRABBER_AUTOPOS - 10) {
-                grabber.setPower(0.75);
+                grabber.setPower(0.6);
                 grabber.setTargetPosition(GRABBER_AUTOPOS);
             }
 
             //Move the claw back to a semi-open position
-            claw2.setPosition(0.9);
+            claw2.setPosition(0.1);
             //relicClaw.setPosition(0.35);
             //The robot is now initialized within 18 inches!
         }
@@ -236,11 +238,20 @@ public class HardwareOmniRobot
 
     public void onmiDrive (double sideways, double forward, double rotation)
     {
+
+        double rotat;
+        if(rotation == 0) {
+            rotat = 1;
+        }
+        else {
+            rotat = 1.8;
+        }
+
         try {
-            leftMotor1.setPower(limit(((forward - sideways)/2) * 1 + (-.2 * rotation)));
-            leftMotor2.setPower(limit(((forward + sideways)/2) * 1 + (-.2 * rotation)));
-            rightMotor1.setPower(limit(((-forward - sideways)/2) * 1 + (-.2 * rotation)));
-            rightMotor2.setPower(limit(((-forward + sideways)/2) * 1 + (-.2 * rotation)));
+            leftMotor1.setPower(limit(((forward - sideways)/rotat) + (-.25 * rotation)));
+            leftMotor2.setPower(limit(((forward + sideways)/rotat) + (-.25 * rotation)));
+            rightMotor1.setPower(limit(((-forward - sideways)/rotat) + (-.25 * rotation)));
+            rightMotor2.setPower(limit(((-forward + sideways)/rotat) + (-.25 * rotation)));
         } catch (Exception e) {
             RobotLog.ee(MESSAGETAG, e.getStackTrace().toString());
         }

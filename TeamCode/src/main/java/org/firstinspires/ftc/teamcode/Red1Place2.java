@@ -37,14 +37,11 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 
-@Autonomous(name="Omnibot: Blue1Place2", group="Omnibot")
+@Autonomous(name="Omnibot: Red1Place2", group="Omnibot")
 //@Disabled
-public class Blue1Place2 extends AutoPull {
+public class Red1Place2 extends AutoPull {
 
     HardwareOmniRobot robot   = new HardwareOmniRobot();
     ElapsedTime runtime = new ElapsedTime();
@@ -98,7 +95,7 @@ public class Blue1Place2 extends AutoPull {
 
         RobotLog.ii("5040MSG","Run vufloria");
         //int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        int choosen = Vuforia(cameraMonitorViewId, "blue",vuforia);
+        int choosen = Vuforia(cameraMonitorViewId, "red",vuforia);
         double target = 0;
 
         switch (choosen) {
@@ -109,7 +106,7 @@ public class Blue1Place2 extends AutoPull {
                 target = 52;
                 break;
             case (3):
-                target = 59;
+                target = 60;
                 break;
             default:
                 target = 52;
@@ -131,14 +128,14 @@ public class Blue1Place2 extends AutoPull {
         robot.claw1.setPosition(0.64);
         robot.claw2.setPosition(0.36);
 
-        JewelKnock(robot,"blue");
+        JewelKnock(robot,"red");
 
 
 
         DriveFor(robot,0.3,0.0,0.0,0.0);
         if(robot.jknock.getPosition() != robot.JKUP) {robot.jknock.setPosition(robot.JKUP);}
-        robot.wheelie.setPower(1);
-        DriveFor(robot,1.3,1.0,0.0,0.0);
+        robot.wheelie.setPower(-1);
+        DriveFor(robot,1.1,-1.0,0.0,0.0);
         robot.wheelie.setPower(0);
 
         DriveFor(robot,1,0,0,1);
@@ -148,8 +145,8 @@ public class Blue1Place2 extends AutoPull {
         DriveFor(robot,0.2,0,0,0);
         robot.glyphStop.setPosition(0.8);
         DriveFor(robot,1.5,1,0,0);
-        robot.claw1.setPosition(0.51);
-        robot.claw2.setPosition(0.49);
+        robot.claw1.setPosition(0.5);
+        robot.claw2.setPosition(0.5);
         DriveFor(robot,0.3,0,0,0);
         DriveFor(robot, 1,-1,0,0);
 
@@ -159,7 +156,7 @@ public class Blue1Place2 extends AutoPull {
         //DriveFor(robot,0.3,0,0,1);
         //DriveFor(robot,0.3,0,0,-1);
         robot.glyphStop.setPosition(0.1);
-        robot.grabber.setPower(0.5);
+        robot.grabber.setPower(0.4);
         robot.grabber.setTargetPosition(400);
         rotateTo(robot,-90,0);
         DriveFor(robot, 1.0,-1,0,0);
@@ -176,16 +173,16 @@ public class Blue1Place2 extends AutoPull {
             speed = 0.25;
         }
         while (dis2 == false && runtime2.seconds() < 17 && opModeIsActive()) {
-            double distanceRight = ((robot.ultra_right.getVoltage() / 5) * 512) + 2.5;// robot.ultra_right.getDistance(DistanceUnit.CM);
-            telemetry.addData("Right", distanceRight);
+            double distanceLeft = ((robot.ultra_left.getVoltage() / 5) * 512) + 2.5;// robot.ultra_right.getDistance(DistanceUnit.CM);
+            telemetry.addData("Left", distanceLeft);
             telemetry.update();
 
-            if (distanceRight > target+0.4) {
-                onmiDrive(robot, -speed, 0.0, 0.0);
+            if (distanceLeft > target+0.4) {
+                onmiDrive(robot, speed, 0.0, 0.0);
                 there = true;
             }
-            else if (distanceRight < target-0.4) {
-                onmiDrive(robot,speed,0.0,0.0);
+            else if (distanceLeft < target-0.4) {
+                onmiDrive(robot,-speed,0.0,0.0);
                 if(there == true) {
                     speed = 0.25;
                 }
@@ -218,9 +215,10 @@ public class Blue1Place2 extends AutoPull {
         runtime.reset();
         while (robot.dumper.getCurrentPosition() <= 470 && opModeIsActive() && runtime2.seconds() < 28 && runtime.seconds() < 2) {
             robot.dumper.setTargetPosition(480);
-            //onmiDrive(robot, 0,.4,0);
+            //onmiDrive(robot, 0,.28,0);
         }
         DriveFor(robot,0.5, 0.4, 0.0, 0.0);
+
 
         onmiDrive(robot,0,0,0);
         while (robot.dumper.getCurrentPosition() >= 5 && opModeIsActive()) {
@@ -243,7 +241,7 @@ public class Blue1Place2 extends AutoPull {
 
             DriveFor(robot,0.3, -1,0,0);
             DriveFor(robot,0.2, 1,0,0);
-            DriveFor(robot,0.28, 0,1,0);
+            DriveFor(robot,0.32, 0,1,0);
             dump = true;
 
             /*int glyphColor2;
