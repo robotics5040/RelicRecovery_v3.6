@@ -7,7 +7,6 @@ import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
 import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.GyroSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.I2cAddr;
@@ -41,7 +40,7 @@ public class HardwareOmniRobot
 
     ModernRoboticsI2cRangeSensor ultra_backMR, ultra_backMR2;
 
-    public final int GRABBER_AUTOPOS = 850;
+    public final int GRABBER_AUTOPOS = 1300;
     public final double JKUP = 0.8;
 
     /* Public OpMode members. */
@@ -120,7 +119,7 @@ public class HardwareOmniRobot
         ultra_backMR2 = hwMap.get(ModernRoboticsI2cRangeSensor.class, "ultra_backMR2");
 
         relicMotor = hwMap.dcMotor.get("relic_motor");
-        //relicMotor.setDirection(DcMotor.Direction.REVERSE);
+        relicMotor.setDirection(DcMotor.Direction.REVERSE);
         relicMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         relicMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         relicWrist = hwMap.get(Servo.class, "relic_wrist");
@@ -144,10 +143,11 @@ public class HardwareOmniRobot
 
         flex = hwMap.analogInput.get("flx");
 
-        leftMotor1.setDirection(DcMotor.Direction.REVERSE); // Set to REVERSE if using AndyMark motors
-        leftMotor2.setDirection(DcMotor.Direction.REVERSE); // Set to REVERSE if using AndyMark motors
-        rightMotor1.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
-        rightMotor2.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
+        leftMotor1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftMotor1.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
+        leftMotor2.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
+        rightMotor1.setDirection(DcMotor.Direction.FORWARD);// Set to FORWARD if using AndyMark motors
+        rightMotor2.setDirection(DcMotor.Direction.FORWARD);// Set to FORWARD if using AndyMark motors
         grabber.setDirection(DcMotor.Direction.REVERSE);
         grabber.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         grabber.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -164,14 +164,14 @@ public class HardwareOmniRobot
         RobotLog.ii("5040MSGHW","Drive Train setPower");
         wheelie.setPower(0);
         jknock.setPosition(0.8);
-        claw1.setPosition(1.0);
-        claw2.setPosition(0.0);
+        claw1.setPosition(0.0);
+        claw2.setPosition(1.0);
         jewelGrab.setPosition(0.19);
         dumper.setPower(0);
-        relicClaw.setPosition(0.5);
-        glyphStop.setPosition(0.1);
+        relicClaw.setPosition(0.15);
+        glyphStop.setPosition(1);
         relicWrist.setPosition(0.94);
-        relicStopper.setPosition(0.96);
+        relicStopper.setPosition(0.98);
         flexServo.setPosition(0.196);        //out to 90 -- 0.82
         RobotLog.ii("5040MSGHW", "Everything Initialized Correctly");
 
@@ -190,7 +190,7 @@ public class HardwareOmniRobot
             imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
 
             //Close the claw to clear the relic arm
-            claw2.setPosition(0.5);
+            claw2.setPosition(0.3);
 
             //Move the grabber Up
             while(grabber.getCurrentPosition() < GRABBER_AUTOPOS - 10) {
@@ -199,7 +199,7 @@ public class HardwareOmniRobot
             }
 
             //Move the claw back to a semi-open position
-            claw2.setPosition(0.1);
+            claw2.setPosition(0.9);
             //relicClaw.setPosition(0.35);
             //The robot is now initialized within 18 inches!
         }

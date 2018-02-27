@@ -26,15 +26,16 @@ public class AnalogPotentiometer {
     private double offset = 0;
 
 
-    AnalogPotentiometer(AnalogInput potentiometer, double maxValue, double offset){
+    AnalogPotentiometer (AnalogInput potentiometer, double maxValue, double offset){
         this.potentiometer = potentiometer;
         this.maxValue = maxValue;
         this.offset = offset;
     }
 
-    AnalogPotentiometer(AnalogInput potentiometer){
+    AnalogPotentiometer (AnalogInput potentiometer){
         this.potentiometer = potentiometer;
     }
+
 
     public double getValue(){
         double conversion = 0;
