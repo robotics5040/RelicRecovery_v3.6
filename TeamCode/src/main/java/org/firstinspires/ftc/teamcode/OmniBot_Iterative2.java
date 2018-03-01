@@ -50,12 +50,10 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
  * This OpMode uses the common Pushbot hardware class to define the devices on the robot.
  * All device access is managed through the HardwarePushbot class.
  *
- * This particular OpMode executes a basic Tank Drive Teleop for a PushBot
+ * This particular OpMode executes a basic Omni Drive Teleop for an Omnibot
  * It raises and lowers the claw using the Gampad Y and A buttons respectively.
  * It also opens and closes the claws slowly using the left and right Bumper buttons.
  *
- * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
- * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
 @TeleOp(name="Pushbot: Omnibot Pushbot Grabber up", group="Pushbot")
@@ -63,8 +61,10 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 public class OmniBot_Iterative2 extends OpMode{
     private double position = 0.0;
     public int  pressed = 0,up=10;
-    private int gamepadMode1 = 0; //Controls wich control scheme is being used by Gamepad1, is toggled by Start-x
-    private int gamepadMode2 = 0; //Controls wich control scheme is being used by Gamepad2, is toggled by Start-x
+    /**
+     * The instance fields: <code>gamepadMode1</code> and <code>gamepadMode2</code> determine which controller is using the alternative controll scheme.
+     */
+    private int gamepadMode1 = 0, gamepadMode2 = 0;
     double wrist_num = 0;
     boolean run2=false, goup = false,dumperReset = false, grabberDown=true, run =false, grabberReset=false;
     
@@ -238,39 +238,39 @@ public class OmniBot_Iterative2 extends OpMode{
             rotate = right_stick_x1*-1;
 
             frontFacing = true;
-            rightFacing = false;
             leftFacing = false;
-            yPressed = false;
+            rightFacing = false;
+            backFacing = false;
         }
-        if(x_button1 == true || rightFacing == true) {
+        if(x_button1 == true || leftFacing == true) {
             front = left_stick_x1;
             side = left_stick_y1*-1;
             rotate = right_stick_y1*-1;
 
             frontFacing = false;
-            rightFacing = true;
-            leftFacing = false;
-            yPressed = false;
+            leftFacing = true;
+            rightFacing = false;
+            backFacing = false;
         }
-        if(b_button1 == true || leftFacing == true) {
+        if(b_button1 == true || rightFacing == true) {
             front = left_stick_x1*-1;
             side = left_stick_y1;
             rotate = right_stick_y1;
 
             frontFacing = false;
-            rightFacing = false;
-            leftFacing = true;
-            yPressed = false;
+            leftFacing = false;
+            rightFacing = true;
+            backFacing = false;
         }
-        if(a_button1 == true || yPressed == true) {
+        if(a_button1 == true || backFacing == true) {
             front = left_stick_y1;
             side = left_stick_x1;
             rotate = right_stick_x1;
 
             frontFacing = false;
-            rightFacing = false;
             leftFacing = false;
-            yPressed = true;
+            rightFacing = false;
+            backFacing = true;
         }
 
         if(left_bumper1 == true) {
@@ -527,7 +527,7 @@ public class OmniBot_Iterative2 extends OpMode{
         telemetry.addData("A Button: ", frontFacing);
         telemetry.addData("B Button: ", rightFacing);
         telemetry.addData("X Button: ", leftFacing);
-        telemetry.addData("Y Button: ", yPressed);
+        telemetry.addData("Y Button: ", backFacing);
         telemetry.addData("2nd Left Trigger",left_stick_x2);
         telemetry.addData("2nd Right Trigger",right_stick_x2);
         telemetry.addData("home",gamepad2.guide);
