@@ -15,46 +15,39 @@ public class ControllerTest extends OpMode {
 
     @Override
     public void loop(){
-        double left_joystick_y, left_joystick_x, right_joystick_y, right_joystick_x;
-        double left_trigger, right_trigger;
-        boolean left_bumper, right_bumper;
-        boolean left_stick_button, right_stick_button;
-        boolean a_button, b_button, x_button, y_button;
-        boolean d_up, d_down, d_left, d_right;
-        boolean home, back, start;
         
         //Left joystick
-        left_joystick_y   = gamepad1.left_stick_y;
-        left_joystick_x   = gamepad1.left_stick_x;
-        left_stick_button = gamepad1.left_stick_button;
+        double left_joystick_y    = gamepad1.left_stick_y;
+        double left_joystick_x    = gamepad1.left_stick_x;
+        boolean left_stick_button = gamepad1.left_stick_button;
         
         //Right Joystick
-        right_joystick_y   = gamepad1.right_stick_y;
-        right_joystick_x   = gamepad1.right_stick_x;
-        right_stick_button = gamepad1.right_stick_button;
+        double right_joystick_y    = gamepad1.right_stick_y;
+        double right_joystick_x    = gamepad1.right_stick_x;
+        boolean right_stick_button = gamepad1.right_stick_button;
 
         //Bumpers & Triggers
-        left_trigger  = gamepad1.left_trigger;
-        left_bumper   = gamepad1.left_bumper;
-        right_trigger = gamepad1.right_trigger;
-        right_bumper  = gamepad1.right_bumper;
+        double left_trigger  = gamepad1.left_trigger;
+        boolean left_bumper  = gamepad1.left_bumper;
+        double right_trigger = gamepad1.right_trigger;
+        boolean right_bumper = gamepad1.right_bumper;
 
         //Face Buttons
-        a_button = gamepad1.a;
-        b_button = gamepad1.b;
-        x_button = gamepad1.x;
-        y_button = gamepad1.y;
+        boolean a_button = gamepad1.a;
+        boolean b_button = gamepad1.b;
+        boolean x_button = gamepad1.x;
+        boolean y_button = gamepad1.y;
 
         //Directional Pad
-        d_up    = gamepad1.dpad_up;
-        d_down  = gamepad1.dpad_down;
-        d_left  = gamepad1.dpad_left;
-        d_right = gamepad1.dpad_right;
+        boolean d_up    = gamepad1.dpad_up;
+        boolean d_down  = gamepad1.dpad_down;
+        boolean d_left  = gamepad1.dpad_left;
+        boolean d_right = gamepad1.dpad_right;
 
         //Utility Buttons
-        back  = gamepad1.back;
-        start = gamepad1.start;
-        home  = gamepad1.guide;
+        boolean back  = gamepad1.back;
+        boolean start = gamepad1.start;
+        boolean home  = gamepad1.guide;
         
         String left_joystick_string = left_joystick_x + ", " + left_joystick_y;
         String right_joystick_string = right_joystick_x + ", " + right_joystick_y;
