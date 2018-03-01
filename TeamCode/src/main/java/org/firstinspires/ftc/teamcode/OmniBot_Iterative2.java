@@ -108,7 +108,7 @@ public class OmniBot_Iterative2 extends OpMode{
         robot.jewelGrab.setPosition(0.19);
         robot.relicClaw.setPosition(0.5);
         robot.glyphStop.setPosition(0.1);
-        //robot.relicWrist.setPosition(0.98);
+        robot.relicWrist.setPosition(0.05);
         robot.relicStopper.setPosition(0.96);
         robot.flexServo.setPosition(0.196);
     }
@@ -405,7 +405,7 @@ public class OmniBot_Iterative2 extends OpMode{
         double rwCurrent = robot.relicWrist.getPosition(), rwGoal = rwCurrent;
 
         double power = 0;
-        double SERVO_INCREMENT = 0.04, decay = 0.008;
+        double SERVO_INCREMENT;
 
         if(right_stick_y_2 < -0.1 && run2 == true){
             robot.relicStopper.setPosition(0.3);
@@ -418,17 +418,17 @@ public class OmniBot_Iterative2 extends OpMode{
             power = 0;
         }
 
-        if(robot.relicWrist.getPosition() < 0.30){
+        if(robot.relicWrist.getPosition() > 0.70){
             SERVO_INCREMENT = 0.01;
         }else{
             SERVO_INCREMENT = 0.04;
         }
 
         if(left_stick_y_2 < -0.1){
-            rwGoal = rwCurrent + SERVO_INCREMENT;
+            rwGoal = rwCurrent - SERVO_INCREMENT;
             //SERVO_INCREMENT -= decay;
         }else if(left_stick_y_2 > 0.1){
-            rwGoal = rwCurrent - SERVO_INCREMENT;
+            rwGoal = rwCurrent + SERVO_INCREMENT;
             //SERVO_INCREMENT += decay;
         }
         if(rwGoal > 1){
@@ -437,14 +437,17 @@ public class OmniBot_Iterative2 extends OpMode{
             rwGoal = 0.0;
         }
 
+        //fully open
         if(a_button == true){
-            robot.relicClaw.setPosition(0.0);
+            robot.relicClaw.setPosition(0.3);
         }
+        //part open
         else if(b_button == true) {
-            robot.relicClaw.setPosition(0.46);
+            robot.relicClaw.setPosition(0.68);
         }
+        //closed
         else{
-            robot.relicClaw.setPosition(0.5);
+            robot.relicClaw.setPosition(0.75);
         }
 
         robot.relicWrist.setPosition(rwGoal);

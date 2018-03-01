@@ -161,7 +161,7 @@ public class Blue1Place2 extends AutoPull {
         //DriveFor(robot,0.3,0,0,1);
         //DriveFor(robot,0.3,0,0,-1);
         robot.glyphStop.setPosition(0.1);
-        robot.grabber.setPower(0.5);
+        robot.grabber.setPower(0.3);
         robot.grabber.setTargetPosition(400);
         rotateTo(robot,-90,0);
         DriveFor(robot, 1.0,-1,0,0);

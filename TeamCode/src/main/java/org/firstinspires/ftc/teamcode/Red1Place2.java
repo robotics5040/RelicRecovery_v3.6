@@ -80,6 +80,7 @@ public class Red1Place2 extends AutoPull {
             //telemetry.addData("HEADING",robot.gyro.getHeading());
             //telemetry.addData("heading2", robot.gyro2.getHeading());
             telemetry.addData("calibration", robot.imu.isGyroCalibrated());
+            telemetry.addData("potentiometer",(robot.potentiometer.getVoltage()*((float)1023/68))-37.5);
             telemetry.update();
             idle();
         }
@@ -92,6 +93,8 @@ public class Red1Place2 extends AutoPull {
         robot.jkcolor.enableLed(true);
         robot.jkcolor2.enableLed(true);
         robot.jknock.setPosition(0.13);
+
+        float angle = (float)((robot.potentiometer.getVoltage()*((float)1023/68))-37.5);
 
         RobotLog.ii("5040MSG","Run vufloria");
         //int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
@@ -135,12 +138,12 @@ public class Red1Place2 extends AutoPull {
         DriveFor(robot,0.3,0.0,0.0,0.0);
         if(robot.jknock.getPosition() != robot.JKUP) {robot.jknock.setPosition(robot.JKUP);}
         robot.wheelie.setPower(-1);
-        DriveFor(robot,1.1,-1.0,0.0,0.0);
+        DriveFor(robot,1.2,-1.0,0.0,0.0);
         robot.wheelie.setPower(0);
 
         DriveFor(robot,1,0,0,1);
         //RotateTo0(robot,0, startG, startG2);
-        rotateTo(robot, -90,0);
+        rotateTo(robot, -90,angle);
         robot.grabber.setTargetPosition(0);
         DriveFor(robot,0.2,0,0,0);
         robot.glyphStop.setPosition(0.8);
@@ -156,7 +159,7 @@ public class Red1Place2 extends AutoPull {
         //DriveFor(robot,0.3,0,0,1);
         //DriveFor(robot,0.3,0,0,-1);
         robot.glyphStop.setPosition(0.1);
-        robot.grabber.setPower(0.4);
+        robot.grabber.setPower(0.3);
         robot.grabber.setTargetPosition(400);
         rotateTo(robot,-90,0);
         DriveFor(robot, 1.0,-1,0,0);

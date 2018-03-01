@@ -125,7 +125,6 @@ public class AutoPull extends LinearOpMode {
         robot.jkcolor.enableLed(false);
         robot.jkcolor2.enableLed(false);
         if(robot.jknock.getPosition() != robot.JKUP) {robot.jknock.setPosition(robot.JKUP);}
-
     }
 
     public void rotateTo(HardwareOmniRobot robot,float degrees,float potent) {
@@ -135,7 +134,7 @@ public class AutoPull extends LinearOpMode {
         degrees += potent;
 
         runtime.reset();
-        while (heading != degrees && opModeIsActive()) {
+        while (heading != degrees && opModeIsActive() && runtime.seconds() < 2) {
             telemetry.addData("HEADING", heading);
             telemetry.addData("Degrees", degrees);
             telemetry.addData("speed", speed);
@@ -146,7 +145,7 @@ public class AutoPull extends LinearOpMode {
                 go = true;
             } else if (degrees+0.5 > heading) {
                 onmiDrive(robot, 0.0, 0.0, speed);
-                if (speed > 0.35 && go == true) {
+                if (speed > 0.3 && go == true) {
                     speed -= 0.01;
                 }
             }
