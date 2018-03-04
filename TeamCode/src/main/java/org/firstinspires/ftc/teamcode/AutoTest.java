@@ -39,7 +39,7 @@ import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.RobotLog;
-
+import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
@@ -66,13 +66,20 @@ import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 public class AutoTest extends AutoPull {
 
     HardwareOmniRobot robot   = new HardwareOmniRobot();
-    public AnalogInput potentiometer =null;
+    public Servo vexMotor = null;
     ElapsedTime runtime = new ElapsedTime();
 
     BNO055IMU imu;
 
     @Override public void runOpMode() {
-        robot.init(hardwareMap, true);
+        vexMotor = hardwareMap.servo.get("vexMotor");
+
+        waitForStart();
+
+        while(opModeIsActive()) {
+            vexMotor.setPosition(0);
+        }
+        /*robot.init(hardwareMap, true);
         potentiometer = hardwareMap.analogInput.get("potentiometer");
 
         telemetry.addLine("waiting for start");
@@ -97,7 +104,9 @@ public class AutoTest extends AutoPull {
             telemetry.addData("potentiometer",potentiometer.getVoltage());
             telemetry.update();
 
-        }
+        }*/
+
+
 
     }
 }

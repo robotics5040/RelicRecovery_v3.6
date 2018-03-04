@@ -184,7 +184,7 @@ public class HardwareOmniRobot
             relicClaw.setPosition(0.5);
             glyphStop.setPosition(0.1);
             relicWrist.setPosition(0.05);
-            relicStopper.setPosition(0.96);
+            relicStopper.setPosition(0);
             flexServo.setPosition(0.196);
 
             BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();

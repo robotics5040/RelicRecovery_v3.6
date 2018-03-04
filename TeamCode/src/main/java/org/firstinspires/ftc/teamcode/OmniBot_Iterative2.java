@@ -109,7 +109,7 @@ public class OmniBot_Iterative2 extends OpMode{
         robot.relicClaw.setPosition(0.5);
         robot.glyphStop.setPosition(0.1);
         robot.relicWrist.setPosition(0.05);
-        robot.relicStopper.setPosition(0.96);
+        robot.relicStopper.setPosition(0);
         robot.flexServo.setPosition(0.196);
     }
 
@@ -407,11 +407,11 @@ public class OmniBot_Iterative2 extends OpMode{
         double power = 0;
         double SERVO_INCREMENT;
 
-        if(right_stick_y_2 < -0.1 && run2 == true){
-            robot.relicStopper.setPosition(0.3);
+        if(right_stick_y_2 < -0.1){
+            robot.relicStopper.setPosition(1);
             power = -1.0;
-        }else if(right_stick_y_2 > 0.1 && run2 == true){
-            robot.relicStopper.setPosition(0.3);
+        }else if(right_stick_y_2 > 0.1 ){
+            robot.relicStopper.setPosition(1);
             power = 1.0;
         }else{
             newRelicMotorPosition = relicMotorPosition;
@@ -443,11 +443,11 @@ public class OmniBot_Iterative2 extends OpMode{
         }
         //part open
         else if(b_button == true) {
-            robot.relicClaw.setPosition(0.68);
+            robot.relicClaw.setPosition(0.55);
         }
         //closed
         else{
-            robot.relicClaw.setPosition(0.75);
+            robot.relicClaw.setPosition(0.6);
         }
 
         robot.relicWrist.setPosition(rwGoal);

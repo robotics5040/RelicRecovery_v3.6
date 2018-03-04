@@ -172,9 +172,6 @@ public class Red1Place2 extends AutoPull {
         int count = 0;
         runtime.reset();
         double speed = 0.35;
-        if(choosen == 2){
-            speed = 0.25;
-        }
         while (dis2 == false && runtime2.seconds() < 17 && opModeIsActive()) {
             double distanceLeft = ((robot.ultra_left.getVoltage() / 5) * 512) + 2.5;// robot.ultra_right.getDistance(DistanceUnit.CM);
             telemetry.addData("Left", distanceLeft);
