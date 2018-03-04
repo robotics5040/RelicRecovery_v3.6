@@ -287,7 +287,7 @@ public class OmniBot_Iterative extends OpMode{
             robot.claw2.setPosition(0.45);
         }
 
-        robot.relicArm(left_stick_y_2, right_stick_y_2, a2);
+        //robot.relicArm(left_stick_y_2, right_stick_y_2, a2);
 
         // Send telemetry message to signify robot running;
         telemetry.addLine("Controller Telemetry:");

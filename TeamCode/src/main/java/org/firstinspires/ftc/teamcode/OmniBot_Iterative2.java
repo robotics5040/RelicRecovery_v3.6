@@ -61,10 +61,13 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 public class OmniBot_Iterative2 extends OpMode{
     private double position = 0.0;
     public int  pressed = 0,up=10;
+
     /**
      * The instance fields: <code>gamepadMode1</code> and <code>gamepadMode2</code> determine which controller is using the alternative controll scheme.
      */
     private int gamepadMode1 = 0, gamepadMode2 = 0;
+
+
     double wrist_num = 0;
     boolean run2=false, goup = false,dumperReset = false, grabberDown=true, run =false, grabberReset=false;
     
@@ -74,9 +77,15 @@ public class OmniBot_Iterative2 extends OpMode{
      * move towards. 
      * *Note: the front of the robot refers to the side with the claw/grabber mechanism 
      */
-    boolean frontFacing = true, rightFacing = false, leftFacing = false, backFacing = false;
-    
-    
+    private boolean frontFacing = true, rightFacing = false, leftFacing = false, backFacing = false;
+
+    /**
+     *  <code>isStartXPressable</code> is used for the toggle of start-x, it is used to make switching between the two
+     *  modes easier to accomplish.
+     */
+    private boolean isStartXPressable = true;
+
+
     boolean closed = true;
 
     private double front, side, rotate;
@@ -84,24 +93,27 @@ public class OmniBot_Iterative2 extends OpMode{
     ElapsedTime runtime = new ElapsedTime();
     /* Declare OpMode members. */
     private HardwareOmniRobot robot; // use the class created to define a Pushbot's hardware
+    private RelicDeliverySystem rds;
 
     public OmniBot_Iterative2() {
         robot = new HardwareOmniRobot();
+        rds   = new RelicDeliverySystem(robot);
     }
 
     // could also use HardwarePushbotMatrix class.
-   /*
+    /*
      * Code to run ONCE when the driver hits INIT
      */
     @Override
     public void init() {
-        /* Initialize the hardware variables.
+        /*
+         * Initialize the hardware variables.
          * The init() method of the hardware class does all the work here
          */
         robot.init(hardwareMap, false);
 
         // Send telemetry message to signify robot waiting;
-        telemetry.addData("Say", "Hello Driver");    //
+        telemetry.addData("Say", "Hello Driver");
     }
 
     /*
@@ -118,6 +130,15 @@ public class OmniBot_Iterative2 extends OpMode{
     public void start() {
         robot.grabber.setPower(0.6);
         robot.dumper.setPower(0.5);
+        robot.jknock.setPosition(0.8);
+        robot.claw1.setPosition(1.0);
+        robot.claw2.setPosition(0.1);
+        robot.jewelGrab.setPosition(0.19);
+        robot.relicClaw.setPosition(0.5);
+        robot.glyphStop.setPosition(0.1);
+        robot.relicWrist.setPosition(0.05);
+        robot.relicStopper.setPosition(0.96);
+        robot.flexServo.setPosition(0.196);
     }
 
     /*
@@ -131,8 +152,8 @@ public class OmniBot_Iterative2 extends OpMode{
          *   Gamepad 1
          */
         //Joystick Inputs
-        double left_stick_y1  = gamepad1.left_stick_y;
-        double right_stick_y1 = gamepad1.right_stick_y;
+        double left_stick_y1  = gamepadMode1 == 0 ? gamepad1.left_stick_y : 0; //Basicly an if statement that
+        double right_stick_y1 = gamepadMode1 == 0 ? gamepad1.right_stick_y : 0;
         //right_trigger1  = gamepad1.right_trigger;//unused
         double left_stick_x1   = gamepad1.left_stick_x;
         double right_stick_x1  = gamepad1.right_stick_x;
@@ -140,8 +161,8 @@ public class OmniBot_Iterative2 extends OpMode{
         //Bumpers and Triggers
         boolean left_bumper1  = gamepad1.left_bumper  && gamepadMode1 == 0;
         boolean right_bumper1 = gamepad1.right_bumper && gamepadMode1 == 0;
-        //left_trigger1  = gamepad1.left_trigger;//unused
-        //right_trigger1 = gamepad1.right_trigger;//unused
+        boolean left_trigger1  = gamepad1.left_trigger > 0.3  && gamepadMode1 == 0;//unused
+        boolean right_trigger1 = gamepad1.right_trigger > 0.3 && gamepadMode1 == 0;//unused
 
         //Button inputs
         boolean b_button1 = gamepad1.b && gamepadMode1 == 0;
@@ -158,22 +179,23 @@ public class OmniBot_Iterative2 extends OpMode{
         //Auxillary Inputs
         boolean left_stick_press1  = gamepad1.right_stick_button && gamepadMode1 == 0;
         boolean right_stick_press1 = gamepad1.left_stick_button  && gamepadMode1 == 0;
-        boolean home = gamepad1.guide && gamepadMode1 == 0;
+        boolean home   = gamepad1.guide && gamepadMode1 == 0;
+        boolean start1 = gamepad1.start && gamepadMode1 == 0;
         
         /*
          *   Gamepad 2
          */
         //Joystick Inputs
-        double left_stick_y_2  = gamepad2.left_stick_y;
-        double right_stick_y_2 = gamepad2.right_stick_y;
+        double left_stick_y2   = gamepadMode2 == 0 ? gamepad2.left_stick_y : 0;
+        double right_stick_y_2 = gamepadMode2 == 0 ? gamepad2.right_stick_y : 0;
         double left_stick_x2   = gamepad2.left_stick_x;
         double right_stick_x2  = gamepad2.right_stick_x;
         
         //Bumpers and Triggers
         boolean left_bumper2  = gamepad2.left_bumper  && gamepadMode2 == 0;
         boolean right_bumper2 = gamepad2.right_bumper && gamepadMode2 == 0;
-        double left_trigger2  = gamepad2.left_trigger;
-        double right_trigger2 = gamepad2.right_trigger;
+        boolean left_trigger2  = gamepad2.left_trigger > 0.3  && gamepadMode2 == 0;
+        boolean right_trigger2 = gamepad2.right_trigger > 0.3 && gamepadMode2 == 0;
         
         //Button inputs
         boolean b_button2 = gamepad2.b && gamepadMode2 == 0;
@@ -190,15 +212,17 @@ public class OmniBot_Iterative2 extends OpMode{
         //Auxillary Inputs
         boolean left_stick_press2  = gamepad2.right_stick_button && gamepadMode2 == 0;
         boolean right_stick_press2 = gamepad2.left_stick_button  && gamepadMode2 == 0;
-        boolean home2 = gamepad2.guide && gamepadMode2 == 0;
+        boolean home2 = gamepad2.guide  && gamepadMode2 == 0;
+        boolean start2 = gamepad2.start && gamepadMode2 == 0;
         
         /*
          *   Gamepad 3
          */
         //Joystick Inputs
-        double left_stick_y3  = gamepad2.left_stick_y;
-        double right_stick_y3 = gamepad2.right_stick_y;
-        double right_trigger3  = gamepad2.right_trigger;
+        double left_stick_y3  = (gamepad2.left_stick_y * gamepadMode2) + (gamepad1.left_stick_y * gamepadMode1);
+        double right_stick_y3 = (gamepad2.right_stick_y * gamepadMode2) + (gamepad1.right_stick_y * gamepadMode1);
+        boolean right_trigger3 = (gamepad2.right_trigger > 0.3 && gamepadMode2 == 1) || (gamepad1.right_trigger > 0.3 && gamepadMode1 == 1);
+        boolean left_trigger3  = (gamepad2.left_trigger  > 0.3 && gamepadMode2 == 1) || (gamepad1.left_trigger > 0.3 && gamepadMode1 == 1);
 
         //Button inputs
         boolean b_button3 = (gamepad2.b && gamepadMode2 == 1) || (gamepad1.b && gamepadMode1 == 1);
@@ -207,15 +231,36 @@ public class OmniBot_Iterative2 extends OpMode{
         boolean x_button3 = (gamepad2.x && gamepadMode2 == 1) || (gamepad1.x && gamepadMode1 == 1);
 
         //Directional Pad Inputs
-        boolean dup2    = (gamepad2.dpad_up    && gamepadMode2 == 1) || (gamepad1.dpad_up    && gamepadMode1 == 1);
-        boolean ddown2  = (gamepad2.dpad_down  && gamepadMode2 == 1) || (gamepad1.dpad_down  && gamepadMode1 == 1);
-        boolean dleft2  = (gamepad2.dpad_left  && gamepadMode2 == 1) || (gamepad1.dpad_left  && gamepadMode1 == 1);
-        boolean dright2 = (gamepad2.dpad_right && gamepadMode2 == 1) || (gamepad1.dpad_right && gamepadMode1 == 1);
+        boolean dup3    = (gamepad2.dpad_up    && gamepadMode2 == 1) || (gamepad1.dpad_up    && gamepadMode1 == 1);
+        boolean ddown3  = (gamepad2.dpad_down  && gamepadMode2 == 1) || (gamepad1.dpad_down  && gamepadMode1 == 1);
+        boolean dleft3  = (gamepad2.dpad_left  && gamepadMode2 == 1) || (gamepad1.dpad_left  && gamepadMode1 == 1);
+        boolean dright3 = (gamepad2.dpad_right && gamepadMode2 == 1) || (gamepad1.dpad_right && gamepadMode1 == 1);
 
         //Auxillary Inputs
-        boolean stick_press3  = (gamepad2.right_stick_button && gamepadMode2 == 1) || (gamepad1.right_stick_button && gamepadMode1 == 1);
-        boolean stick_press3 = (gamepad2.left_stick_button  && gamepadMode2 == 1)  || (gamepad1.left_stick_button  && gamepadMode1 == 1);
+        boolean right_stick_press3  = (gamepad2.right_stick_button && gamepadMode2 == 1) || (gamepad1.right_stick_button && gamepadMode1 == 1);
+        boolean left_stick_press3 = (gamepad2.left_stick_button  && gamepadMode2 == 1)  || (gamepad1.left_stick_button  && gamepadMode1 == 1);
         boolean home3 = (gamepad2.guide && gamepadMode2 == 1);
+        boolean start3 = (gamepad1.start && gamepadMode1 == 1) || (gamepad2.start && gamepadMode2 == 1);
+
+        /*
+            Switch the controller mode
+            mapped to Start-x
+         */
+        if (x_button1 && start1 && isStartXPressable) {
+            gamepadMode1 = 1;
+            gamepadMode2 = 0;
+            isStartXPressable = false;
+        }else if (x_button2 && start2 && isStartXPressable) {
+            gamepadMode1 = 0;
+            gamepadMode2 = 1;
+            isStartXPressable = false;
+        }else if (x_button3 && start3 && isStartXPressable) {
+            gamepadMode1 = 0;
+            gamepadMode2 = 0;
+            isStartXPressable = false;
+        }
+        isStartXPressable = !((x_button1 && start1) || (x_button2 && start2) || (x_button3 && start3));
+
 
         //slight adjustments for driver
         if(ddown1 == true) {
@@ -235,7 +280,7 @@ public class OmniBot_Iterative2 extends OpMode{
         if(y_button1 == true || frontFacing == true) {
             front = left_stick_y1 * -1;
             side = left_stick_x1 * -1;
-            rotate = right_stick_x1*-1;
+            rotate = right_stick_x1 * -1;
 
             frontFacing = true;
             leftFacing = false;
@@ -244,8 +289,8 @@ public class OmniBot_Iterative2 extends OpMode{
         }
         if(x_button1 == true || leftFacing == true) {
             front = left_stick_x1;
-            side = left_stick_y1*-1;
-            rotate = right_stick_y1*-1;
+            side = left_stick_y1 * -1;
+            rotate = right_stick_y1 * -1;
 
             frontFacing = false;
             leftFacing = true;
@@ -253,7 +298,7 @@ public class OmniBot_Iterative2 extends OpMode{
             backFacing = false;
         }
         if(b_button1 == true || rightFacing == true) {
-            front = left_stick_x1*-1;
+            front = left_stick_x1 * -1;
             side = left_stick_y1;
             rotate = right_stick_y1;
 
@@ -313,7 +358,7 @@ public class OmniBot_Iterative2 extends OpMode{
             robot.grabber.setTargetPosition(550);
 
         }
-        else if(left_trigger2 > 0.3) {
+        else if(left_trigger2) {
             robot.grabber.setPower(0.35);
             //robot.glyphStop.setPosition(0.6);
             robot.grabber.setTargetPosition(400);
@@ -350,7 +395,6 @@ public class OmniBot_Iterative2 extends OpMode{
             robot.grabber.setPower(0.2);
             robot.grabber.setTargetPosition(-1500);
             grabberReset = true;
-
         }
         else if(grabberReset == true) {
             //Reset the position and encoders of the grabber
@@ -368,7 +412,7 @@ public class OmniBot_Iterative2 extends OpMode{
         else{
             //robot.glyphStop.setPosition(0.4);
         }*/
-        if(right_trigger2 > 0.4 && left_bumper2 == false && left_trigger2 < 0.3 && robot.grabber.getCurrentPosition() < 20 && dup2 == false && ddown2 == false && run2 == false) {
+        if(right_trigger1 && left_bumper1 == false && left_trigger1  && robot.grabber.getCurrentPosition() < 20 && dup2 == false && ddown2 == false && run2 == false) {
             robot.glyphStop.setPosition(0.8);
         }
         else {
@@ -398,7 +442,7 @@ public class OmniBot_Iterative2 extends OpMode{
             robot.dumper.setPower(0.5);
             robot.dumper.setTargetPosition(480);
         }
-        else if(right_trigger2 > 0.5) {
+        else if(right_trigger2) {
             if(robot.dumper.getCurrentPosition() >= -200) {
                 robot.dumper.setPower(0.6);
             }
@@ -441,93 +485,33 @@ public class OmniBot_Iterative2 extends OpMode{
             robot.claw2.setPosition(0.38);
         }
 
-        int relicMotorPosition = robot.relicMotor.getCurrentPosition();
-        int newRelicMotorPosition = relicMotorPosition;
+        /**
+         * Move the Relic Slide
+         */
+        rds.moveSlide(right_stick_y3 + right_stick_y_2, run2);
+        rds.moveWrist(left_stick_y3 + left_stick_y2, x_button3);
+        rds.openClaw(right_trigger3, left_trigger3);
 
-        double rwCurrent = robot.relicWrist.getPosition(), rwGoal = rwCurrent;
 
-        double power = 0.5;
-        final int RELIC_OUT = 3500; // Minimum Value to Prevent Over Extension
-        final int RELIC_IN  = 0;
-        double SERVO_INCREMENT = 0.04, decay = 0.008;
-
-        if(right_stick_y_2 < -0.1 && robot.relicMotor.getCurrentPosition() < RELIC_OUT && run2 == true){
-            robot.relicStopper.setPosition(0.0);
-            newRelicMotorPosition = RELIC_OUT;
-            power = 1.0;
-        }else if(right_stick_y_2 > 0.1){
-            newRelicMotorPosition = RELIC_IN;
-            power = 1.0;
-        }else{
-            newRelicMotorPosition = relicMotorPosition;
-        }
-
-        if(robot.relicWrist.getPosition() < 0.30){
-            SERVO_INCREMENT = 0.01;
-        }else{
-            SERVO_INCREMENT = 0.04;
-        }
-
-        if(left_stick_y_2 < -0.1){
-            rwGoal = rwCurrent + SERVO_INCREMENT;
-            //SERVO_INCREMENT -= decay;
-        }else if(left_stick_y_2 > 0.1){
-            rwGoal = rwCurrent - SERVO_INCREMENT;
-            //SERVO_INCREMENT += decay;
-        }
-        if(rwGoal > 1.0){
-            rwGoal = 1.0;
-        }else if(rwGoal < 0.0){
-            rwGoal = 0.0;
-        }
-
-        if(a_button2 == true){
-            robot.relicClaw.setPosition(0.0);
-        }
-        else if(b_button2 == true) {
-            robot.relicClaw.setPosition(0.46);
-        }
-        else{
-            robot.relicClaw.setPosition(0.5);
-        }
-
-        robot.relicWrist.setPosition(rwGoal);
-
-        telemetry.addData("Servo Increment: ", SERVO_INCREMENT);
-        telemetry.addData("Motor Slide New Position: ", newRelicMotorPosition);
-        telemetry.addData("Motor Slide Current Position: ", relicMotorPosition);
-        telemetry.addData("Relic Claw Position: ", robot.relicClaw.getPosition());
-        telemetry.addData("Relic Wrist Position: ", robot.relicWrist.getPosition());
-
-        newRelicMotorPosition = Range.clip(newRelicMotorPosition, RELIC_IN, RELIC_OUT);
-        robot.relicMotor.setTargetPosition(newRelicMotorPosition);
-        relicMotorPosition = robot.relicMotor.getCurrentPosition();
-        //power = Math.abs(right_stick_y_2);
-
-        if(power < 0.4){
-            power = 0.4;
-        }
-
-        robot.relicMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.relicMotor.setPower(power);
         // Send telemetry message to signify robot running;
         telemetry.addLine();
         telemetry.addData("grabber position", robot.grabber.getCurrentPosition());
         telemetry.addLine();
         telemetry.addLine("Controller Telemetry:");
+        telemetry.addData("Gamepade 1 Mode: ", gamepadMode1);
         telemetry.addData("Gamepade 2 Mode: ", gamepadMode2);
         telemetry.addData("Left Bumper: ", left_bumper2);
-        telemetry.addData("Right Bumper: ", right_bumper2 );
+        telemetry.addData("Right Bumper: ", right_bumper2);
         telemetry.addData("Left Trigger: ", left_trigger2);
         telemetry.addData("Right Trigger: ", right_trigger2);
         telemetry.addData("A Button: ", a_button2);
         telemetry.addData("B Button: ", b_button2);
         telemetry.addData("X Button: ", x_button2);
         telemetry.addData("Y Button: ", y_button2);
-        telemetry.addData("A Button: ", frontFacing);
-        telemetry.addData("B Button: ", rightFacing);
-        telemetry.addData("X Button: ", leftFacing);
-        telemetry.addData("Y Button: ", backFacing);
+        telemetry.addData("Front Facing: ", frontFacing);
+        telemetry.addData("Right Facing: ", rightFacing);
+        telemetry.addData("Left Facing: ", leftFacing);
+        telemetry.addData("Back Facing: ", backFacing);
         telemetry.addData("2nd Left Trigger",left_stick_x2);
         telemetry.addData("2nd Right Trigger",right_stick_x2);
         telemetry.addData("home",gamepad2.guide);
@@ -543,7 +527,7 @@ public class OmniBot_Iterative2 extends OpMode{
         telemetry.addData("Ultra Left ", ((robot.ultra_left.getVoltage() / 5) * 512) + 2.5);
         telemetry.addData("Ultra Right ", ((robot.ultra_right.getVoltage() / 5) * 512) + 2.5);
         telemetry.addLine("What is my name?: Spitz");
-        telemetry.addData("rotate",rotate);
+        telemetry.addData("rotate: ",rotate);
 
     }
 
