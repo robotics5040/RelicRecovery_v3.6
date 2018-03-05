@@ -33,7 +33,7 @@ public class HardwareOmniRobot
 {
     ElapsedTime runtime = new ElapsedTime();
 
-    ColorSensor jkcolor, jkcolor2, dumperColor;
+    ColorSensor jkcolor, jkcolor2;
 
     ModernRoboticsI2cGyro gyro, gyro2;
     BNO055IMU imu;
@@ -117,7 +117,6 @@ public class HardwareOmniRobot
         flexServo = hwMap.servo.get("flex");
         jkcolor = hwMap.get(ColorSensor.class, "color_sense");
         jkcolor2 = hwMap.get(ColorSensor.class, "color");
-        dumperColor = hwMap.get(ColorSensor.class, "dumperColor");
         RobotLog.ii("5040MSGHW","Everything but ultras gotten");
 
         jkcolor.setI2cAddress(I2cAddr.create8bit(0x28));

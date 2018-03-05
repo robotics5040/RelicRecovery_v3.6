@@ -141,13 +141,12 @@ public class Blue1Place1 extends AutoPull {
         telemetry.addLine("Lineup 1 Complete");
         telemetry.update();
 
+        robot.grabber.setTargetPosition(350);
+
         boolean dis2 = false;
         int count = 0;
         runtime.reset();
         double speed = 0.285;
-        if(choosen == 2){
-            speed = 0.25;
-        }
         while (dis2 == false && runtime2.seconds() < 23 && opModeIsActive()) {
             double distanceRight = ((robot.ultra_right.getVoltage() / 5) * 512) + 2.5;// robot.ultra_right.getDistance(DistanceUnit.CM);
             telemetry.addData("Right", distanceRight);

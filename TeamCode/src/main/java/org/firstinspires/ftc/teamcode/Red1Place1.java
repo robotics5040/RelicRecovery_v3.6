@@ -117,6 +117,8 @@ public class Red1Place1 extends AutoPull {
         robot.claw1.setPosition(0.5);
         robot.claw2.setPosition(0.5);
 
+        robot.grabber.setTargetPosition(350);
+
         JewelKnock(robot,"red");
         DriveFor(robot,0.3,0.0,0.0,0.0);
         if(robot.jknock.getPosition() != robot.JKUP) {robot.jknock.setPosition(robot.JKUP);}

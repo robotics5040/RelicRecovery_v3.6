@@ -134,7 +134,7 @@ public class AutoPull extends LinearOpMode {
         degrees += potent;
 
         runtime.reset();
-        while (heading != degrees && opModeIsActive() && runtime.seconds() < 2) {
+        while (heading != degrees && opModeIsActive() && runtime.seconds() < 1.5) {
             telemetry.addData("HEADING", heading);
             telemetry.addData("Degrees", degrees);
             telemetry.addData("speed", speed);

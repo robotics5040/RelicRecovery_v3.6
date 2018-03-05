@@ -443,7 +443,7 @@ public class OmniBot_Iterative2 extends OpMode{
         }
         //part open
         else if(b_button == true) {
-            robot.relicClaw.setPosition(0.55);
+            robot.relicClaw.setPosition(0.5488);
         }
         //closed
         else{

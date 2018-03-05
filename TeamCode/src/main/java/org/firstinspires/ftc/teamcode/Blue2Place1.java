@@ -140,6 +140,8 @@ public class Blue2Place1 extends AutoPull {
         DriveFor(robot,0.55,0.36,0,0);
         DriveFor(robot,0.3,0,0,0);
 
+        robot.grabber.setTargetPosition(350);
+
         telemetry.addLine("Lineup 1 Complete");
         telemetry.update();
 
