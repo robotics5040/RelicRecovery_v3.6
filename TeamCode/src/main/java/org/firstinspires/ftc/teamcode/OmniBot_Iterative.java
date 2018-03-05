@@ -234,7 +234,6 @@ public class OmniBot_Iterative extends OpMode{
 
         else if (left_bumper == true) {
             robot.grabber.setTargetPosition(1560);
-
         }
         else if(left_trigger > 0.2) {
             robot.grabber.setTargetPosition(1200);
@@ -287,7 +286,7 @@ public class OmniBot_Iterative extends OpMode{
             robot.claw2.setPosition(0.45);
         }
 
-        robot.relicArm(left_stick_y_2, right_stick_y_2, a2);
+        //robot.relicArm(left_stick_y_2, right_stick_y_2, a2);
 
         // Send telemetry message to signify robot running;
         telemetry.addLine("Controller Telemetry:");
@@ -297,7 +296,7 @@ public class OmniBot_Iterative extends OpMode{
         telemetry.addData("Right Trigger: ", right_trigger1);
         telemetry.addData("2nd Left Joystick: ", left_stick_y_2);
         telemetry.addData("2nd Right Joystick: ", right_stick_y_2);
-        telemetry.addData("Relic Wrist Position: ", robot.relicWrist.getPosition());
+        //telemetry.addData("Relic Wrist Position: ", robot.relicWrist.getPosition());
         telemetry.addData("A Button: ",a_button);
         telemetry.addData("B Button: ",b_button);
         telemetry.addData("X Button: ",x_button);
