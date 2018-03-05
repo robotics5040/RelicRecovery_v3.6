@@ -170,7 +170,7 @@ public class AutoPull extends LinearOpMode {
         while(opModeIsActive() && runtime.seconds() < 5){
             double heading = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle + offset;
 
-            double power = pid.update(robot.leftMotor1, heading);
+            double power = 0;
             power = Range.clip(power, -1.0, 1.0);
 
             robot.onmiDrive(0.0, 0.0, power);

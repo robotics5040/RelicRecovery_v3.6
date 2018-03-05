@@ -12,68 +12,89 @@ public class RelicDeliverySystem {
 
     private HardwareOmniRobot robot;
 
-    private final int RELIC_OUT = 3000; // Minimum Value to Prevent Over Extension
-    private final int RELIC_IN = 0;
     private double increment = 0.04;
 
+    /**
+     * Instantiates the <code>RelicDeliverySystem</code>
+     *
+     * @param robot the robot object that contains the needed hardware for the relic slide
+     */
     public RelicDeliverySystem(HardwareOmniRobot robot) {
         //Initialize the robot based on the given one
         this.robot = robot;
     }
 
+    /**
+     * <code>moveSlide</code> is used to move the relic slide in and out
+     *
+     * @param joystick a double value of a joystick that moves the slide forward
+     */
     public void moveSlide(double joystick) {
+        //Sets the poser to a default of zero
         double power = 0.0;
-        int newRelicMotorPosition;
 
-        if(joystick< -0.1 && robot.relicMotor.getCurrentPosition() <RELIC_OUT) {
-            robot.relicStopper.setPosition(0.3);
-            newRelicMotorPosition = RELIC_OUT;
+        //Deactivates the relic stopper and moves the slide forward based on the joystick
+        if (joystick < -0.1) {
+            robot.relicStopper.setPosition(1);
+            power = -1.0;
+        } else if (joystick > 0.1) {
+            robot.relicStopper.setPosition(1);
             power = 1.0;
-        }else if(joystick > 0.1) {
-            newRelicMotorPosition = RELIC_IN;
-            power = 1.0;
-        }else {
-            newRelicMotorPosition = robot.relicMotor.getCurrentPosition();
         }
 
-        newRelicMotorPosition = Range.clip(newRelicMotorPosition, RELIC_IN, RELIC_OUT);
-        robot.relicMotor.setTargetPosition(newRelicMotorPosition);
-
-        robot.relicMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        //Set the power to the slide
         robot.relicMotor.setPower(power);
     }
 
-    public void moveWrist(double joystick){
+    /**
+     * <code>moveWrist</code> is used to move the wrist on the relic slide
+     *
+     * @param joystick      a double value from the controller that is used to move the wrist
+     * @param halfwayButton a boolean from the controller that moves the relic wrist to the
+     *                      halfway position
+     */
+    public void moveWrist(double joystick, boolean halfwayButton) {
+        // Fetch the actual value of the wrist
         double rwCurrent = robot.relicWrist.getPosition(), rwGoal = rwCurrent;
 
-        if(robot.relicWrist.getPosition() < 0.30){
+        //Change the speed of the wrist if it excedes the position 0.3;
+        if (rwCurrent > 0.70) {
             increment = 0.01;
-        }else{
+        } else {
             increment = 0.04;
         }
 
-        if(joystick < -0.1){
-            rwGoal = rwCurrent + increment;
-        }else if(joystick > 0.1){
+        //Move the servo based on the speed
+        if (joystick < -0.1) {
             rwGoal = rwCurrent - increment;
+        } else if (joystick > 0.1) {
+            rwGoal = rwCurrent + increment;
         }
 
-        if(rwGoal > 1.0){
-            rwGoal = 1.0;
-        }else if(rwGoal < 0.0){
-            rwGoal = 0.0;
+        if (halfwayButton) {
+            rwGoal = 0.50;
         }
 
+        //Make sure that the new position isn't out of bounds
+        Range.clip(rwGoal, 0.0, 1.0);
+
+        //Apply the new position
         robot.relicWrist.setPosition(rwGoal);
     }
 
-    public void openClaw(boolean button) {
-        if (button) {
-            robot.relicClaw.setPosition(0.0);
+    /**
+     * Opens the claw to various grips based on the inputted buttons
+     *
+     * @param buttonOpen
+     * @param buttonPartway
+     */
+    public void openClaw(boolean buttonOpen, boolean buttonPartway) {
+        if (buttonOpen) {
+            robot.relicClaw.setPosition(0.3);
+        } else if (buttonPartway) {
+            robot.relicClaw.setPosition(0.5488);
         } else {
-            robot.relicClaw.setPosition(0.5);
+            robot.relicClaw.setPosition(0.6);
         }
     }
-
-
 }

@@ -39,7 +39,7 @@ public class DriveTrain {
         } else if (left) {
             currentSide = Side.LEFT;
         } else if (back) {
-            currentSide = Side.BACK:
+            currentSide = Side.BACK;
         }
     }
 
