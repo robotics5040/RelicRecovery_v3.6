@@ -416,7 +416,7 @@ public class OmniBot_Iterative extends OpMode{
         }*/
         if(right_trigger1 && left_bumper1 == false && !left_trigger2  && robot.grabber.getCurrentPosition() < 20 && dup2 == false && ddown2 == false && run2 == false) {
             telemetry.addLine("BOP!");
-            robot.glyphStop.setPosition(0.8);
+            robot.glyphStop.setPosition(0.75);
         }
         else {
             robot.glyphStop.setPosition(0.1);
