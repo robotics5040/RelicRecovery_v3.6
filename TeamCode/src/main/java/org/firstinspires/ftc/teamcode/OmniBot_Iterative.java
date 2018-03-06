@@ -493,7 +493,7 @@ public class OmniBot_Iterative extends OpMode{
          */
         rds.moveSlide(right_stick_y3 + right_stick_y_2);
         rds.moveWrist(left_stick_y3 + left_stick_y2, x_button3);
-        rds.openClaw(right_bumper3, left_bumper3);
+        rds.openClaw(right_bumper3 || a_button2, left_bumper3 || b_button2);
 
 
         // Send telemetry message to signify robot running;
