@@ -114,9 +114,6 @@ public class Red2Place1 extends AutoPull {
         telemetry.addData("VuMark", "%s visible", choosen);
         telemetry.update();
 
-        robot.claw1.setPosition(0.5);
-        robot.claw2.setPosition(0.5);
-
         JewelKnock(robot,"red");
         DriveFor(robot,0.3,0.0,0.0,0.0);
         if(robot.jknock.getPosition() != robot.JKUP) {robot.jknock.setPosition(robot.JKUP);}
@@ -136,6 +133,9 @@ public class Red2Place1 extends AutoPull {
         DriveFor(robot,1.0,-1,0,0);
         DriveFor(robot,0.55,0.36,0,0);
         DriveFor(robot,0.3,0,0,0);
+
+        robot.claw1.setPosition(0.5);
+        robot.claw2.setPosition(0.5);
 
         robot.grabber.setTargetPosition(350);
 

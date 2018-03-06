@@ -92,7 +92,7 @@ public class RelicDeliverySystem {
         if (buttonOpen) {
             robot.relicClaw.setPosition(0.3);
         } else if (buttonPartway) {
-            robot.relicClaw.setPosition(0.5488);
+            robot.relicClaw.setPosition(0.546);
         } else {
             robot.relicClaw.setPosition(0.6);
         }
