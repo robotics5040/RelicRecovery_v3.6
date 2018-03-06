@@ -161,8 +161,8 @@ public class OmniBot_Iterative extends OpMode{
         //Bumpers and Triggers
         boolean left_bumper1  = gamepad1.left_bumper  && gamepadMode1 == 0;
         boolean right_bumper1 = gamepad1.right_bumper && gamepadMode1 == 0;
-        boolean left_trigger1  = gamepad1.left_trigger > 0.3  && gamepadMode1 == 0;//unused
-        boolean right_trigger1 = gamepad1.right_trigger > 0.3 && gamepadMode1 == 0;//unused
+        boolean left_trigger1  = gamepad1.left_trigger  > 0.3 && gamepadMode1 == 0;//unused
+        boolean right_trigger1 = gamepad1.right_trigger > 0.3 && gamepadMode1 == 0;
 
         //Button inputs
         boolean b_button1 = gamepad1.b && gamepadMode1 == 0;
@@ -414,7 +414,8 @@ public class OmniBot_Iterative extends OpMode{
         else{
             //robot.glyphStop.setPosition(0.4);
         }*/
-        if(right_trigger1 && left_bumper1 == false && left_trigger1  && robot.grabber.getCurrentPosition() < 20 && dup2 == false && ddown2 == false && run2 == false) {
+        if(right_trigger1 && left_bumper1 == false && !left_trigger2  && robot.grabber.getCurrentPosition() < 20 && dup2 == false && ddown2 == false && run2 == false) {
+            telemetry.addLine("BOP!");
             robot.glyphStop.setPosition(0.8);
         }
         else {
