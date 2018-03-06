@@ -212,7 +212,7 @@ public class Red1Place2 extends AutoPull {
 
         robot.dumper.setPower(0.6);
         runtime.reset();
-        while (robot.dumper.getCurrentPosition() <= 470 && opModeIsActive() && runtime2.seconds() < 28 && runtime.seconds() < 2) {
+        while (robot.dumper.getCurrentPosition() <= 470 && opModeIsActive() && runtime2.seconds() < 28 && runtime.seconds() < 1) {
             robot.dumper.setTargetPosition(480);
             //onmiDrive(robot, 0,.28,0);
         }
@@ -226,7 +226,7 @@ public class Red1Place2 extends AutoPull {
 
         robot.grabber.setPower(1);
         robot.grabber.setTargetPosition(520);
-        DriveFor(robot,0.45,0,0,0);
+        DriveFor(robot,0.6,0,0,0);
         robot.claw1.setPosition(0.64);
         robot.claw2.setPosition(0.36);
         DriveFor(robot,0.3,0,0,0);
@@ -245,12 +245,12 @@ public class Red1Place2 extends AutoPull {
         DriveFor(robot,0.4,-1,0,0);
 
         runtime.reset();
-        while (robot.dumper.getCurrentPosition() <= 470 && opModeIsActive() && runtime2.seconds() < 28 && runtime.seconds() < 2) {
+        while (robot.dumper.getCurrentPosition() <= 470 && opModeIsActive() && runtime2.seconds() < 28 && runtime.seconds() < 1) {
             robot.dumper.setTargetPosition(480);
             //onmiDrive(robot, 0,.3,0);
         }
         //onmiDrive(robot,0,0,0);
-        // DriveFor(robot,0.4, 0.4, 0.0, 0.0);
+        DriveFor(robot,0.4, 0.4, 0.0, 0.0);
 
         while (robot.dumper.getCurrentPosition() >= 5 && opModeIsActive()) {
             robot.dumper.setTargetPosition(0);

@@ -408,15 +408,8 @@ public class OmniBot_Iterative extends OpMode{
             robot.grabber.setPower(1);
         }
 
-        /*if(left_bumper2 == true || left_trigger2 > 0.3 || dup2 == true || ddown2 == true || robot.grabber.getCurrentPosition() > 10 || grabberDown == false) {
-            //robot.glyphStop.setPosition(0.6);
-        }
-        else{
-            //robot.glyphStop.setPosition(0.4);
-        }*/
-        if(right_trigger1 && left_bumper1 == false && left_trigger1  && robot.grabber.getCurrentPosition() < 20 && dup2 == false && ddown2 == false && run2 == false) {
-            robot.glyphStop.setPosition(0.8);
-        }
+        //for being able to glyph if problems happen
+
         else {
             robot.glyphStop.setPosition(0.1);
         }

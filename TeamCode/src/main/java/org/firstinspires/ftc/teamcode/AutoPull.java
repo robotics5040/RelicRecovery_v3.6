@@ -129,7 +129,7 @@ public class AutoPull extends LinearOpMode {
 
     public void rotateTo(HardwareOmniRobot robot,float degrees,float potent) {
         float heading = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle;//getGyro(robot) - gyro;
-        double speed = 0.45;
+        double speed = 0.4;
         boolean go = false;
         degrees += potent;
 
@@ -145,7 +145,7 @@ public class AutoPull extends LinearOpMode {
                 go = true;
             } else if (degrees+0.5 > heading) {
                 onmiDrive(robot, 0.0, 0.0, speed);
-                if (speed > 0.3 && go == true) {
+                if (speed > 0.35 && go == true) {
                     speed -= 0.01;
                 }
             }
