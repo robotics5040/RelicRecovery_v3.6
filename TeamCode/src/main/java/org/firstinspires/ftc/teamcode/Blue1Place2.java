@@ -214,7 +214,7 @@ public class Blue1Place2 extends AutoPull {
 
         robot.dumper.setPower(0.6);
         runtime.reset();
-        while (robot.dumper.getCurrentPosition() <= 470 && opModeIsActive() && runtime2.seconds() < 28 && runtime.seconds() < 2) {
+        while (robot.dumper.getCurrentPosition() <= 470 && opModeIsActive() && runtime2.seconds() < 28 && runtime.seconds() < 1) {
             robot.dumper.setTargetPosition(480);
             //onmiDrive(robot, 0,.4,0);
         }
@@ -247,7 +247,7 @@ public class Blue1Place2 extends AutoPull {
         DriveFor(robot,0.4,-1,0,0);
 
         runtime.reset();
-        while (robot.dumper.getCurrentPosition() <= 470 && opModeIsActive() && runtime2.seconds() < 28 && runtime.seconds() < 2) {
+        while (robot.dumper.getCurrentPosition() <= 470 && opModeIsActive() && runtime2.seconds() < 28 && runtime.seconds() < 1) {
             robot.dumper.setTargetPosition(480);
             //onmiDrive(robot, 0,.3,0);
         }
