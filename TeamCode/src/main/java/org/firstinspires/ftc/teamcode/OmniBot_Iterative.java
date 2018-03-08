@@ -366,12 +366,12 @@ public class OmniBot_Iterative extends OpMode{
         else if(left_trigger2) {
             robot.grabber.setPower(0.35);
             //robot.glyphStop.setPosition(0.6);
-            robot.grabber.setTargetPosition(400);
+            robot.grabber.setTargetPosition(350);
         }
         else if(left_bumper1 == true) {
             robot.grabber.setPower(0.6);
             //robot.glyphStop.setPosition(0.6);
-            robot.grabber.setTargetPosition(450);
+            robot.grabber.setTargetPosition(510);
             robot.claw1.setPosition(0.7);
             robot.claw2.setPosition(0.25);
             run2 = true;
