@@ -432,13 +432,6 @@ public class OmniBot_Iterative extends OpMode{
         else {
             robot.wheelie.setPower(0.0);
         }
-        //Jewel Remover Controls
-        /*if(right_trigger2 > 0.3) {
-            robot.jewelGrab.setPosition(0.8);
-        }
-        else {
-            robot.jewelGrab.setPosition(0.19);
-        }*/
 
         //dumper controls
         if (right_bumper2 == true) {
@@ -471,11 +464,10 @@ public class OmniBot_Iterative extends OpMode{
         }
 
         //claw controls
-        // OLD NUMBERS -- closed - .76,.24 -- partway - .6,.4
         //closes claws
         if (x_button2 == true || run2 == true) {
-            robot.claw1.setPosition(0.51);
-            robot.claw2.setPosition(0.49);
+            robot.claw1.setPosition(0.49);
+            robot.claw2.setPosition(0.51);
         }
         //all the way open
         else if(y_button2 == true) {

@@ -98,16 +98,16 @@ public class Red2Place1 extends AutoPull {
 
         switch (choosen) {
             case (1):
-                target = 23;
+                target = 22;
                 break;
             case (2):
-                target = 31.5;
+                target = 29.5;
                 break;
             case (3):
                 target = 37;
                 break;
             default:
-                target = 31.5;
+                target = 29.5;
                 break;
         }
 

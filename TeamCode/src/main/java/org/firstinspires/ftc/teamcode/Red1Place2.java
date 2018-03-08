@@ -102,7 +102,7 @@ public class Red1Place2 extends AutoPull {
 
         switch (choosen) {
             case (1):
-                target = 44.5;
+                target = 46;
                 break;
             case (2):
                 target = 52;
@@ -147,8 +147,8 @@ public class Red1Place2 extends AutoPull {
         DriveFor(robot,0.2,0,0,0);
         robot.glyphStop.setPosition(0.8);
         DriveFor(robot,1.5,1,0,0);
-        robot.claw1.setPosition(0.5);
-        robot.claw2.setPosition(0.5);
+        robot.claw1.setPosition(0.49);
+        robot.claw2.setPosition(0.51);
         DriveFor(robot,0.3,0,0,0);
         DriveFor(robot, 1,-1,0,0);
 
@@ -216,16 +216,17 @@ public class Red1Place2 extends AutoPull {
             robot.dumper.setTargetPosition(480);
             //onmiDrive(robot, 0,.28,0);
         }
-        DriveFor(robot,0.5, 0.4, 0.0, 0.0);
+        DriveFor(robot,0.5, 0.5, 0.0, 0.0);
 
+        runtime.reset();
 
         onmiDrive(robot,0,0,0);
-        while (robot.dumper.getCurrentPosition() >= 5 && opModeIsActive()) {
+        while (robot.dumper.getCurrentPosition() >= 5 && opModeIsActive() && runtime.seconds() < 1.5) {
             robot.dumper.setTargetPosition(0);
         }
 
         robot.grabber.setPower(1);
-        robot.grabber.setTargetPosition(520);
+        robot.grabber.setTargetPosition(550);
         DriveFor(robot,0.6,0,0,0);
         robot.claw1.setPosition(0.64);
         robot.claw2.setPosition(0.36);
@@ -240,9 +241,11 @@ public class Red1Place2 extends AutoPull {
             DriveFor(robot, 0.3, -1, 0, 0);
             DriveFor(robot, 0.2, 1, 0, 0);
             DriveFor(robot, 0.32, 0, 1, 0);
+            DriveFor(robot, 0.2, -1, 0, 0);
         }
-
-        DriveFor(robot,0.4,-1,0,0);
+        else {
+            DriveFor(robot, 0.4, -1, 0, 0);
+        }
 
         runtime.reset();
         while (robot.dumper.getCurrentPosition() <= 470 && opModeIsActive() && runtime2.seconds() < 28 && runtime.seconds() < 1) {

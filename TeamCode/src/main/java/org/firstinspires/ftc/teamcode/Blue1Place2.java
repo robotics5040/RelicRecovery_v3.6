@@ -104,13 +104,13 @@ public class Blue1Place2 extends AutoPull {
 
         switch (choosen) {
             case (1):
-                target = 44.5;
+                target = 44;
                 break;
             case (2):
                 target = 52;
                 break;
             case (3):
-                target = 59;
+                target = 58.5;
                 break;
             default:
                 target = 52;
@@ -134,8 +134,6 @@ public class Blue1Place2 extends AutoPull {
 
         JewelKnock(robot,"blue");
 
-
-
         DriveFor(robot,0.3,0.0,0.0,0.0);
         if(robot.jknock.getPosition() != robot.JKUP) {robot.jknock.setPosition(robot.JKUP);}
         robot.wheelie.setPower(1);
@@ -149,11 +147,10 @@ public class Blue1Place2 extends AutoPull {
         DriveFor(robot,0.2,0,0,0);
         robot.glyphStop.setPosition(0.8);
         DriveFor(robot,1.5,1,0,0);
-        robot.claw1.setPosition(0.51);
-        robot.claw2.setPosition(0.49);
+        robot.claw1.setPosition(0.49);
+        robot.claw2.setPosition(0.51);
         DriveFor(robot,0.3,0,0,0);
         DriveFor(robot, 1,-1,0,0);
-
 
         //Shaking off glyph
 
@@ -214,19 +211,25 @@ public class Blue1Place2 extends AutoPull {
 
         robot.dumper.setPower(0.6);
         runtime.reset();
+        robot.dumper.setTargetPosition(480);
         while (robot.dumper.getCurrentPosition() <= 470 && opModeIsActive() && runtime2.seconds() < 28 && runtime.seconds() < 1) {
             robot.dumper.setTargetPosition(480);
+            telemetry.addData("dumper", robot.dumper.getCurrentPosition());
+            telemetry.update();
             //onmiDrive(robot, 0,.4,0);
         }
-        DriveFor(robot,0.5, 0.4, 0.0, 0.0);
+        DriveFor(robot,0.5, 0.5, 0.0, 0.0);
 
-        onmiDrive(robot,0,0,0);
-        while (robot.dumper.getCurrentPosition() >= 5 && opModeIsActive()) {
-            robot.dumper.setTargetPosition(0);
+        runtime.reset();
+
+        DriveFor(robot,0.5, 0, 0.0, 0.0);
+        while (robot.dumper.getCurrentPosition() >= 10 && opModeIsActive() && runtime.seconds() < 1.5) {
+            telemetry.addData("dumper", robot.dumper.getCurrentPosition());
+            telemetry.update();
+            robot.dumper.setTargetPosition(5);
         }
-
         robot.grabber.setPower(1);
-        robot.grabber.setTargetPosition(520);
+        robot.grabber.setTargetPosition(550);
         DriveFor(robot,0.45,0,0,0);
         robot.claw1.setPosition(0.64);
         robot.claw2.setPosition(0.36);
@@ -234,7 +237,6 @@ public class Blue1Place2 extends AutoPull {
         robot.grabber.setTargetPosition(350);
         DriveFor(robot,0.3,0,0,0);
 
-        boolean dump = false;
         DriveFor(robot,0.3,0,0,0);
         //telemetry.addData("DumperColor", robot.dumperColor.alpha());
         if(choosen != 1 && choosen != 3) {
@@ -242,9 +244,11 @@ public class Blue1Place2 extends AutoPull {
             DriveFor(robot,0.3, -1,0,0);
             DriveFor(robot,0.2, 1,0,0);
             DriveFor(robot,0.3, 0,1,0);
+            DriveFor(robot,0.2,-1,0,0);
         }
-
-        DriveFor(robot,0.4,-1,0,0);
+        else {
+            DriveFor(robot, 0.4, -1, 0, 0);
+        }
 
         runtime.reset();
         while (robot.dumper.getCurrentPosition() <= 470 && opModeIsActive() && runtime2.seconds() < 28 && runtime.seconds() < 1) {
