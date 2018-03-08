@@ -180,6 +180,7 @@ public class OmniBot_Iterative extends OpMode{
         boolean left_stick_press1  = gamepad1.right_stick_button && gamepadMode1 == 0;
         boolean right_stick_press1 = gamepad1.left_stick_button  && gamepadMode1 == 0;
         boolean home   = gamepad1.guide && gamepadMode1 == 0;
+        boolean back1   = gamepad1.back  && gamepadMode1 == 0;
         boolean start1 = gamepad1.start && gamepadMode1 == 0;
 
         /*
@@ -221,6 +222,8 @@ public class OmniBot_Iterative extends OpMode{
         //Joystick Inputs
         double left_stick_y3  = (gamepad2.left_stick_y * gamepadMode2) + (gamepad1.left_stick_y * gamepadMode1);
         double right_stick_y3 = (gamepad2.right_stick_y * gamepadMode2) + (gamepad1.right_stick_y * gamepadMode1);
+        double left_stick_x3  = (gamepad2.left_stick_x * gamepadMode2) + (gamepad1.left_stick_x * gamepadMode1);
+        double right_stick_x3 = (gamepad2.right_stick_x * gamepadMode2) + (gamepad1.right_stick_x * gamepadMode1);
         boolean right_trigger3 = (gamepad2.right_trigger > 0.3 && gamepadMode2 == 1) || (gamepad1.right_trigger > 0.3 && gamepadMode1 == 1);
         boolean left_trigger3  = (gamepad2.left_trigger  > 0.3 && gamepadMode2 == 1) || (gamepad1.left_trigger > 0.3 && gamepadMode1 == 1);
         boolean right_bumper3 = (gamepad2.right_bumper && gamepadMode2 == 1) || (gamepad1.right_bumper && gamepadMode1 == 1);
@@ -433,6 +436,10 @@ public class OmniBot_Iterative extends OpMode{
             robot.wheelie.setPower(0.0);
         }
 
+        if (back1) {
+            run2 = true;
+        }
+
         //dumper controls
         if (right_bumper2 == true) {
             robot.dumper.setPower(0.5);
@@ -480,7 +487,7 @@ public class OmniBot_Iterative extends OpMode{
             robot.claw2.setPosition(0.38);
         }
 
-        /**
+        /*
          * Move the Relic Slide
          */
         rds.moveSlide(right_stick_y3 + right_stick_y_2);
@@ -493,23 +500,75 @@ public class OmniBot_Iterative extends OpMode{
         telemetry.addData("grabber position", robot.grabber.getCurrentPosition());
         telemetry.addLine();
         telemetry.addLine("Controller Telemetry:");
-        telemetry.addData("Gamepade 1 Mode: ", gamepadMode1);
-        telemetry.addData("Gamepade 2 Mode: ", gamepadMode2);
-        telemetry.addData("Left Bumper: ", left_bumper2);
-        telemetry.addData("Right Bumper: ", right_bumper2);
-        telemetry.addData("Left Trigger: ", left_trigger2);
-        telemetry.addData("Right Trigger: ", right_trigger2);
-        telemetry.addData("A Button: ", a_button2);
-        telemetry.addData("B Button: ", b_button2);
-        telemetry.addData("X Button: ", x_button2);
-        telemetry.addData("Y Button: ", y_button2);
-        telemetry.addData("Front Facing: ", frontFacing);
-        telemetry.addData("Right Facing: ", rightFacing);
-        telemetry.addData("Left Facing: ", leftFacing);
-        telemetry.addData("Back Facing: ", backFacing);
-        telemetry.addData("2nd Left Trigger",left_stick_x2);
-        telemetry.addData("2nd Right Trigger",right_stick_x2);
-        telemetry.addData("home",gamepad2.guide);
+        //Controller 1
+        if (gamepadMode1 == 0) {
+            telemetry.addLine("--------------------------------------------------");
+            telemetry.addLine("CONTROLLER 1");
+            telemetry.addData("Left Joystick (x, y)", left_stick_x1 + ", " + left_stick_y1);
+            telemetry.addData("Right Joystick (x, y)", right_stick_x1 + ", " + right_stick_y1);
+            telemetry.addData("Left Trigger", left_trigger1);
+            telemetry.addData("Right Trigger", right_trigger1);
+            telemetry.addData("Left Bumper", left_bumper1);
+            telemetry.addData("Right Bumper", right_bumper1);
+            telemetry.addData("A Button", a_button1);
+            telemetry.addData("B Button", b_button1);
+            telemetry.addData("X Button", x_button1);
+            telemetry.addData("Y Button", y_button1);
+            telemetry.addData("Dpad Up", dup1);
+            telemetry.addData("Dpad Down", ddown1);
+            telemetry.addData("Dpad Left" , dleft1);
+            telemetry.addData("Dpad Right", dright1);
+            telemetry.addData("Start", start1);
+            telemetry.addData("Back", back1);
+        }
+        
+        if (gamepadMode2 == 0) {
+            telemetry.addLine("--------------------------------------------------");
+            telemetry.addLine("CONTROLLER 2");
+            telemetry.addData("Left Joystick y",  left_stick_y2);
+            telemetry.addData("Right Joystick y", right_stick_y_2);
+            telemetry.addData("Left Trigger", left_trigger2);
+            telemetry.addData("Right Trigger", right_trigger2);
+            telemetry.addData("Left Bumper", left_bumper2);
+            telemetry.addData("Right Bumper", right_bumper2);
+            telemetry.addData("A Button", a_button2);
+            telemetry.addData("B Button", b_button2);
+            telemetry.addData("X Button", x_button2);
+            telemetry.addData("Y Button", y_button2);
+            telemetry.addData("Dpad Up", dup2);
+            telemetry.addData("Dpad Down", ddown2);
+            //telemetry.addData("Dpad Left" , dleft2);
+            //telemetry.addData("Dpad Right", dright2);
+            telemetry.addData("Start", start2);
+            telemetry.addData("Home", home2);
+        }
+        
+        if (gamepadMode1 == 1 || gamepadMode2 == 1) {
+            telemetry.addLine("--------------------------------------------------");
+            telemetry.addLine("CONTROLLER 3");
+            if (gamepadMode1 == 1) {
+                telemetry.addLine("Being Controlled by Controller 1");
+            } else {
+                telemetry.addLine("Being Controlled by Controller 2");
+            }
+            telemetry.addData("Left Joystick (x, y)", left_stick_x3 + ", " + left_stick_y3);
+            telemetry.addData("Right Joystick (x, y)", right_stick_x3 + ", " + right_stick_y3);
+            //telemetry.addData("Left Trigger", left_trigger3);
+            //telemetry.addData("Right Trigger", right_trigger3);
+            telemetry.addData("Left Bumper", left_bumper3);
+            telemetry.addData("Right Bumper", right_bumper3);
+            //telemetry.addData("A Button", a_button3);
+            //telemetry.addData("B Button", b_button3);
+            telemetry.addData("X Button", x_button3);
+            //telemetry.addData("Y Button", y_button3);
+            //telemetry.addData("Dpad Up", dup3);
+            //telemetry.addData("Dpad Down", ddown3);
+            //telemetry.addData("Dpad Left" , dleft3);
+            //telemetry.addData("Dpad Right", dright3);
+            telemetry.addData("Start", start3);
+            //telemetry.addData("Home", home3);
+        }
+
         telemetry.addData("color 1", robot.jkcolor.blue());
         telemetry.addData("color 1", robot.jkcolor2.blue());
         telemetry.addData("dumper", robot.dumper.getCurrentPosition());
