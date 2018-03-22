@@ -36,12 +36,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 /**
  * This file provides basic Teleop driving for an Omni-wheeled robot (omnibot for short).
@@ -473,8 +468,8 @@ public class OmniBot_Iterative extends OpMode{
         //claw controls
         //closes claws
         if (x_button2 == true || run2 == true) {
-            robot.claw1.setPosition(0.49);
-            robot.claw2.setPosition(0.51);
+            robot.claw1.setPosition(0.515);//Old: 0.49
+            robot.claw2.setPosition(0.485);//Old: 0.51
         }
         //all the way open
         else if(y_button2 == true) {
@@ -490,8 +485,15 @@ public class OmniBot_Iterative extends OpMode{
         /*
          * Move the Relic Slide
          */
+        //uses the right stick on either the third or second controller to move the slide
         rds.moveSlide(right_stick_y3 + right_stick_y_2);
-        rds.moveWrist(left_stick_y3 + left_stick_y2, x_button3);
+        //Uses the left stick on either the third or second controller to the wrist
+        //Uses the x button on the third controller to move the wrist to the halfway position
+        rds.moveWrist(left_stick_y3 + left_stick_y2, a_button3);
+        //Fully opens the claw fully with the a button on the second controller or the right
+        //bumper on the third controller
+        //Partially opens the claw with the b button on the second controller or the left bumper
+        //of the third controller
         rds.openClaw(right_bumper3 || a_button2, left_bumper3 || b_button2);
 
 
