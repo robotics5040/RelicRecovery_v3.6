@@ -36,10 +36,10 @@ public class RelicDeliverySystem {
         //Deactivates the relic stopper and moves the slide forward based on the joystick
         if (joystick < -0.1) {
             robot.relicStopper.setPosition(1);
-            power = -1.0;
+            power = 1.0;
         } else if (joystick > 0.1) {
             robot.relicStopper.setPosition(1);
-            power = 1.0;
+            power = -1.0;
         }
 
         //Set the power to the slide

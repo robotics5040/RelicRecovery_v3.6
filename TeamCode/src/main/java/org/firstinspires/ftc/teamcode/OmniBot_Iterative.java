@@ -131,7 +131,7 @@ public class OmniBot_Iterative extends OpMode{
         robot.jewelGrab.setPosition(0.19);
         robot.relicClaw.setPosition(0.5);
         robot.glyphStop.setPosition(0.1);
-        robot.relicWrist.setPosition(0.05);
+        robot.relicWrist.setPosition(0.03);
         robot.relicStopper.setPosition(0.0);
         robot.flexServo.setPosition(0.196);
     }
@@ -322,6 +322,11 @@ public class OmniBot_Iterative extends OpMode{
             front /= 2;
             side /= 2;
         }
+        if(left_trigger1  == true) {
+            rotate /= 2;
+            front /= 2;
+            side /= 2;
+        }
 
         robot.onmiDrive(side, front, rotate);
 
@@ -376,11 +381,11 @@ public class OmniBot_Iterative extends OpMode{
             robot.grabber.setPower(0.2);
         }
         else if(run2 == false){
-            if(robot.grabber.getCurrentPosition() <= 10) {
+            if(robot.grabber.getCurrentPosition() <= 20) {
                 robot.grabber.setPower(0);
             }
             else {
-                robot.grabber.setPower(0.6);
+                robot.grabber.setPower(0.4);
             }
             robot.grabber.setTargetPosition(5);
         }
@@ -468,8 +473,8 @@ public class OmniBot_Iterative extends OpMode{
         //claw controls
         //closes claws
         if (x_button2 == true || run2 == true) {
-            robot.claw1.setPosition(0.515);//Old: 0.49
-            robot.claw2.setPosition(0.485);//Old: 0.51
+            robot.claw1.setPosition(0.55);
+            robot.claw2.setPosition(0.5);
         }
         //all the way open
         else if(y_button2 == true) {
@@ -478,8 +483,8 @@ public class OmniBot_Iterative extends OpMode{
         }
         //part way open when not pressing a button
         else {
-            robot.claw1.setPosition(0.62);
-            robot.claw2.setPosition(0.38);
+            robot.claw1.setPosition(0.65);
+            robot.claw2.setPosition(0.35);
         }
 
         /*
@@ -520,13 +525,13 @@ public class OmniBot_Iterative extends OpMode{
             telemetry.addData("Dpad Down", ddown1);
             telemetry.addData("Dpad Left" , dleft1);
             telemetry.addData("Dpad Right", dright1);
-            telemetry.addData("Start", start1);
             telemetry.addData("Back", back1);
         }
-        
+
         if (gamepadMode2 == 0) {
             telemetry.addLine("--------------------------------------------------");
             telemetry.addLine("CONTROLLER 2");
+
             telemetry.addData("Left Joystick y",  left_stick_y2);
             telemetry.addData("Right Joystick y", right_stick_y_2);
             telemetry.addData("Left Trigger", left_trigger2);
@@ -539,12 +544,9 @@ public class OmniBot_Iterative extends OpMode{
             telemetry.addData("Y Button", y_button2);
             telemetry.addData("Dpad Up", dup2);
             telemetry.addData("Dpad Down", ddown2);
-            //telemetry.addData("Dpad Left" , dleft2);
-            //telemetry.addData("Dpad Right", dright2);
-            telemetry.addData("Start", start2);
             telemetry.addData("Home", home2);
         }
-        
+
         if (gamepadMode1 == 1 || gamepadMode2 == 1) {
             telemetry.addLine("--------------------------------------------------");
             telemetry.addLine("CONTROLLER 3");
@@ -555,30 +557,44 @@ public class OmniBot_Iterative extends OpMode{
             }
             telemetry.addData("Left Joystick (x, y)", left_stick_x3 + ", " + left_stick_y3);
             telemetry.addData("Right Joystick (x, y)", right_stick_x3 + ", " + right_stick_y3);
-            //telemetry.addData("Left Trigger", left_trigger3);
-            //telemetry.addData("Right Trigger", right_trigger3);
+            telemetry.addData("Left Trigger", left_trigger3);
+            telemetry.addData("Right Trigger", right_trigger3);
             telemetry.addData("Left Bumper", left_bumper3);
             telemetry.addData("Right Bumper", right_bumper3);
-            //telemetry.addData("A Button", a_button3);
-            //telemetry.addData("B Button", b_button3);
+            telemetry.addData("A Button", a_button3);
+            telemetry.addData("B Button", b_button3);
             telemetry.addData("X Button", x_button3);
-            //telemetry.addData("Y Button", y_button3);
-            //telemetry.addData("Dpad Up", dup3);
-            //telemetry.addData("Dpad Down", ddown3);
-            //telemetry.addData("Dpad Left" , dleft3);
-            //telemetry.addData("Dpad Right", dright3);
+            telemetry.addData("Y Button", y_button3);
+            telemetry.addData("Dpad Up", dup3);
+            telemetry.addData("Dpad Down", ddown3);
+            telemetry.addData("Dpad Left" , dleft3);
+            telemetry.addData("Dpad Right", dright3);
             telemetry.addData("Start", start3);
-            //telemetry.addData("Home", home3);
+            telemetry.addData("Home", home3);
         }
 
+        telemetry.addLine("--------------------------------------------------");
+        telemetry.addLine("Servos");
+        telemetry.addData("glyphStop Position", robot.glyphStop.getPosition());
+        telemetry.addData("claw1 Position", robot.claw1.getPosition());
+        telemetry.addData("claw2 Position", robot.claw2.getPosition());
+        telemetry.addData("relic Stop Position", robot.relicStopper.getPosition());
+        telemetry.addData("relic Wrist Position", robot.relicWrist.getPosition());
+        telemetry.addData("relic Claw Position", robot.relicClaw.getPosition());
+        telemetry.addData("jewel knock Position", robot.jknock.getPosition());
+
+        telemetry.addLine("--------------------------------------------------");
+        telemetry.addLine("Motors");
+        telemetry.addData("dumper Position", robot.dumper.getCurrentPosition());
+        telemetry.addData("grabber Position", robot.grabber.getCurrentPosition());
+        telemetry.addData("relic Motor Power", robot.relicMotor.getPower());
+        telemetry.addData("Platform wheel Power", robot.wheelie.getPower());
+
+        telemetry.addLine("--------------------------------------------------");
+        telemetry.addLine("Sensors");
         telemetry.addData("color 1", robot.jkcolor.blue());
         telemetry.addData("color 1", robot.jkcolor2.blue());
         telemetry.addData("dumper", robot.dumper.getCurrentPosition());
-        /*
-        telemetry.addData("Ultra back", robot.ultra_back.getDistance(DistanceUnit.CM));
-        telemetry.addData("Ultra left", robot.ultra_left.getDistance(DistanceUnit.CM));
-        telemetry.addData("Ultra right", robot.ultra_right.getDistance(DistanceUnit.CM));
-        */
         telemetry.addData("Ultra Back ", ((robot.ultra_back.getVoltage() / 5) * 512) + 2.5);
         telemetry.addData("Ultra Left ", ((robot.ultra_left.getVoltage() / 5) * 512) + 2.5);
         telemetry.addData("Ultra Right ", ((robot.ultra_right.getVoltage() / 5) * 512) + 2.5);
