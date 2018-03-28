@@ -1,23 +1,17 @@
 /*
 Copyright (c) 2016 Robert Atkinson
-
 All rights reserved.
-
 Redistribution and use in source and binary forms, with or without modification,
 are permitted (subject to the limitations in the disclaimer below) provided that
 the following conditions are met:
-
 Redistributions of source code must retain the above copyright notice, this list
 of conditions and the following disclaimer.
-
 Redistributions in binary form must reproduce the above copyright notice, this
 list of conditions and the following disclaimer in the documentation and/or
 other materials provided with the distribution.
-
 Neither the name of Robert Atkinson nor the names of his contributors may be used to
 endorse or promote products derived from this software without specific prior
 written permission.
-
 NO EXPRESS OR IMPLIED LICENSES TO ANY PARTY'S PATENT RIGHTS ARE GRANTED BY THIS
 LICENSE. THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
@@ -95,7 +89,7 @@ public class Blue1Place2 extends AutoPull {
 
         robot.jkcolor.enableLed(true);
         robot.jkcolor2.enableLed(true);
-        robot.jknock.setPosition(0.13);
+        robot.jknock.setPosition(0.1);
 
         RobotLog.ii("5040MSG","Run vufloria");
         //int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
@@ -110,7 +104,7 @@ public class Blue1Place2 extends AutoPull {
                 target = 52;
                 break;
             case (3):
-                target = 58.5;
+                target = 59;
                 break;
             default:
                 target = 52;
@@ -134,34 +128,31 @@ public class Blue1Place2 extends AutoPull {
 
         JewelKnock(robot,"blue");
 
-        DriveFor(robot,0.3,0.0,0.0,0.0);
-        if(robot.jknock.getPosition() != robot.JKUP) {robot.jknock.setPosition(robot.JKUP);}
+        DriveFor(robot,0.3,0.0,0.0,0.0,true);
+        robot.jknock.setPosition(robot.JKUP);
         robot.wheelie.setPower(1);
-        DriveFor(robot,1.3,1.0,0.0,0.0);
+        DriveFor(robot,1.1,1.0,0.0,0.0,false);
         robot.wheelie.setPower(0);
 
-        DriveFor(robot,1,0,0,1);
+        DriveFor(robot,0.8,0,0,1,false);
         //RotateTo0(robot,0, startG, startG2);
         rotateTo(robot, -90,angle);
         robot.grabber.setTargetPosition(0);
-        DriveFor(robot,0.2,0,0,0);
-        robot.glyphStop.setPosition(0.8);
-        DriveFor(robot,1.5,1,0,0);
-        robot.claw1.setPosition(0.49);
-        robot.claw2.setPosition(0.51);
-        DriveFor(robot,0.3,0,0,0);
-        DriveFor(robot, 1,-1,0,0);
-
-        //Shaking off glyph
-
-        //DriveFor(robot,0.3,0,0,1);
-        //DriveFor(robot,0.3,0,0,-1);
-        robot.glyphStop.setPosition(0.1);
+        DriveFor(robot,0.2,0,0,0,true);
+        robot.glyphStop.setPosition(0.5);
+        DriveFor(robot,1,1,0,0,false);
+        robot.claw1.setPosition(0.5);
+        robot.claw2.setPosition(0.5);
+        DriveFor(robot,0.3,0,0,0,true);
+        DriveFor(robot, 0.7,-1,-0.2,0,false);
+        robot.glyphStop.setPosition(0);
+        DriveFor(robot,0.3,0,0,0,true);
         robot.grabber.setPower(0.3);
         robot.grabber.setTargetPosition(350);
+
         rotateTo(robot,-90,0);
-        DriveFor(robot, 1.0,-1,0,0);
-        DriveFor(robot,0.2,1,0,0);
+        DriveFor(robot, 1,-1,-0.2,0,false);
+        DriveFor(robot,0.2,1,0,0,false);
 
         telemetry.addLine("Lineup 1 Complete");
         telemetry.update();
@@ -169,103 +160,118 @@ public class Blue1Place2 extends AutoPull {
         boolean dis2 = false, there = false;
         int count = 0;
         runtime.reset();
-        double speed = 0.35;
-        while (dis2 == false && runtime2.seconds() < 17 && opModeIsActive()) {
+        double speed = 0.45;
+        while (dis2 == false && runtime2.seconds() < 18 && opModeIsActive()) {
             double distanceRight = ((robot.ultra_right.getVoltage() / 5) * 512) + 2.5;// robot.ultra_right.getDistance(DistanceUnit.CM);
             telemetry.addData("Right", distanceRight);
             telemetry.update();
 
             if (distanceRight > target+0.4) {
-                onmiDrive(robot, -speed, 0.0, 0.0);
+                omniDrive(robot, -speed, 0.0, 0.0,true);
                 there = true;
+                if(speed < 0.45 && speed > 0.29)
+                    speed -= 0.03;
             }
             else if (distanceRight < target-0.4) {
-                onmiDrive(robot,speed,0.0,0.0);
-                if(there == true) {
-                    speed = 0.25;
+                omniDrive(robot,speed,0.0,0.0,true);
+                if(there == true && speed > 0.29) {
+                    speed -= 0.03;
                 }
             }
             else {
                 if(count == 1) {
-                    speed = 0.3;
-                }
-                onmiDrive(robot,0.0, 0.0, 0.0);
-                DriveFor(robot,0.3,0,0,0);
-                if(count == 1) {
+                    speed = 0.27;
+                    omniDrive(robot,0.0, 0.0, 0.0,true);
+                    DriveFor(robot,0.3,0,0,0,true);
                     rotateTo(robot, -90, 0);
-                    DriveFor(robot, 0.3, 0, 0, 0);
+                    DriveFor(robot, 0.3, 0, 0, 0,true);
+                    count++;
                 }
-                else if(count == 2){
+                else {
+                    omniDrive(robot,0.0, 0.0, 0.0,true);
+                    DriveFor(robot,0.3,0,0,0,true);
                     dis2 = true;
                 }
-                count ++;
             }
         }
-        onmiDrive(robot,0.0, 0.0, 0.0);
-        //rotateTo(robot,-90,0);
-        DriveFor(robot,0.4,-1,0,0);
-        DriveFor(robot,0.3,0,0,0);
+
+        DriveFor(robot,0.4,-1,-0.2,0,false);
+        DriveFor(robot,0.3,0,0,0,true);
 
         telemetry.addLine("Lineup 2 Complete");
         telemetry.update();
 
+        robot.grabber.setTargetPosition(200);
+
         robot.dumper.setPower(0.6);
         runtime.reset();
         robot.dumper.setTargetPosition(480);
-        while (robot.dumper.getCurrentPosition() <= 470 && opModeIsActive() && runtime2.seconds() < 28 && runtime.seconds() < 1) {
+        while (robot.dumper.getCurrentPosition() <= 470 && opModeIsActive() && runtime2.seconds() < 28 && runtime.seconds() < 0.5) {
             robot.dumper.setTargetPosition(480);
             telemetry.addData("dumper", robot.dumper.getCurrentPosition());
             telemetry.update();
             //onmiDrive(robot, 0,.4,0);
         }
-        DriveFor(robot,0.5, 0.5, 0.0, 0.0);
+        DriveFor(robot,0.5, 0.5, 0.0, 0.0,true);
 
         runtime.reset();
 
-        DriveFor(robot,0.5, 0, 0.0, 0.0);
+        DriveFor(robot,0.5, 0, 0.0, 0.0,true);
         while (robot.dumper.getCurrentPosition() >= 10 && opModeIsActive() && runtime.seconds() < 1.5) {
             telemetry.addData("dumper", robot.dumper.getCurrentPosition());
             telemetry.update();
             robot.dumper.setTargetPosition(5);
         }
         robot.grabber.setPower(1);
+        DriveFor(robot,0.45,0,0,0,true);
         robot.grabber.setTargetPosition(550);
-        DriveFor(robot,0.45,0,0,0);
+        DriveFor(robot,0.45,0,0,0,true);
         robot.claw1.setPosition(0.64);
         robot.claw2.setPosition(0.36);
-        DriveFor(robot,0.3,0,0,0);
+        DriveFor(robot,0.3,0,0,0,true);
         robot.grabber.setTargetPosition(350);
-        DriveFor(robot,0.3,0,0,0);
+        DriveFor(robot,0.3,0,0,0,true);
 
-        DriveFor(robot,0.3,0,0,0);
+        DriveFor(robot,0.3,0,0,0,true);
         //telemetry.addData("DumperColor", robot.dumperColor.alpha());
-        if(choosen != 1 && choosen != 3) {
-
-            DriveFor(robot,0.3, -1,0,0);
-            DriveFor(robot,0.2, 1,0,0);
-            DriveFor(robot,0.3, 0,1,0);
-            DriveFor(robot,0.2,-1,0,0);
+        if(choosen == 3) {
+            DriveFor(robot,0.3, -1,0,0,true);
+            DriveFor(robot,0.2, 1,0,0,true);
+            DriveFor(robot,0.6, 0,1,0,true);
+            DriveFor(robot,0.2,-1,0,0,true);
+        }
+        else if(choosen == 2 ) {
+            DriveFor(robot,0.3, -1,0,0,true);
+            DriveFor(robot,0.2, 1,0,0,true);
+            DriveFor(robot,0.3, 0,1.2,0,true);
+            DriveFor(robot,0.2,-1,0,0,true);
         }
         else {
-            DriveFor(robot, 0.4, -1, 0, 0);
+            DriveFor(robot,0.3, -1,0,0,true);
+            DriveFor(robot,0.2, 1,0,0,true);
+            DriveFor(robot,0.3, 0,-1.2,0,true);
+            DriveFor(robot,0.2,-1,0,0,true);
         }
 
         runtime.reset();
-        while (robot.dumper.getCurrentPosition() <= 470 && opModeIsActive() && runtime2.seconds() < 28 && runtime.seconds() < 1) {
+        while (robot.dumper.getCurrentPosition() <= 470 && opModeIsActive() && runtime2.seconds() < 28 && runtime.seconds() < 0.5) {
             robot.dumper.setTargetPosition(480);
             //onmiDrive(robot, 0,.3,0);
         }
         //onmiDrive(robot,0,0,0);
-        DriveFor(robot,0.4, 0.4, 0.0, 0.0);
+        DriveFor(robot,0.5, 0.5, 0.0, 0.0,true);
 
-        while (robot.dumper.getCurrentPosition() >= 5 && opModeIsActive()) {
-            robot.dumper.setTargetPosition(0);
+        while (robot.dumper.getCurrentPosition() >= 10 && opModeIsActive() && runtime.seconds() < 1.5) {
+            telemetry.addData("dumper", robot.dumper.getCurrentPosition());
+            telemetry.update();
+            robot.dumper.setTargetPosition(5);
         }
+
 
         if(runtime2.seconds() < 28) {
-            DriveFor(robot, 1.0, -1, 0.0, 0.0);
+            DriveFor(robot, 0.3, -1, 0.0, 0.0,false);
             //DriveFor(robot, 0.5, 0.5, 0.0, 0.0);
         }
-        DriveFor(robot,0.3, 1, 0.0, 0.0);
+        DriveFor(robot,0.3, 1, 0.0, 0.0,false);
     }
 }

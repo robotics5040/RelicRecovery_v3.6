@@ -37,11 +37,14 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 
-@Autonomous(name="Omnibot: Red2Place1", group="Omnibot")
+@Autonomous(name="Omnibot: Blue2Place2", group="Omnibot")
 //@Disabled
-public class Red2Place1 extends AutoPull {
+public class Blue2Place2 extends AutoPull {
 
     HardwareOmniRobot robot   = new HardwareOmniRobot();
     ElapsedTime runtime = new ElapsedTime();
@@ -89,47 +92,48 @@ public class Red2Place1 extends AutoPull {
 
         robot.jkcolor.enableLed(true);
         robot.jkcolor2.enableLed(true);
-        robot.jknock.setPosition(0.13);
+        robot.jknock.setPosition(0.12);
 
         RobotLog.ii("5040MSG","Run vufloria");
         //int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        int choosen = Vuforia(cameraMonitorViewId, "red",vuforia);
+        int choosen = Vuforia(cameraMonitorViewId, "blue",vuforia);
         double target = 0;
 
         switch (choosen) {
             case (1):
-                target = 22;
+                target = 21.5;
                 break;
             case (2):
-                target = 29.5;
+                target = 28;
                 break;
             case (3):
-                target = 37;
+                target = 36;
                 break;
             default:
-                target = 29.5;
+                target = 28;
                 break;
         }
 
         telemetry.addData("VuMark", "%s visible", choosen);
         telemetry.update();
 
-        JewelKnock(robot,"red");
+        JewelKnock(robot,"blue");
         DriveFor(robot,0.3,0.0,0.0,0.0,true);
         if(robot.jknock.getPosition() != robot.JKUP) {robot.jknock.setPosition(robot.JKUP);}
-        robot.wheelie.setPower(-1);
-        DriveFor(robot,0.8,-1.0,0.0,0.0,false);
+
+        robot.wheelie.setPower(1);
+        DriveFor(robot,0.8,1.0,0.0,0.0,false);
         robot.wheelie.setPower(0);
-        DriveFor(robot,0.5,-0.4,0.0,0.0,false);
         DriveFor(robot,0.5,0.4,0.0,0.0,false);
+        DriveFor(robot,0.5,-0.4,0.0,0.0,false);
         DriveFor(robot,0.3,0.0,0.0,0.0,true);
 
-        //DriveFor(robot,0.3,0,0,0);
+        DriveFor(robot,1.4,0,0,-1,false);
         //RotateTo0(robot,0, startG, startG2);
-        rotateTo(robot,0,0);
+        rotateTo180();
         DriveFor(robot,0.3,0.0,0.0,0.0,true);
 
-        DriveFor(robot, 0.4,0,1,0,false);
+        DriveFor(robot, 0.4,0,-1,0,false);
         DriveFor(robot,1.0,-1,0,0,false);
         DriveFor(robot,0.55,0.36,0,0,false);
         DriveFor(robot,0.3,0,0,0,true);
@@ -142,66 +146,96 @@ public class Red2Place1 extends AutoPull {
         telemetry.addLine("Lineup 1 Complete");
         telemetry.update();
 
-        boolean dis2 = false;
+        boolean dis2 = false, there = false;
         int count = 0;
         runtime.reset();
-        double speed = 0.285;
-        if(choosen == 2){
-            speed = 0.25;
-        }
-        while (dis2 == false && runtime2.seconds() < 23 && opModeIsActive()) {
-            double distanceLeft = ((robot.ultra_left.getVoltage() / 5) * 512) + 2.5;// robot.ultra_right.getDistance(DistanceUnit.CM);
-            telemetry.addData("Left", distanceLeft);
+        double speed = 0.45;
+        while (dis2 == false && runtime2.seconds() < 18 && opModeIsActive()) {
+            double distanceRight = ((robot.ultra_right.getVoltage() / 5) * 512) + 2.5;// robot.ultra_right.getDistance(DistanceUnit.CM);
+            telemetry.addData("Right", distanceRight);
             telemetry.update();
 
-            if (distanceLeft > target+0.3) {
-                omniDrive(robot, speed, 0.0, 0.0,true);
+            if (distanceRight > target+0.4) {
+                omniDrive(robot, -speed, 0.0, 0.0,true);
+                there = true;
+                if(speed < 0.45 && speed > 0.29)
+                    speed -= 0.03;
             }
-            else if (distanceLeft < target-0.3) {
-                omniDrive(robot,-speed,0.0,0.0,true);
+            else if (distanceRight < target-0.4) {
+                omniDrive(robot,speed,0.0,0.0,true);
+                if(there == true && speed > 0.29) {
+                    speed -= 0.03;
+                }
             }
             else {
                 if(count == 1) {
-                    speed = 0.25;
+                    speed = 0.27;
+                    omniDrive(robot,0.0, 0.0, 0.0,true);
+                    DriveFor(robot,0.3,0,0,0,true);
+                    rotateTo(robot, -90, 0);
+                    DriveFor(robot, 0.3, 0, 0, 0,true);
+                    count++;
                 }
-                omniDrive(robot,0.0, 0.0, 0.0,true);
-                DriveFor(robot,0.3,0,0,0,true);
-                if(count == 2) {
-                    rotateTo(robot, 0, 0);
-                   DriveFor(robot, 0.3, 0, 0, 0,true);
-                }
-                if(count == 3) {
+                else {
+                    omniDrive(robot,0.0, 0.0, 0.0,true);
+                    DriveFor(robot,0.3,0,0,0,true);
                     dis2 = true;
                 }
-                count ++;
             }
         }
         omniDrive(robot,0.0, 0.0, 0.0,true);
         DriveFor(robot,0.6,-1,0,0,false);
-        DriveFor(robot,0.3,0,0,0,true);
+        DriveFor(robot,0.3,0,0,0,false);
 
         telemetry.addLine("Lineup 2 Complete");
         telemetry.update();
 
         robot.dumper.setPower(0.4);
         runtime.reset();
-        while (robot.dumper.getCurrentPosition() <= 470 && opModeIsActive() && runtime2.seconds() < 28 && runtime.seconds() < 2.0) {
+        while (robot.dumper.getCurrentPosition() <= 470 && opModeIsActive() && runtime2.seconds() < 28 && runtime.seconds() < 0.5) {
             robot.dumper.setTargetPosition(480);
-            //onmiDrive(robot, 0,.26,0);
+            //onmiDrive(robot, 0,.3,0);
         }
-        DriveFor(robot,0.5, 0.4, 0.0, 0.0,true);
+        //onmiDrive(robot,0,0,0);
+        DriveFor(robot,0.5, 0.5, 0.0, 0.0,true);
 
-        while (robot.dumper.getCurrentPosition() >= 5 && opModeIsActive()) {
-            robot.dumper.setTargetPosition(0);
+        while (robot.dumper.getCurrentPosition() >= 10 && opModeIsActive() && runtime.seconds() < 1.5) {
+            telemetry.addData("dumper", robot.dumper.getCurrentPosition());
+            telemetry.update();
+            robot.dumper.setTargetPosition(5);
         }
 
         if(runtime2.seconds() < 28) {
-            DriveFor(robot, 1.0, -0.8, 0.0, 0.0,false);
-            DriveFor(robot, 0.5, 0.5, 0.0, 0.0,false);
+            DriveFor(robot, 0.3, -1, 0.0, 0.0,false);
+            //DriveFor(robot, 0.5, 0.5, 0.0, 0.0);
         }
-        //robot.claw1.setPosition(0.3);
-        //robot.claw2.setPosition(0.7);
-        DriveFor(robot,1.0, 0.0, 0.0, 0.0,false);
+        DriveFor(robot,0.3, 1, 0.0, 0.0,false);
 
+
+    }
+
+    public void rotateTo180()  {
+        float heading = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle;//getGyro(robot) - gyro;
+        double speed = 0.5;
+        boolean go = false;
+
+        runtime.reset();
+        while (heading != 180 && opModeIsActive() && runtime.seconds() < 1.5) {
+            telemetry.addData("HEADING", heading);
+            telemetry.addData("speed", speed);
+            telemetry.update();
+            heading = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle;//robot.gyro.getHeading() - gyro;
+            if(heading < -150) {
+                omniDrive(robot, 0, 0, -speed,true);
+                go = true;
+            }
+            else if (180+0.5 > heading) {
+                omniDrive(robot, 0.0, 0.0, speed,true);
+                if (speed > 0.35 && go == true) {
+                    speed -= 0.01;
+                }
+            }
+        }
+        omniDrive(robot, 0.0, 0.0, 0.0,true);
     }
 }

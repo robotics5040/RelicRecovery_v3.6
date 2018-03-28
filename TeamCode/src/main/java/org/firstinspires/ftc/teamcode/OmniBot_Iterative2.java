@@ -107,7 +107,7 @@ public class OmniBot_Iterative2 extends OpMode{
         robot.claw2.setPosition(0.1);
         robot.jewelGrab.setPosition(0.19);
         robot.relicClaw.setPosition(0.5);
-        robot.glyphStop.setPosition(0.1);
+        robot.glyphStop.setPosition(1);
         robot.relicWrist.setPosition(0.05);
         robot.relicStopper.setPosition(0);
         robot.flexServo.setPosition(0.196);
@@ -319,10 +319,10 @@ public class OmniBot_Iterative2 extends OpMode{
         }
 
         if(right_trigger1 > 0.4 && left_bumper == false && left_trigger < 0.3 && robot.grabber.getCurrentPosition() < 20 && dup == false && ddown == false && run2 == false) {
-            robot.glyphStop.setPosition(0.8);
+            robot.glyphStop.setPosition(1);
         }
         else {
-            robot.glyphStop.setPosition(0.1);
+            robot.glyphStop.setPosition(0);
         }
         //wheelie controlls
         if(left_bump1 == true) {

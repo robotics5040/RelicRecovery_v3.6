@@ -120,21 +120,21 @@ public class Red1Place1 extends AutoPull {
         robot.grabber.setTargetPosition(350);
 
         JewelKnock(robot,"red");
-        DriveFor(robot,0.3,0.0,0.0,0.0);
+        DriveFor(robot,0.3,0.0,0.0,0.0,true);
         if(robot.jknock.getPosition() != robot.JKUP) {robot.jknock.setPosition(robot.JKUP);}
         robot.wheelie.setPower(-1);
-        DriveFor(robot,1.2,-1.0,0.0,0.0);
+        DriveFor(robot,1.2,-1.0,0.0,0.0,false);
         robot.wheelie.setPower(0);
-        DriveFor(robot,0.3,0.0,0.0,0.0);
+        DriveFor(robot,0.3,0.0,0.0,0.0,true);
 
-        DriveFor(robot,1,0,0,1);
+        DriveFor(robot,1,0,0,1,false);
         //RotateTo0(robot,0, startG, startG2);
         rotateTo(robot, -90,0);
-        DriveFor(robot,0.3,0.0,0.0,0.0);
+        DriveFor(robot,0.3,0.0,0.0,0.0,true);
 
-        DriveFor(robot,1.0,-1,0,0);
-        DriveFor(robot,0.55,0.36,0,0);
-        DriveFor(robot,0.3,0,0,0);
+        DriveFor(robot,1.0,-1,0,0,false);
+        DriveFor(robot,0.55,0.36,0,0,false);
+        DriveFor(robot,0.3,0,0,0,true);
 
         telemetry.addLine("Lineup 1 Complete");
         telemetry.update();
@@ -152,20 +152,20 @@ public class Red1Place1 extends AutoPull {
             telemetry.update();
 
             if (distanceLeft > target+0.3) {
-                onmiDrive(robot, speed, 0.0, 0.0);
+                omniDrive(robot, speed, 0.0, 0.0,true);
             }
             else if (distanceLeft < target-0.3) {
-                onmiDrive(robot,-speed,0.0,0.0);
+                omniDrive(robot,-speed,0.0,0.0,true);
             }
             else {
                 if(count == 1) {
                     speed = 0.25;
                 }
-                onmiDrive(robot,0.0, 0.0, 0.0);
-                DriveFor(robot,0.3,0,0,0);
+                omniDrive(robot,0.0, 0.0, 0.0,true);
+                DriveFor(robot,0.3,0,0,0,true);
                 if(count == 2) {
                     rotateTo(robot, -90, 0);
-                    DriveFor(robot, 0.3, 0, 0, 0);
+                    DriveFor(robot, 0.3, 0, 0, 0,true);
                 }
                 else if(count == 3) {
                     dis2 = true;
@@ -173,9 +173,9 @@ public class Red1Place1 extends AutoPull {
                 count ++;
             }
         }
-        onmiDrive(robot,0.0, 0.0, 0.0);
-        DriveFor(robot,0.6,-1,0,0);
-        DriveFor(robot,0.3,0,0,0);
+        omniDrive(robot,0.0, 0.0, 0.0,true);
+        DriveFor(robot,0.6,-1,0,0,false);
+        DriveFor(robot,0.3,0,0,0,false);
 
         telemetry.addLine("Lineup 2 Complete");
         telemetry.update();
@@ -186,19 +186,19 @@ public class Red1Place1 extends AutoPull {
             robot.dumper.setTargetPosition(480);
             //onmiDrive(robot, 0,.26,0);
         }
-        DriveFor(robot,0.5, 0.4, 0.0, 0.0);
+        DriveFor(robot,0.5, 0.4, 0.0, 0.0,true);
 
         while (robot.dumper.getCurrentPosition() >= 5 && opModeIsActive()) {
             robot.dumper.setTargetPosition(0);
         }
 
         if(runtime2.seconds() < 28) {
-            DriveFor(robot, 1.0, -0.8, 0.0, 0.0);
-            DriveFor(robot, 0.5, 0.5, 0.0, 0.0);
+            DriveFor(robot, 1.0, -0.8, 0.0, 0.0,false);
+            DriveFor(robot, 0.5, 0.5, 0.0, 0.0,false);
         }
         //robot.claw1.setPosition(0.3);
         //robot.claw2.setPosition(0.7);
-        DriveFor(robot,1.0, 0.0, 0.0, 0.0);
+        DriveFor(robot,1.0, 0.0, 0.0, 0.0,false);
 
 
     }

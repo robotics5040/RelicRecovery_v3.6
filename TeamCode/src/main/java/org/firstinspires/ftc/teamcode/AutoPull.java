@@ -39,42 +39,53 @@ public class AutoPull extends LinearOpMode {
     }
 
     //normal drive for robot
-    public void onmiDrive (HardwareOmniRobot robot,double sideways, double forward, double rotation)
+    public void omniDrive (HardwareOmniRobot robot,double sideways, double forward, double rotation, boolean half)
     {
+
+        double rotat;
+        if(half == true) {
+            rotat = 2;
+        }
+        else if(rotation == 0) {
+            rotat = 1;
+        }
+        else {
+            rotat = 1.4;
+        }
+
         try {
-            robot.leftMotor1.setPower(limit(((forward - sideways)/2) * 1 + (-.25 * rotation)));
-            robot.leftMotor2.setPower(limit(((forward + sideways)/2) * 1 + (-.25 * rotation)));
-            robot.rightMotor1.setPower(limit(((-forward - sideways)/2) * 1 + (-.25 * rotation)));
-            robot.rightMotor2.setPower(limit(((-forward + sideways)/2) * 1 + (-.25 * rotation)));
+            robot.leftMotor1.setPower(limit(((forward - sideways)/rotat) + (-.3 * rotation)));
+            robot.leftMotor2.setPower(limit(((forward + sideways)/rotat) + (-.3 * rotation)));
+            robot.rightMotor1.setPower(limit(((-forward - sideways)/rotat) + (-.3 * rotation)));
+            robot.rightMotor2.setPower(limit(((-forward + sideways)/rotat) + (-.3 * rotation)));
         } catch (Exception e) {
-            RobotLog.ee(robot.MESSAGETAG, e.getStackTrace().toString());
         }
     }
 
     //drives robot for certain time amount. Can also be used for waiting time
-    public void DriveFor(HardwareOmniRobot robot, double time, double forward, double side, double rotate) {
-        onmiDrive(robot,-side, forward, -rotate); //starts moving in wanted direction
+    public void DriveFor(HardwareOmniRobot robot, double time, double forward, double side, double rotate, boolean half) {
+        omniDrive(robot,-side, forward, -rotate, half); //starts moving in wanted direction
         runtime.reset(); //resets time
 
         while (opModeIsActive() && runtime.seconds() < time) {    //runs for amount of time wanted
         }
-        onmiDrive(robot,0.0, 0.0, 0.0); //stops  moving after
+        omniDrive(robot,0.0, 0.0, 0.0, half); //stops  moving after
     }
 
     //Jewel knocking off code - gets called from the jewel code
     public void TurnLeft(HardwareOmniRobot robot){
         telemetry.addLine("Left");
         telemetry.update();
-        DriveFor(robot,0.2, 0.0, 0.0, -1);
+        DriveFor(robot,0.2, 0.0, 0.0, -1, true);
         robot.jknock.setPosition(0.7);
-        DriveFor(robot,0.3, 0.0, 0.0, 1);
+        DriveFor(robot,0.3, 0.0, 0.0, 1, true);
     }
     public void TurnRight(HardwareOmniRobot robot){
         telemetry.addLine("Right");
         telemetry.update();
-        DriveFor(robot,0.2, 0.0, 0.0, 1);
+        DriveFor(robot,0.2, 0.0, 0.0, 1, true);
         robot.jknock.setPosition(0.7);
-        DriveFor(robot,0.3, 0.0, 0.0, -1);
+        DriveFor(robot,0.3, 0.0, 0.0, -1, true);
     }
 
     //jewel code
@@ -82,7 +93,7 @@ public class AutoPull extends LinearOpMode {
 
         robot.jkcolor.enableLed(true);
         robot.jkcolor2.enableLed(true);
-        robot.jknock.setPosition(0.13);
+        robot.jknock.setPosition(0.12);
         //DriveFor(robot,0.5,0.0,0.0,0.0);
         boolean decided = false;
         runtime.reset();
@@ -141,73 +152,16 @@ public class AutoPull extends LinearOpMode {
             telemetry.update();
             heading = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle;//robot.gyro.getHeading() - gyro;
             if (degrees-0.5< heading) {
-                onmiDrive(robot, 0.0, 0.0, -speed);
+                omniDrive(robot, 0.0, 0.0, -speed,true);
                 go = true;
             } else if (degrees+0.5 > heading) {
-                onmiDrive(robot, 0.0, 0.0, speed);
+                omniDrive(robot, 0.0, 0.0, speed,true);
                 if (speed > 0.35 && go == true) {
                     speed -= 0.01;
                 }
             }
         }
-        onmiDrive(robot, 0.0, 0.0, 0.0);
-    }
-
-    //rotates to degree. goes from -180
-    public void RotateTo(HardwareOmniRobot robot, int degrees, int offset) {
-        robot.leftMotor1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.leftMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.rightMotor1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.rightMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        double p = 0.02;
-        double i = 0.01;
-        double d = 0.000;
-
-        PID pid = new PID(p, i, d);
-        pid.setSetPoint(degrees);
-        runtime.reset();
-        while(opModeIsActive() && runtime.seconds() < 5){
-            double heading = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle + offset;
-
-            double power = 0;
-            power = Range.clip(power, -1.0, 1.0);
-
-            robot.onmiDrive(0.0, 0.0, power);
-
-            if(Math.abs(heading - degrees) < 0.5){
-                break;
-            }
-
-            telemetry.addData("Power: ", power);
-            telemetry.addData("Heading: ", robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle + offset);
-            telemetry.addData("Error: ", Math.abs(heading - degrees));
-            telemetry.addData("calibrated? gyro: ", robot.imu.isGyroCalibrated());
-            telemetry.update();
-        }
-        telemetry.addLine("Done!");
-        robot.onmiDrive(0.0, 0.0, 0);
-
-        robot.leftMotor1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        robot.leftMotor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        robot.rightMotor1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        robot.rightMotor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-    }
-
-    public void rotateBy(HardwareOmniRobot robot, int degrees,int gyro){
-        float heading = robot.gyro.getHeading()-gyro;
-        /*TRAVIS'S 'POOR MAN'S PID
-            double realMinSpeed = 0.29;
-            double realMaxSpeed = 1.0;
-
-            double theoreticalSpeed = realMaxSpeed - realMinSpeed;
-
-            //int dTheta = Math.abs((currentHeading - desiredHeading + 180) % 360 - 100));
-
-            double powerCoefficient = ((1.0 / 180) * theoreticalSpeed);
-
-            double speed = dTheta * powerCoefficient + realMinSpeed;
-        */
+        omniDrive(robot, 0.0, 0.0, 0.0,true);
     }
 
     //vuforia
@@ -261,4 +215,3 @@ public class AutoPull extends LinearOpMode {
         return choosen;
     }
 }
-

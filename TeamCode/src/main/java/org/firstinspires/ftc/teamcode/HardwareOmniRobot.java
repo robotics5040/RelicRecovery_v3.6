@@ -181,7 +181,7 @@ public class HardwareOmniRobot
             claw2.setPosition(0.1);
             jewelGrab.setPosition(0.19);
             relicClaw.setPosition(0.5);
-            glyphStop.setPosition(0.1);
+            glyphStop.setPosition(0);
             relicWrist.setPosition(0.05);
             relicStopper.setPosition(0);
             flexServo.setPosition(0.196);
