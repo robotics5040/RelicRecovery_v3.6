@@ -189,13 +189,13 @@ public class Red1Place2 extends AutoPull {
                 }
             }
             else {
+                count++;
                 if(count == 1) {
                     speed = 0.27;
                     omniDrive(robot,0.0, 0.0, 0.0,true);
                     DriveFor(robot,0.3,0,0,0,true);
                     rotateTo(robot, -90, 0);
                     DriveFor(robot, 0.3, 0, 0, 0,true);
-                    count++;
                 }
                 else {
                     omniDrive(robot,0.0, 0.0, 0.0,true);

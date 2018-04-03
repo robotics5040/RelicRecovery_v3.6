@@ -145,7 +145,7 @@ public class Blue1Place2 extends AutoPull {
         robot.claw2.setPosition(0.5);
         DriveFor(robot,0.3,0,0,0,true);
         DriveFor(robot, 0.7,-1,-0.2,0,false);
-        robot.glyphStop.setPosition(0);
+        robot.glyphStop.setPosition(0.1);
         DriveFor(robot,0.3,0,0,0,true);
         robot.grabber.setPower(0.3);
         robot.grabber.setTargetPosition(350);
@@ -179,13 +179,13 @@ public class Blue1Place2 extends AutoPull {
                 }
             }
             else {
+                count++;
                 if(count == 1) {
                     speed = 0.27;
                     omniDrive(robot,0.0, 0.0, 0.0,true);
                     DriveFor(robot,0.3,0,0,0,true);
                     rotateTo(robot, -90, 0);
                     DriveFor(robot, 0.3, 0, 0, 0,true);
-                    count++;
                 }
                 else {
                     omniDrive(robot,0.0, 0.0, 0.0,true);
@@ -232,7 +232,6 @@ public class Blue1Place2 extends AutoPull {
         robot.grabber.setTargetPosition(350);
         DriveFor(robot,0.3,0,0,0,true);
 
-        DriveFor(robot,0.3,0,0,0,true);
         //telemetry.addData("DumperColor", robot.dumperColor.alpha());
         if(choosen == 3) {
             DriveFor(robot,0.3, -1,0,0,true);
@@ -266,7 +265,6 @@ public class Blue1Place2 extends AutoPull {
             telemetry.update();
             robot.dumper.setTargetPosition(5);
         }
-
 
         if(runtime2.seconds() < 28) {
             DriveFor(robot, 0.3, -1, 0.0, 0.0,false);

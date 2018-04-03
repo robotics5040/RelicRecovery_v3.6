@@ -70,8 +70,6 @@ public class HardwareOmniRobot
     public DcMotor dumper = null;
     public Servo claw1 = null;
     public Servo claw2 = null;
-    public Servo jewelGrab = null;
-    public Servo flexServo = null;
     public Servo glyphStop = null;
     private final double MIN_MOTOR_OUTPUT_VALUE = -1.0;
     private final double MAX_MOTOR_OUTPUT_VALUE = 1.0;
@@ -110,11 +108,9 @@ public class HardwareOmniRobot
         wheelie = hwMap.dcMotor.get("wheelie");
         grabber = hwMap.dcMotor.get("grabber");
         dumper = hwMap.dcMotor.get("dumper");
-        jewelGrab = hwMap.servo.get("JewelGrab");
         claw1 = hwMap.servo.get("claw_1");
         claw2 = hwMap.servo.get("claw_2");
         jknock = hwMap.servo.get("jknock");
-        flexServo = hwMap.servo.get("flex");
         jkcolor = hwMap.get(ColorSensor.class, "color_sense");
         jkcolor2 = hwMap.get(ColorSensor.class, "color");
         RobotLog.ii("5040MSGHW","Everything but ultras gotten");
@@ -179,12 +175,10 @@ public class HardwareOmniRobot
             jknock.setPosition(0.8);
             claw1.setPosition(1.0);
             claw2.setPosition(0.1);
-            jewelGrab.setPosition(0.19);
             relicClaw.setPosition(0.5);
             glyphStop.setPosition(0);
             relicWrist.setPosition(0.05);
             relicStopper.setPosition(0);
-            flexServo.setPosition(0.196);
 
             BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
             parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;

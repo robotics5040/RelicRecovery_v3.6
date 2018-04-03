@@ -66,18 +66,21 @@ import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 public class AutoTest extends AutoPull {
 
     HardwareOmniRobot robot   = new HardwareOmniRobot();
-    public Servo vexMotor = null;
+    //public Servo vexMotor = null;
     ElapsedTime runtime = new ElapsedTime();
 
     BNO055IMU imu;
 
     @Override public void runOpMode() {
-        vexMotor = hardwareMap.servo.get("vexMotor");
+        robot.init(hardwareMap, true);
+        //vexMotor = hardwareMap.servo.get("vexMotor");
 
         waitForStart();
+        DriveFor(robot,1,0,1,0,false);
+        rotateTo(robot,200,0);
 
         while(opModeIsActive()) {
-            vexMotor.setPosition(0);
+            //vexMotor.setPosition(0);
         }
         /*robot.init(hardwareMap, true);
         potentiometer = hardwareMap.analogInput.get("potentiometer");

@@ -126,14 +126,12 @@ public class OmniBot_Iterative extends OpMode{
         robot.grabber.setPower(0.6);
         robot.dumper.setPower(0.5);
         robot.jknock.setPosition(0.8);
-        robot.claw1.setPosition(1.0);
-        robot.claw2.setPosition(0.1);
-        robot.jewelGrab.setPosition(0.19);
-        robot.relicClaw.setPosition(0.5);
+        robot.claw1.setPosition(0.65);
+        robot.claw2.setPosition(0.35);
+        robot.relicClaw.setPosition(0.6);
         robot.glyphStop.setPosition(0.1);
         robot.relicWrist.setPosition(0.03);
         robot.relicStopper.setPosition(0.0);
-        robot.flexServo.setPosition(0.196);
     }
 
     /*
@@ -194,6 +192,7 @@ public class OmniBot_Iterative extends OpMode{
         boolean right_trigger2 = gamepad2.right_trigger > 0.3 && gamepadMode2 == 0;
 
         //Button inputs
+        boolean back2 = gamepad2.back && gamepadMode2 == 0;
         boolean b_button2 = gamepad2.b && gamepadMode2 == 0;
         boolean a_button2 = gamepad2.a && gamepadMode2 == 0;
         boolean y_button2 = gamepad2.y && gamepadMode2 == 0;
@@ -419,7 +418,10 @@ public class OmniBot_Iterative extends OpMode{
         }*/
         if(right_trigger1 && left_bumper1 == false && !left_trigger2  && robot.grabber.getCurrentPosition() < 20 && dup2 == false && ddown2 == false && run2 == false) {
             telemetry.addLine("BOP!");
-            robot.glyphStop.setPosition(0.75);
+            robot.glyphStop.setPosition(0.55);
+        }
+        else if(back2 == true) {
+            robot.glyphStop.setPosition(0.8);
         }
         else {
             robot.glyphStop.setPosition(0.1);

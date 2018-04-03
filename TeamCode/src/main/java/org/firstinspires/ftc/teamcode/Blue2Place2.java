@@ -133,13 +133,13 @@ public class Blue2Place2 extends AutoPull {
         rotateTo180();
         DriveFor(robot,0.3,0.0,0.0,0.0,true);
 
-        DriveFor(robot, 0.4,0,-1,0,false);
-        DriveFor(robot,1.0,-1,0,0,false);
-        DriveFor(robot,0.55,0.36,0,0,false);
+        DriveFor(robot, 0.5,0,-1,0,false);
+        DriveFor(robot,0.5,-1,0,0,false);
+        DriveFor(robot,0.2,1,0,0,false);
         DriveFor(robot,0.3,0,0,0,true);
 
-        robot.claw1.setPosition(0.5);
-        robot.claw2.setPosition(0.5);
+        robot.claw1.setPosition(0.64);
+        robot.claw2.setPosition(0.36);
 
         robot.grabber.setTargetPosition(350);
 
@@ -150,7 +150,7 @@ public class Blue2Place2 extends AutoPull {
         int count = 0;
         runtime.reset();
         double speed = 0.45;
-        while (dis2 == false && runtime2.seconds() < 18 && opModeIsActive()) {
+        while (dis2 == false && runtime2.seconds() < 15 && opModeIsActive()) {
             double distanceRight = ((robot.ultra_right.getVoltage() / 5) * 512) + 2.5;// robot.ultra_right.getDistance(DistanceUnit.CM);
             telemetry.addData("Right", distanceRight);
             telemetry.update();
@@ -168,43 +168,106 @@ public class Blue2Place2 extends AutoPull {
                 }
             }
             else {
+                count++;
                 if(count == 1) {
                     speed = 0.27;
                     omniDrive(robot,0.0, 0.0, 0.0,true);
                     DriveFor(robot,0.3,0,0,0,true);
-                    rotateTo(robot, -90, 0);
-                    DriveFor(robot, 0.3, 0, 0, 0,true);
-                    count++;
-                }
-                else {
-                    omniDrive(robot,0.0, 0.0, 0.0,true);
-                    DriveFor(robot,0.3,0,0,0,true);
+                    //rotateTo180();
+                    //DriveFor(robot, 0.3, 0, 0, 0,true);
                     dis2 = true;
                 }
             }
         }
         omniDrive(robot,0.0, 0.0, 0.0,true);
-        DriveFor(robot,0.6,-1,0,0,false);
+        DriveFor(robot,0.3,-1,0,0,false);
         DriveFor(robot,0.3,0,0,0,false);
 
         telemetry.addLine("Lineup 2 Complete");
         telemetry.update();
 
-        robot.dumper.setPower(0.4);
+        robot.dumper.setPower(0.6);
         runtime.reset();
+        robot.dumper.setTargetPosition(480);
         while (robot.dumper.getCurrentPosition() <= 470 && opModeIsActive() && runtime2.seconds() < 28 && runtime.seconds() < 0.5) {
             robot.dumper.setTargetPosition(480);
-            //onmiDrive(robot, 0,.3,0);
+            telemetry.addData("dumper", robot.dumper.getCurrentPosition());
+            telemetry.update();
+            //onmiDrive(robot, 0,.4,0);
         }
-        //onmiDrive(robot,0,0,0);
         DriveFor(robot,0.5, 0.5, 0.0, 0.0,true);
 
+        runtime.reset();
+
+        DriveFor(robot,0.5, 0, 0.0, 0.0,true);
         while (robot.dumper.getCurrentPosition() >= 10 && opModeIsActive() && runtime.seconds() < 1.5) {
             telemetry.addData("dumper", robot.dumper.getCurrentPosition());
             telemetry.update();
             robot.dumper.setTargetPosition(5);
         }
 
+        DriveFor(robot, 0.3, -1, 0.0, 0.0,false);
+        DriveFor(robot,0.3, 1, 0.0, 0.0,false);
+
+        double distanceRight = ((robot.ultra_right.getVoltage() / 5) * 512) + 2.5;
+        while(opModeIsActive() == true && distanceRight < 38.5) {
+            distanceRight = ((robot.ultra_right.getVoltage() / 5) * 512) + 2.5;
+            omniDrive(robot, 1, 0, 0, true);
+        }
+        omniDrive(robot,0,0,0,true);
+
+        DriveFor(robot,0.3,0,0,0,true);
+
+        robot.grabber.setTargetPosition(0);
+
+        double distanceBack = ((robot.ultra_back.getVoltage() / 5) * 512) + 2.5;
+        while(opModeIsActive() == true && distanceBack < 25) {
+            distanceBack = ((robot.ultra_back.getVoltage() / 5) * 512) + 2.5;
+            omniDrive(robot, 0, 1, 0, false);
+        }
+        omniDrive(robot,0,0,0,true);
+
+        robot.glyphStop.setPosition(0.5);
+
+        DriveFor(robot,0.8,1,0,-1,false);
+        robot.claw1.setPosition(0.5);
+        robot.claw2.setPosition(0.5);
+        DriveFor(robot,0.3,0,0,0,true);
+        DriveFor(robot,1,-1,0,1,false);
+
+        robot.glyphStop.setPosition(0.1);
+        DriveFor(robot,0.3,0,0,0,true);
+
+        //place second glyph in dumper
+        robot.grabber.setPower(1);
+        DriveFor(robot,0.45,0,0,0,true);
+        robot.grabber.setTargetPosition(550);
+        DriveFor(robot,0.45,0,0,0,true);
+        robot.claw1.setPosition(0.64);
+        robot.claw2.setPosition(0.36);
+        DriveFor(robot,0.3,0,0,0,true);
+        robot.grabber.setTargetPosition(350);
+
+
+        DriveFor(robot,2,-1,0,-.7,false);
+
+        robot.dumper.setTargetPosition(480);
+        while (robot.dumper.getCurrentPosition() <= 470 && opModeIsActive()&& runtime.seconds() < 0.5) {
+            robot.dumper.setTargetPosition(480);
+            telemetry.addData("dumper", robot.dumper.getCurrentPosition());
+            telemetry.update();
+            //onmiDrive(robot, 0,.4,0);
+        }
+        DriveFor(robot,0.5, 0.5, 0.0, 0.0,true);
+
+        runtime.reset();
+
+        DriveFor(robot,0.5, 0, 0.0, 0.0,true);
+        while (robot.dumper.getCurrentPosition() >= 10 && opModeIsActive() && runtime.seconds() < 1.5) {
+            telemetry.addData("dumper", robot.dumper.getCurrentPosition());
+            telemetry.update();
+            robot.dumper.setTargetPosition(5);
+        }
         if(runtime2.seconds() < 28) {
             DriveFor(robot, 0.3, -1, 0.0, 0.0,false);
             //DriveFor(robot, 0.5, 0.5, 0.0, 0.0);
@@ -220,7 +283,7 @@ public class Blue2Place2 extends AutoPull {
         boolean go = false;
 
         runtime.reset();
-        while (heading != 180 && opModeIsActive() && runtime.seconds() < 1.5) {
+        while (heading != 180 && opModeIsActive() && runtime.seconds() < 2) {
             telemetry.addData("HEADING", heading);
             telemetry.addData("speed", speed);
             telemetry.update();
@@ -231,7 +294,7 @@ public class Blue2Place2 extends AutoPull {
             }
             else if (180+0.5 > heading) {
                 omniDrive(robot, 0.0, 0.0, speed,true);
-                if (speed > 0.35 && go == true) {
+                if (speed > 0.27 && go == true) {
                     speed -= 0.01;
                 }
             }
