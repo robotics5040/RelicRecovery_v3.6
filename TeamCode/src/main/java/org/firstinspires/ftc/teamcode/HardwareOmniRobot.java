@@ -64,6 +64,7 @@ public class HardwareOmniRobot
     public Servo relicClaw    = null;
     public Servo relicStopper = null;
 
+    public Servo glyphRake = null;
     public DcMotor wheelie = null;
     public DcMotor grabber = null;
     public Servo jknock = null;
@@ -111,6 +112,7 @@ public class HardwareOmniRobot
         claw1 = hwMap.servo.get("claw_1");
         claw2 = hwMap.servo.get("claw_2");
         jknock = hwMap.servo.get("jknock");
+        glyphRake = hwMap.servo.get("glyphRake");
         jkcolor = hwMap.get(ColorSensor.class, "color_sense");
         jkcolor2 = hwMap.get(ColorSensor.class, "color");
         RobotLog.ii("5040MSGHW","Everything but ultras gotten");
@@ -174,11 +176,12 @@ public class HardwareOmniRobot
             //grabber.setPower(0.4);
             jknock.setPosition(0.8);
             claw1.setPosition(1.0);
-            claw2.setPosition(0.1);
+            //claw2.setPosition(0.1);
             relicClaw.setPosition(0.5);
             glyphStop.setPosition(0);
             relicWrist.setPosition(0.05);
             relicStopper.setPosition(0);
+            glyphRake.setPosition(0);
 
             BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
             parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
@@ -202,7 +205,7 @@ public class HardwareOmniRobot
             }
 
             //Move the claw back to a semi-open position
-            claw2.setPosition(0);
+            claw2.setPosition(0.5);
             //relicClaw.setPosition(0.35);
             //The robot is now initialized within 18 inches!
         }

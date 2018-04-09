@@ -39,7 +39,7 @@ import com.qualcomm.robotcore.util.RobotLog;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 
-@Autonomous(name="Omnibot: Red1Place1", group="Omnibot")
+@Autonomous(name="Omnibot: Red1Place1", group="Red1Auto")
 //@Disabled
 public class Red1Place1 extends AutoPull {
 

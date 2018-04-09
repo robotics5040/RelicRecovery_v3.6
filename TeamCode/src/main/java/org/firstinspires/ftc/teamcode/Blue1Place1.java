@@ -42,7 +42,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 
-@Autonomous(name="Omnibot: Blue1Place1", group="Omnibot")
+@Autonomous(name="Omnibot: Blue1Place1", group="Blue1Auto")
 //@Disabled
 public class Blue1Place1 extends AutoPull {
 

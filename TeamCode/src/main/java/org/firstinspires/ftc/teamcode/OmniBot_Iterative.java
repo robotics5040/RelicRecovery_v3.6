@@ -150,6 +150,7 @@ public class OmniBot_Iterative extends OpMode{
         //right_trigger1  = gamepad1.right_trigger;//unused
         double left_stick_x1   = gamepad1.left_stick_x;
         double right_stick_x1  = gamepad1.right_stick_x;
+        boolean stick_press1 = gamepad1.left_stick_button || gamepad1.right_stick_button;
 
         //Bumpers and Triggers
         boolean left_bumper1  = gamepad1.left_bumper  && gamepadMode1 == 0;
@@ -321,10 +322,17 @@ public class OmniBot_Iterative extends OpMode{
             front /= 2;
             side /= 2;
         }
-        if(left_trigger1  == true) {
+        if(stick_press1  == true) {
             rotate /= 2;
             front /= 2;
             side /= 2;
+        }
+
+        if(left_trigger1 == true) {
+            robot.glyphRake.setPosition(.98);
+        }
+        else {
+            robot.glyphRake.setPosition(0);
         }
 
         robot.onmiDrive(side, front, rotate);
@@ -370,7 +378,7 @@ public class OmniBot_Iterative extends OpMode{
         else if(left_bumper1 == true) {
             robot.grabber.setPower(0.6);
             //robot.glyphStop.setPosition(0.6);
-            robot.grabber.setTargetPosition(510);
+            robot.grabber.setTargetPosition(370);
             robot.claw1.setPosition(0.7);
             robot.claw2.setPosition(0.25);
             run2 = true;
@@ -463,8 +471,8 @@ public class OmniBot_Iterative extends OpMode{
             dumperReset = false;
         }
         else {
-            if(robot.dumper.getCurrentPosition() <= 10) {
-                robot.dumper.setPower(0);
+            if(robot.dumper.getCurrentPosition() <= 5) {
+                robot.dumper.setPower(0.1);
             }
             else {
                 robot.dumper.setPower(0.5);
@@ -475,8 +483,8 @@ public class OmniBot_Iterative extends OpMode{
         //claw controls
         //closes claws
         if (x_button2 == true || run2 == true) {
-            robot.claw1.setPosition(0.55);
-            robot.claw2.setPosition(0.5);
+            robot.claw1.setPosition(0.53);
+            robot.claw2.setPosition(0.47);
         }
         //all the way open
         else if(y_button2 == true) {

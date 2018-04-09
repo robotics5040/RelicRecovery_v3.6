@@ -42,7 +42,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 
-@Autonomous(name="Omnibot: Blue2Place1", group="Omnibot")
+@Autonomous(name="Omnibot: Blue2Place1", group="Blue2Auto")
 //@Disabled
 public class Blue2Place1 extends AutoPull {
 
@@ -74,14 +74,25 @@ public class Blue2Place1 extends AutoPull {
             telemetry.addLine("Calibrating gyro");
             telemetry.update();
         }*/
+        int adjustment = 0;
         RobotLog.ii("5040MSG","Gyro Calibrated");
         while (!(isStarted() || isStopRequested())) {
 
+            if(gamepad1.left_stick_y > 0.5)
+                adjustment -= 10;
+            else if(gamepad1.left_stick_y < -0.5)
+                adjustment += 10;
+            if(gamepad1.back == true) {
+                robot.claw2.setPosition(0);
+            }
             // Display the light level while we are waiting to start
             //telemetry.addData("HEADING",robot.gyro.getHeading());
             //telemetry.addData("heading2", robot.gyro2.getHeading());
             telemetry.addData("calibration", robot.imu.isGyroCalibrated());
+            telemetry.addData("potentiometer",(robot.potentiometer.getVoltage()*((float)1023/68))-37.5);
             telemetry.update();
+
+            robot.grabber.setTargetPosition(robot.GRABBER_AUTOPOS+adjustment);
             idle();
         }
         //int startG = robot.gyro.getHeading();
@@ -141,7 +152,7 @@ public class Blue2Place1 extends AutoPull {
         robot.claw1.setPosition(0.5);
         robot.claw2.setPosition(0.5);
 
-        robot.grabber.setTargetPosition(350);
+        robot.grabber.setTargetPosition(350+adjustment);
 
         telemetry.addLine("Lineup 1 Complete");
         telemetry.update();
@@ -170,7 +181,7 @@ public class Blue2Place1 extends AutoPull {
             else {
                 count++;
                 if(count == 1) {
-                    speed = 0.27;
+                    speed = 0.35;
                     omniDrive(robot,0.0, 0.0, 0.0,true);
                     DriveFor(robot,0.3,0,0,0,true);
                     rotateTo180();
@@ -214,7 +225,7 @@ public class Blue2Place1 extends AutoPull {
             DriveFor(robot, 0.3, -1, 0.0, 0.0,false);
             //DriveFor(robot, 0.5, 0.5, 0.0, 0.0);
         }
-        DriveFor(robot,0.3, 1, 0.0, 0.0,false);
+        DriveFor(robot,0.2, 1, 0.0, 0.0,false);
 
 
     }

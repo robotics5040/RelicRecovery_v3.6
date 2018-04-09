@@ -93,7 +93,7 @@ public class AutoPull extends LinearOpMode {
 
         robot.jkcolor.enableLed(true);
         robot.jkcolor2.enableLed(true);
-        robot.jknock.setPosition(0.12);
+        robot.jknock.setPosition(0.11);
         //DriveFor(robot,0.5,0.0,0.0,0.0);
         boolean decided = false;
         runtime.reset();

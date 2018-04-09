@@ -39,7 +39,7 @@ import com.qualcomm.robotcore.util.RobotLog;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 
-@Autonomous(name="Omnibot: Red1Place2", group="Omnibot")
+@Autonomous(name="Omnibot: Red1Place2", group="Red1Auto")
 //@Disabled
 public class Red1Place2 extends AutoPull {
 
@@ -72,15 +72,25 @@ public class Red1Place2 extends AutoPull {
             telemetry.addLine("Calibrating gyro");
             telemetry.update();
         }*/
+        int adjustment = 0;
         RobotLog.ii("5040MSG","Gyro Calibrated");
         while (!(isStarted() || isStopRequested())) {
 
+            if(gamepad1.left_stick_y > 0.5)
+                adjustment -= 10;
+            else if(gamepad1.left_stick_y < -0.5)
+                adjustment += 10;
+            if(gamepad1.back == true) {
+                robot.claw2.setPosition(0);
+            }
             // Display the light level while we are waiting to start
             //telemetry.addData("HEADING",robot.gyro.getHeading());
             //telemetry.addData("heading2", robot.gyro2.getHeading());
             telemetry.addData("calibration", robot.imu.isGyroCalibrated());
             telemetry.addData("potentiometer",(robot.potentiometer.getVoltage()*((float)1023/68))-37.5);
             telemetry.update();
+
+            robot.grabber.setTargetPosition(robot.GRABBER_AUTOPOS+adjustment);
             idle();
         }
         //int startG = robot.gyro.getHeading();
@@ -102,16 +112,16 @@ public class Red1Place2 extends AutoPull {
 
         switch (choosen) {
             case (1):
-                target = 44;
+                target = 45.5;
                 break;
             case (2):
-                target = 51.5;
+                target = 52;
                 break;
             case (3):
-                target = 59;
+                target = 58.5;
                 break;
             default:
-                target = 51.5;
+                target = 52;
                 break;
         }
 
@@ -147,8 +157,8 @@ public class Red1Place2 extends AutoPull {
         DriveFor(robot,0.2,0,0,0,true);
         robot.glyphStop.setPosition(0.5);
         DriveFor(robot,1,1,0,0,false);
-        robot.claw1.setPosition(0.5);
-        robot.claw2.setPosition(0.5);
+        robot.claw1.setPosition(0.52);
+        robot.claw2.setPosition(0.48);
         DriveFor(robot,0.3,0,0,0,true);
         DriveFor(robot, 0.7,-1,-0.2,0,false);
 
@@ -159,7 +169,7 @@ public class Red1Place2 extends AutoPull {
         robot.glyphStop.setPosition(0);
         DriveFor(robot,0.3,0,0,0,true);
         robot.grabber.setPower(0.3);
-        robot.grabber.setTargetPosition(350);
+        robot.grabber.setTargetPosition(350+adjustment);
         rotateTo(robot,-90,0);
         DriveFor(robot, 1.0,-1,0,0,false);
         DriveFor(robot,0.2,1,0,0,false);
@@ -167,10 +177,10 @@ public class Red1Place2 extends AutoPull {
         telemetry.addLine("Lineup 1 Complete");
         telemetry.update();
 
-        boolean dis2 = false, there = false;
+        boolean dis2 = false;
         int count = 0;
         runtime.reset();
-        double speed = 0.45;
+        double speed = 0.36;
         while (dis2 == false && runtime2.seconds() < 18 && opModeIsActive()) {
             double distanceLeft = ((robot.ultra_left.getVoltage() / 5) * 512) + 2.5;// robot.ultra_right.getDistance(DistanceUnit.CM);
             telemetry.addData("Right", distanceLeft);
@@ -178,20 +188,14 @@ public class Red1Place2 extends AutoPull {
 
             if (distanceLeft > target+0.4) {
                 omniDrive(robot, speed, 0.0, 0.0,true);
-                there = true;
-                if(speed < 0.45 && speed > 0.29)
-                    speed -= 0.03;
             }
             else if (distanceLeft < target-0.4) {
                 omniDrive(robot,-speed,0.0,0.0,true);
-                if(there == true && speed > 0.29) {
-                    speed -= 0.03;
-                }
             }
             else {
                 count++;
                 if(count == 1) {
-                    speed = 0.27;
+                    speed = 0.3;
                     omniDrive(robot,0.0, 0.0, 0.0,true);
                     DriveFor(robot,0.3,0,0,0,true);
                     rotateTo(robot, -90, 0);
@@ -211,7 +215,7 @@ public class Red1Place2 extends AutoPull {
         telemetry.addLine("Lineup 2 Complete");
         telemetry.update();
 
-        robot.grabber.setTargetPosition(200);
+        robot.grabber.setTargetPosition(200+adjustment);
 
         robot.dumper.setPower(0.6);
         runtime.reset();
@@ -234,12 +238,12 @@ public class Red1Place2 extends AutoPull {
         }
         robot.grabber.setPower(1);
         DriveFor(robot,0.45,0,0,0,true);
-        robot.grabber.setTargetPosition(550);
+        robot.grabber.setTargetPosition(550+adjustment);
         DriveFor(robot,0.45,0,0,0,true);
         robot.claw1.setPosition(0.64);
         robot.claw2.setPosition(0.36);
         DriveFor(robot,0.3,0,0,0,true);
-        robot.grabber.setTargetPosition(350);
+        robot.grabber.setTargetPosition(350+adjustment);
         DriveFor(robot,0.3,0,0,0,true);
 
         DriveFor(robot,0.3,0,0,0,true);
@@ -247,15 +251,17 @@ public class Red1Place2 extends AutoPull {
 
         DriveFor(robot,0.3, -1,0,0,true);
         DriveFor(robot,0.2, 1,0,0,true);
+
         if(choosen == 3) {
             DriveFor(robot,0.4, 0,-1,0,true);
         }
-        else if(choosen == 2 ) {
-            DriveFor(robot,0.4, 0,1,0,true);
-        }
-        else {
+        else if(choosen == 1) {
             DriveFor(robot,0.7, 0,1,0,true);
         }
+        else {
+            DriveFor(robot,0.4, 0,1,0,true);
+        }
+
         DriveFor(robot,0.2,-1,0,0,true);
 
         runtime.reset();
@@ -277,6 +283,6 @@ public class Red1Place2 extends AutoPull {
             DriveFor(robot, 0.3, -1, 0.0, 0.0,false);
             //DriveFor(robot, 0.5, 0.5, 0.0, 0.0);
         }
-        DriveFor(robot,0.3, 1, 0.0, 0.0,false);
+        DriveFor(robot,0.2, 1, 0.0, 0.0,false);
     }
 }
