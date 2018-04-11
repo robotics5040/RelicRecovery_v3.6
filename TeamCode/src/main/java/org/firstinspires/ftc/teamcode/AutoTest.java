@@ -72,14 +72,18 @@ public class AutoTest extends AutoPull {
     BNO055IMU imu;
 
     @Override public void runOpMode() {
-        robot.init(hardwareMap, true);
+        robot.init(hardwareMap, false);
         //vexMotor = hardwareMap.servo.get("vexMotor");
 
         waitForStart();
-        DriveFor(robot,1,0,1,0,false);
-        rotateTo(robot,200,0);
+        //DriveFor(robot,1,0,1,0,false);
+        //rotateTo(robot,200,0);
 
         while(opModeIsActive()) {
+            robot.glyphDetect.enableLed(true);
+
+            telemetry.addData("raw light", robot.glyphDetect.getRawLightDetected());
+            telemetry.update();
             //vexMotor.setPosition(0);
         }
         /*robot.init(hardwareMap, true);

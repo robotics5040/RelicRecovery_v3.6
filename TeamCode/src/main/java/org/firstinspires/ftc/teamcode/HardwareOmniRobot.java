@@ -11,6 +11,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.GyroSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.I2cAddr;
+import com.qualcomm.robotcore.hardware.OpticalDistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.RobotLog;
@@ -34,6 +35,7 @@ public class HardwareOmniRobot
     ElapsedTime runtime = new ElapsedTime();
 
     ColorSensor jkcolor, jkcolor2;
+    OpticalDistanceSensor glyphDetect;
 
     ModernRoboticsI2cGyro gyro, gyro2;
     BNO055IMU imu;
@@ -115,6 +117,7 @@ public class HardwareOmniRobot
         glyphRake = hwMap.servo.get("glyphRake");
         jkcolor = hwMap.get(ColorSensor.class, "color_sense");
         jkcolor2 = hwMap.get(ColorSensor.class, "color");
+        glyphDetect = hwMap.get(OpticalDistanceSensor.class, "glyph_detect");
         RobotLog.ii("5040MSGHW","Everything but ultras gotten");
 
         jkcolor.setI2cAddress(I2cAddr.create8bit(0x28));

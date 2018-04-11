@@ -164,6 +164,24 @@ public class AutoPull extends LinearOpMode {
         omniDrive(robot, 0.0, 0.0, 0.0,true);
     }
 
+    //code for dumping glyph as it is the same in all programs
+    public void dumpGlyph(HardwareOmniRobot robot) {
+        runtime.reset();
+        while (robot.dumper.getCurrentPosition() <= 470 && opModeIsActive() && runtime.seconds() < 0.5) {
+            robot.dumper.setTargetPosition(480);
+            //onmiDrive(robot, 0,.3,0);
+        }
+        //onmiDrive(robot,0,0,0);
+        DriveFor(robot,0.5, 0.5, 0.0, 0.0,true);
+
+        robot.dumper.setTargetPosition(5);
+        while (robot.dumper.getCurrentPosition() >= 10 && opModeIsActive() && runtime.seconds() < 1.5) {
+            telemetry.addData("dumper", robot.dumper.getCurrentPosition());
+            telemetry.update();
+            robot.dumper.setTargetPosition(5);
+        }
+    }
+
     //vuforia
     public int Vuforia(int cameraMonitorViewId, String side, VuforiaLocalizer vuforia) {
 

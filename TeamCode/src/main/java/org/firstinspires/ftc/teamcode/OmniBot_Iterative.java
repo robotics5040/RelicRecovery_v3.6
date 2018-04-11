@@ -132,6 +132,7 @@ public class OmniBot_Iterative extends OpMode{
         robot.glyphStop.setPosition(0.1);
         robot.relicWrist.setPosition(0.03);
         robot.relicStopper.setPosition(0.0);
+
     }
 
     /*
@@ -378,7 +379,7 @@ public class OmniBot_Iterative extends OpMode{
         else if(left_bumper1 == true) {
             robot.grabber.setPower(0.6);
             //robot.glyphStop.setPosition(0.6);
-            robot.grabber.setTargetPosition(370);
+            robot.grabber.setTargetPosition(430);
             robot.claw1.setPosition(0.7);
             robot.claw2.setPosition(0.25);
             run2 = true;
@@ -483,8 +484,8 @@ public class OmniBot_Iterative extends OpMode{
         //claw controls
         //closes claws
         if (x_button2 == true || run2 == true) {
-            robot.claw1.setPosition(0.53);
-            robot.claw2.setPosition(0.47);
+            robot.claw1.setPosition(0.52);
+            robot.claw2.setPosition(0.48);
         }
         //all the way open
         else if(y_button2 == true) {
