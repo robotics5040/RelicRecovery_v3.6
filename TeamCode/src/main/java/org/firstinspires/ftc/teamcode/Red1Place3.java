@@ -1,12 +1,12 @@
 /*
-Copyright (c) 2016 Robert Atkinson
-All rights reserved.
+Copyleft (c) 2016 Robert Atkinson
+All lefts reserved.
 Redistribution and use in source and binary forms, with or without modification,
 are permitted (subject to the limitations in the disclaimer below) provided that
 the following conditions are met:
-Redistributions of source code must retain the above copyright notice, this list
+Redistributions of source code must retain the above copyleft notice, this list
 of conditions and the following disclaimer.
-Redistributions in binary form must reproduce the above copyright notice, this
+Redistributions in binary form must reproduce the above copyleft notice, this
 list of conditions and the following disclaimer in the documentation and/or
 other materials provided with the distribution.
 Neither the name of Robert Atkinson nor the names of his contributors may be used to
@@ -33,9 +33,9 @@ import com.qualcomm.robotcore.util.RobotLog;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 
-@Autonomous(name="Omnibot: Blue1Place3", group="Blue1Auto")
+@Autonomous(name="Omnibot: Red1Place3", group="Red1Auto")
 //@Disabled
-public class Blue1Place3 extends AutoPull {
+public class Red1Place3 extends AutoPull {
 
     HardwareOmniRobot robot   = new HardwareOmniRobot();
     ElapsedTime runtime = new ElapsedTime();
@@ -100,32 +100,24 @@ public class Blue1Place3 extends AutoPull {
 
         RobotLog.ii("5040MSG","Run vufloria");
         //int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        int choosen = Vuforia(cameraMonitorViewId, "blue",vuforia);
+        int choosen = Vuforia(cameraMonitorViewId, "red",vuforia);
         double target = 0;
 
         switch (choosen) {
             case (1):
-                target = 44;
+                target = 45.5;
                 break;
             case (2):
                 target = 52;
                 break;
             case (3):
-                target = 59;
+                target = 58.5;
                 break;
             default:
                 target = 52;
                 break;
         }
 
-        /*int glyphColor1;
-        //brown    1 is brown 2 is gray 0 is none
-        if(robot.dumperColor.alpha() < 20) {
-            glyphColor1 = 1;
-        }
-        else {
-            glyphColor1 = 2;
-        }*/
 
         telemetry.addData("VuMark", "%s visible", choosen);
         telemetry.update();
@@ -133,12 +125,14 @@ public class Blue1Place3 extends AutoPull {
         robot.claw1.setPosition(0.64);
         robot.claw2.setPosition(0.36);
 
-        JewelKnock(robot,"blue");
+        JewelKnock(robot,"red");
+
+
 
         DriveFor(robot,0.3,0.0,0.0,0.0,true);
-        robot.jknock.setPosition(robot.JKUP);
-        robot.wheelie.setPower(1);
-        DriveFor(robot,1.1,1.0,0.0,0.0,false);
+        if(robot.jknock.getPosition() != robot.JKUP) {robot.jknock.setPosition(robot.JKUP);}
+        robot.wheelie.setPower(-1);
+        DriveFor(robot,1,-1.0,0.0,0.0,false);
         robot.wheelie.setPower(0);
 
         DriveFor(robot,0.8,0,0,1,false);
@@ -169,15 +163,15 @@ public class Blue1Place3 extends AutoPull {
         runtime.reset();
         double speed = 0.35;
         while (dis2 == false && runtime2.seconds() < 15 && opModeIsActive()) {
-            double distanceRight = ((robot.ultra_right.getVoltage() / 5) * 512) + 2.5;// robot.ultra_right.getDistance(DistanceUnit.CM);
-            telemetry.addData("Right", distanceRight);
+            double distanceLeft = ((robot.ultra_left.getVoltage() / 5) * 512) + 2.5;// robot.ultra_left.getDistance(DistanceUnit.CM);
+            telemetry.addData("Left", distanceLeft);
             telemetry.update();
 
-            if (distanceRight > target+0.4) {
-                omniDrive(robot, -speed, 0.0, 0.0,true);
+            if (distanceLeft > target+0.4) {
+                omniDrive(robot,speed, 0.0, 0.0,true);
             }
-            else if (distanceRight < target-0.4) {
-                omniDrive(robot,speed,0.0,0.0,true);
+            else if (distanceLeft < target-0.4) {
+                omniDrive(robot,-speed,0.0,0.0,true);
             }
             else {
                 count++;
@@ -226,32 +220,31 @@ public class Blue1Place3 extends AutoPull {
             //telemetry.addData("DumperColor", robot.dumperColor.alpha());
 
             if (choosen == 3) {
-                DriveFor(robot, 0.55, 0, 1, 0, true);
+                DriveFor(robot, 0.7, 0, -1, 0, true);
             }
             else if (choosen == 1) {
-                DriveFor(robot, 0.4, 0, -1, 0, true);
-            }
-            else {
                 DriveFor(robot, 0.4, 0, 1, 0, true);
             }
+            else {
+                DriveFor(robot, 0.4, 0, -1, 0, true);
+            }
 
-            DriveFor(robot, 0.4, -1, 0, 0, true);
+            DriveFor(robot, 0.4, -1, 0.0, 0.0, false);
 
             dumpGlyph(robot);
 
             DriveFor(robot, 0.3, -1, 0.0, 0.0, false);
             DriveFor(robot, 0.4, 1, 0.0, 0.0, false);
 
-
             if(choosen == 1 && choosen == 3)
-                DriveFor(robot, 0.3, 0, -1, 0, false);
+                DriveFor(robot, 0.3, 0, 1, 0, false);
         }
         else {
             if (choosen == 3) {
-                DriveFor(robot, .3, 0, 1, 0, false);
+                DriveFor(robot, .4, 0, -1, 0, false);
             }
             else if (choosen == 1) {
-                DriveFor(robot, .3, 0, -1, 0, false);
+                DriveFor(robot, .4, 0, 1, 0, false);
             }
         }
 
@@ -276,32 +269,27 @@ public class Blue1Place3 extends AutoPull {
 
             DriveFor(robot, 0.3, 0, 0, 0, true);
             robot.grabber.setTargetPosition(200);
+            DriveFor(robot, 0.3, 0, 0, 0, true);
+            DriveFor(robot, 0.7, -1, 0, 0, false);
 
-            if(robot.glyphDetect.getRawLightDetected() > noGlyph+1) {
+            dumpGlyph(robot);
 
-                DriveFor(robot, 0.3, 0, 0, 0, true);
-                DriveFor(robot, 0.7, -1, 0, 0, false);
-
-                dumpGlyph(robot);
-
-                DriveFor(robot, 0.3, -1, 0.0, 0.0, false);
-                DriveFor(robot, 0.2, 1, 0.0, 0.0, false);
-            }
+            DriveFor(robot, 0.3, -1, 0.0, 0.0, false);
+            DriveFor(robot, 0.4, 1, 0.0, 0.0, false);
         }
-
         robot.grabber.setTargetPosition(200);
 
-        double distanceRight = ((robot.ultra_right.getVoltage() / 5) * 512) + 2.5;
-        while(opModeIsActive() == true && distanceRight < 52) {
-            distanceRight = ((robot.ultra_right.getVoltage() / 5) * 512) + 2.5;
-            omniDrive(robot, .7, 0, 0, true);
+        double distanceLeft = ((robot.ultra_left.getVoltage() / 5) * 512) + 2.5;
+        while(opModeIsActive() == true && distanceLeft < 52) {
+            distanceLeft = ((robot.ultra_left.getVoltage() / 5) * 512) + 2.5;
+            omniDrive(robot, -.7, 0, 0, true);
         }
         omniDrive(robot,0,0,0,true);
 
-        distanceRight = ((robot.ultra_right.getVoltage() / 5) * 512) + 2.5;
-        while(opModeIsActive() == true && distanceRight > 52) {
-            distanceRight = ((robot.ultra_right.getVoltage() / 5) * 512) + 2.5;
-            omniDrive(robot, -.7, 0, 0, true);
+        distanceLeft = ((robot.ultra_left.getVoltage() / 5) * 512) + 2.5;
+        while(opModeIsActive() == true && distanceLeft > 52) {
+            distanceLeft = ((robot.ultra_left.getVoltage() / 5) * 512) + 2.5;
+            omniDrive(robot, .7, 0, 0, true);
         }
         omniDrive(robot,0,0,0,true);
 

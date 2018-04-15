@@ -322,6 +322,7 @@ public class OmniBot_Iterative extends OpMode{
         if(left_bumper1 == true) {
             front /= 2;
             side /= 2;
+            rotate /= 2;
         }
         if(stick_press1  == true) {
             rotate /= 2;
@@ -379,7 +380,7 @@ public class OmniBot_Iterative extends OpMode{
         else if(left_bumper1 == true) {
             robot.grabber.setPower(0.6);
             //robot.glyphStop.setPosition(0.6);
-            robot.grabber.setTargetPosition(430);
+            robot.grabber.setTargetPosition(450);
             robot.claw1.setPosition(0.7);
             robot.claw2.setPosition(0.25);
             run2 = true;
