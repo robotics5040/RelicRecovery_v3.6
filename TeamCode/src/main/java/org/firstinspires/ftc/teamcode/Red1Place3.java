@@ -96,7 +96,7 @@ public class Red1Place3 extends AutoPull {
 
         robot.jkcolor.enableLed(true);
         robot.jkcolor2.enableLed(true);
-        robot.jknock.setPosition(0.1);
+        robot.jknock.setPosition(robot.JKDOWN);
 
         RobotLog.ii("5040MSG","Run vufloria");
         //int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
@@ -105,13 +105,13 @@ public class Red1Place3 extends AutoPull {
 
         switch (choosen) {
             case (1):
-                target = 45.5;
+                target = 44.5;
                 break;
             case (2):
                 target = 52;
                 break;
             case (3):
-                target = 58.5;
+                target = 60;
                 break;
             default:
                 target = 52;
@@ -130,7 +130,7 @@ public class Red1Place3 extends AutoPull {
 
 
         DriveFor(robot,0.3,0.0,0.0,0.0,true);
-        if(robot.jknock.getPosition() != robot.JKUP) {robot.jknock.setPosition(robot.JKUP);}
+        robot.jknock.setPosition(robot.JKUP);
         robot.wheelie.setPower(-1);
         DriveFor(robot,1,-1.0,0.0,0.0,false);
         robot.wheelie.setPower(0);
@@ -152,7 +152,7 @@ public class Red1Place3 extends AutoPull {
         robot.grabber.setTargetPosition(350+adjustment);
 
         rotateTo(robot,-90,0);
-        DriveFor(robot, 1,-1,-0.2,0,false);
+        DriveFor(robot, 1.2,-1,-0.2,0,false);
         DriveFor(robot,0.2,1,0,0,false);
 
         telemetry.addLine("Lineup 1 Complete");
@@ -176,7 +176,6 @@ public class Red1Place3 extends AutoPull {
             else {
                 count++;
                 if(count == 1) {
-                    speed = 0.32;
                     omniDrive(robot,0.0, 0.0, 0.0,true);
                     DriveFor(robot,0.3,0,0,0,true);
                     DriveFor(robot, 0.3, 0, 0, 0,true);
@@ -220,13 +219,13 @@ public class Red1Place3 extends AutoPull {
             //telemetry.addData("DumperColor", robot.dumperColor.alpha());
 
             if (choosen == 3) {
-                DriveFor(robot, 0.7, 0, -1, 0, true);
+                DriveFor(robot, 0.25, 0, -1, 0, false);
             }
             else if (choosen == 1) {
-                DriveFor(robot, 0.4, 0, 1, 0, true);
+                DriveFor(robot, 0.5, 0, 1, 0, false);
             }
             else {
-                DriveFor(robot, 0.4, 0, -1, 0, true);
+                DriveFor(robot, 0.25, 0, 1, 0, false);
             }
 
             DriveFor(robot, 0.4, -1, 0.0, 0.0, false);
@@ -236,19 +235,17 @@ public class Red1Place3 extends AutoPull {
             DriveFor(robot, 0.3, -1, 0.0, 0.0, false);
             DriveFor(robot, 0.4, 1, 0.0, 0.0, false);
 
-            if(choosen == 1 && choosen == 3)
-                DriveFor(robot, 0.3, 0, 1, 0, false);
+            if(choosen == 1 || choosen == 2)
+                DriveFor(robot, 0.3, 0, -1, 0, false);
         }
         else {
             if (choosen == 3) {
-                DriveFor(robot, .4, 0, -1, 0, false);
+                DriveFor(robot, .3, 0, -1, 0, false);
             }
             else if (choosen == 1) {
-                DriveFor(robot, .4, 0, 1, 0, false);
+                DriveFor(robot, .3, 0, 1, 0, false);
             }
         }
-
-        //rotateTo(robot, -90,angle);
 
         robot.grabber.setTargetPosition(0);
         DriveFor(robot,0.2,0,0,0,true);
@@ -257,7 +254,13 @@ public class Red1Place3 extends AutoPull {
         robot.claw1.setPosition(0.52);
         robot.claw2.setPosition(0.48);
         DriveFor(robot,0.3,0,0,0,true);
-        DriveFor(robot, 1.2,-1,-0.2,0,false);
+
+        double distanceBack = ((robot.ultra_back.getVoltage() / 5) * 512) + 2.5;
+        while(opModeIsActive() == true && distanceBack > 25) {
+            distanceBack = ((robot.ultra_back.getVoltage() / 5) * 512) + 2.5;
+            omniDrive(robot, 0, -1, 0, false);
+        }
+
         robot.glyphStop.setPosition(0.1);
 
         if(runtime2.seconds() < 26) {
@@ -269,14 +272,21 @@ public class Red1Place3 extends AutoPull {
 
             DriveFor(robot, 0.3, 0, 0, 0, true);
             robot.grabber.setTargetPosition(200);
-            DriveFor(robot, 0.3, 0, 0, 0, true);
-            DriveFor(robot, 0.7, -1, 0, 0, false);
 
-            dumpGlyph(robot);
+            DriveFor(robot,0.45,0,0,0,true);
 
-            DriveFor(robot, 0.3, -1, 0.0, 0.0, false);
-            DriveFor(robot, 0.4, 1, 0.0, 0.0, false);
+            if(robot.glyphDetect.getRawLightDetected() > noGlyph+.5) {
+
+                DriveFor(robot, 0.3, 0, 0, 0, true);
+                DriveFor(robot, 0.7, -1, 0, 0, false);
+
+                dumpGlyph(robot);
+
+                DriveFor(robot, 0.3, -1, 0.0, 0.0, false);
+                DriveFor(robot, 0.2, 1, 0.0, 0.0, false);
+            }
         }
+
         robot.grabber.setTargetPosition(200);
 
         double distanceLeft = ((robot.ultra_left.getVoltage() / 5) * 512) + 2.5;

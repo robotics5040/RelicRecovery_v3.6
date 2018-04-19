@@ -96,7 +96,7 @@ public class Blue1Place3 extends AutoPull {
 
         robot.jkcolor.enableLed(true);
         robot.jkcolor2.enableLed(true);
-        robot.jknock.setPosition(0.1);
+        robot.jknock.setPosition(robot.JKDOWN);
 
         RobotLog.ii("5040MSG","Run vufloria");
         //int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
@@ -243,7 +243,7 @@ public class Blue1Place3 extends AutoPull {
             DriveFor(robot, 0.4, 1, 0.0, 0.0, false);
 
 
-            if(choosen == 1 && choosen == 3)
+            if(choosen == 1 || choosen == 2)
                 DriveFor(robot, 0.3, 0, -1, 0, false);
         }
         else {
@@ -264,7 +264,13 @@ public class Blue1Place3 extends AutoPull {
         robot.claw1.setPosition(0.52);
         robot.claw2.setPosition(0.48);
         DriveFor(robot,0.3,0,0,0,true);
-        DriveFor(robot, 1.2,-1,-0.2,0,false);
+
+        double distanceBack = ((robot.ultra_back.getVoltage() / 5) * 512) + 2.5;
+        while(opModeIsActive() == true && distanceBack > 26) {
+            distanceBack = ((robot.ultra_back.getVoltage() / 5) * 512) + 2.5;
+            omniDrive(robot, 0, -1, 0, false);
+        }
+
         robot.glyphStop.setPosition(0.1);
 
         if(runtime2.seconds() < 26) {
@@ -277,7 +283,9 @@ public class Blue1Place3 extends AutoPull {
             DriveFor(robot, 0.3, 0, 0, 0, true);
             robot.grabber.setTargetPosition(200);
 
-            if(robot.glyphDetect.getRawLightDetected() > noGlyph+1) {
+            DriveFor(robot,0.45,0,0,0,true);
+
+            if(robot.glyphDetect.getRawLightDetected() > noGlyph+.5) {
 
                 DriveFor(robot, 0.3, 0, 0, 0, true);
                 DriveFor(robot, 0.7, -1, 0, 0, false);

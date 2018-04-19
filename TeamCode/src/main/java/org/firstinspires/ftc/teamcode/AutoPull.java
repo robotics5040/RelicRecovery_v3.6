@@ -77,14 +77,14 @@ public class AutoPull extends LinearOpMode {
         telemetry.addLine("Left");
         telemetry.update();
         DriveFor(robot,0.2, 0.0, 0.0, -1, true);
-        robot.jknock.setPosition(0.7);
+        robot.jknock.setPosition(robot.JKUP);
         DriveFor(robot,0.3, 0.0, 0.0, 1, true);
     }
     public void TurnRight(HardwareOmniRobot robot){
         telemetry.addLine("Right");
         telemetry.update();
         DriveFor(robot,0.2, 0.0, 0.0, 1, true);
-        robot.jknock.setPosition(0.7);
+        robot.jknock.setPosition(robot.JKUP);
         DriveFor(robot,0.3, 0.0, 0.0, -1, true);
     }
 
@@ -93,7 +93,7 @@ public class AutoPull extends LinearOpMode {
 
         robot.jkcolor.enableLed(true);
         robot.jkcolor2.enableLed(true);
-        robot.jknock.setPosition(0.11);
+        robot.jknock.setPosition(robot.JKDOWN);
         //DriveFor(robot,0.5,0.0,0.0,0.0);
         boolean decided = false;
         runtime.reset();
@@ -135,7 +135,7 @@ public class AutoPull extends LinearOpMode {
         }
         robot.jkcolor.enableLed(false);
         robot.jkcolor2.enableLed(false);
-        if(robot.jknock.getPosition() != robot.JKUP) {robot.jknock.setPosition(robot.JKUP);}
+        robot.jknock.setPosition(robot.JKUP);
     }
 
     public void rotateTo(HardwareOmniRobot robot,float degrees,float potent) {
@@ -172,7 +172,11 @@ public class AutoPull extends LinearOpMode {
             //onmiDrive(robot, 0,.3,0);
         }
         //onmiDrive(robot,0,0,0);
-        DriveFor(robot,0.5, 0.5, 0.0, 0.0,true);
+        DriveFor(robot,0.5, 0.5, 0, 0,true);
+
+        DriveFor(robot,0.3, 0, 0, 0,true);
+
+        DriveFor(robot,0.2, 0.5, 0, 0,true);
 
         robot.dumper.setTargetPosition(5);
         while (robot.dumper.getCurrentPosition() >= 10 && opModeIsActive() && runtime.seconds() < 1.5) {

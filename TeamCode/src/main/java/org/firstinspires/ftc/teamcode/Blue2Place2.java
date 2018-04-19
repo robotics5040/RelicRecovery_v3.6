@@ -103,7 +103,7 @@ public class Blue2Place2 extends AutoPull {
 
         robot.jkcolor.enableLed(true);
         robot.jkcolor2.enableLed(true);
-        robot.jknock.setPosition(0.12);
+        robot.jknock.setPosition(robot.JKDOWN);
 
         RobotLog.ii("5040MSG","Run vufloria");
         //int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
@@ -130,7 +130,7 @@ public class Blue2Place2 extends AutoPull {
 
         JewelKnock(robot,"blue");
         DriveFor(robot,0.3,0.0,0.0,0.0,true);
-        if(robot.jknock.getPosition() != robot.JKUP) {robot.jknock.setPosition(robot.JKUP);}
+        robot.jknock.setPosition(robot.JKUP);
 
         robot.wheelie.setPower(1);
         DriveFor(robot,0.8,1.0,0.0,0.0,false);

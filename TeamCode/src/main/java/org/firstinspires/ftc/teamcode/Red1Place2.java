@@ -101,7 +101,7 @@ public class Red1Place2 extends AutoPull {
 
         robot.jkcolor.enableLed(true);
         robot.jkcolor2.enableLed(true);
-        robot.jknock.setPosition(0.12);
+        robot.jknock.setPosition(robot.JKDOWN);
 
         float angle = (float)((robot.potentiometer.getVoltage()*((float)1023/68))-37.5);
 
@@ -137,7 +137,7 @@ public class Red1Place2 extends AutoPull {
 
 
         DriveFor(robot,0.3,0.0,0.0,0.0,true);
-        if(robot.jknock.getPosition() != robot.JKUP) {robot.jknock.setPosition(robot.JKUP);}
+        robot.jknock.setPosition(robot.JKUP);
         robot.wheelie.setPower(-1);
         DriveFor(robot,1,-1.0,0.0,0.0,false);
         robot.wheelie.setPower(0);

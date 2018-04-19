@@ -130,7 +130,7 @@ public class OmniBot_Iterative extends OpMode{
         robot.claw2.setPosition(0.35);
         robot.relicClaw.setPosition(0.6);
         robot.glyphStop.setPosition(0.1);
-        robot.relicWrist.setPosition(0.03);
+        robot.relicWrist.setPosition(0.02);
         robot.relicStopper.setPosition(0.0);
 
     }
