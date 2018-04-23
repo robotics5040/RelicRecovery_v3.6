@@ -105,27 +105,18 @@ public class Red1Place3 extends AutoPull {
 
         switch (choosen) {
             case (1):
-                target = 44;
+                target = 45.6;
                 break;
             case (2):
                 target = 52;
                 break;
             case (3):
-                target = 59;
+                target = 59.5;
                 break;
             default:
                 target = 52;
                 break;
         }
-
-        /*int glyphColor1;
-        //brown    1 is brown 2 is gray 0 is none
-        if(robot.dumperColor.alpha() < 20) {
-            glyphColor1 = 1;
-        }
-        else {
-            glyphColor1 = 2;
-        }*/
 
         telemetry.addData("VuMark", "%s visible", choosen);
         telemetry.update();
@@ -138,7 +129,7 @@ public class Red1Place3 extends AutoPull {
         DriveFor(robot,0.3,0.0,0.0,0.0,true);
         robot.jknock.setPosition(robot.JKUP);
         robot.wheelie.setPower(-1);
-        DriveFor(robot,1.1,-1.0,0.0,0.0,false);
+        DriveFor(robot,1,-1.0,0.0,0.0,false);
         robot.wheelie.setPower(0);
 
         DriveFor(robot,0.8,0,0,1,false);
@@ -158,7 +149,7 @@ public class Red1Place3 extends AutoPull {
         robot.grabber.setTargetPosition(350+adjustment);
 
         rotateTo(robot,-90,0);
-        DriveFor(robot, 1,-1,-0.2,0,false);
+        DriveFor(robot, 1.2,-1,-0.2,0,false);
         DriveFor(robot,0.2,1,0,0,false);
 
         telemetry.addLine("Lineup 1 Complete");
@@ -167,7 +158,7 @@ public class Red1Place3 extends AutoPull {
         boolean dis2 = false;
         int count = 0;
         runtime.reset();
-        double speed = 0.35;
+        double speed = 0.38;
         while (dis2 == false && runtime2.seconds() < 15 && opModeIsActive()) {
             double distanceLeft = ((robot.ultra_left.getVoltage() / 5) * 512) + 2.5;// robot.ultra_left.getDistance(DistanceUnit.CM);
             telemetry.addData("Left", distanceLeft);
@@ -221,14 +212,14 @@ public class Red1Place3 extends AutoPull {
         telemetry.addData("glyph?", robot.glyphDetect.getRawLightDetected());
         telemetry.update();
 
-        if(robot.glyphDetect.getRawLightDetected() > noGlyph+1) {
+        if(robot.glyphDetect.getRawLightDetected() > noGlyph+0.5) {
             //telemetry.addData("DumperColor", robot.dumperColor.alpha());
 
             if (choosen == 3) {
-                DriveFor(robot, 0.3, 0, -1, 0, true);
+                DriveFor(robot, 0.4, 0, -1, 0, true);
             }
             else if (choosen == 1) {
-                DriveFor(robot, 0.55, 0, 1, 0, true);
+                DriveFor(robot, 0.6, 0, 1, 0, true);
             }
             else {
                 DriveFor(robot, 0.3, 0, 1, 0, true);
@@ -291,22 +282,24 @@ public class Red1Place3 extends AutoPull {
 
                 dumpGlyph(robot);
 
-                DriveFor(robot, 0.3, -1, 0.0, 0.0, false);
-                DriveFor(robot, 0.2, 1, 0.0, 0.0, false);
+                if(runtime2.seconds() > 28) {
+                    DriveFor(robot, 0.3, -1, 0.0, 0.0, false);
+                    DriveFor(robot, 0.2, 1, 0.0, 0.0, false);
+                }
             }
         }
 
         robot.grabber.setTargetPosition(200);
 
         double distanceLeft = ((robot.ultra_left.getVoltage() / 5) * 512) + 2.5;
-        while(opModeIsActive() == true && distanceLeft < 52) {
+        while(opModeIsActive() == true && distanceLeft < 52 && runtime2.seconds() < 29.5) {
             distanceLeft = ((robot.ultra_left.getVoltage() / 5) * 512) + 2.5;
             omniDrive(robot, -.7, 0, 0, true);
         }
         omniDrive(robot,0,0,0,true);
 
         distanceLeft = ((robot.ultra_left.getVoltage() / 5) * 512) + 2.5;
-        while(opModeIsActive() == true && distanceLeft > 52) {
+        while(opModeIsActive() == true && distanceLeft > 52 && runtime2.seconds() < 29.5) {
             distanceLeft = ((robot.ultra_left.getVoltage() / 5) * 512) + 2.5;
             omniDrive(robot, .7, 0, 0, true);
         }
